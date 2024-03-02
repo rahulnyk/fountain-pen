@@ -1,6 +1,6 @@
 // ArticleEditor.tsx
 
-import { useState, useMemo, useCallback, ChangeEvent } from "react";
+import { useState, useMemo, useCallback, ChangeEvent, useEffect } from "react";
 import pipe from "lodash/fp/pipe";
 import { withEditableVoids } from "./plugins";
 import {
@@ -33,19 +33,34 @@ declare module "slate" {
     }
 }
 
+const saveToLocalStorage = (value: Descendant[]) => {
+    const content = JSON.stringify(value);
+    localStorage.setItem("editorContent", content);
+};
+
+const loadFromLocalStorage = (): Descendant[] | null => {
+    const content = localStorage.getItem("editorContent");
+    // console.log("Content Load", content);
+    return content? JSON.parse(content): null;
+};
+
 const ArticleEditor = () => {
     const editor = useMemo(() => createEditorWithPlugins(createEditor()), []);
 
-    const [value, setValue] = useState<Descendant[]>([
+    const [value, setValue] = useState<Descendant[]>(loadFromLocalStorage() || [
         {
             type: "title",
             children: [{ text: "Your Article Heading" }],
-        },
-        {
+        },        {
             type: "paragraph",
             children: [{ text: "Start writing your article..." }],
         },
     ]);
+
+    useEffect(() => {
+        saveToLocalStorage(value);
+      }, [value]);
+
 
     const renderElement = useCallback(
         (props: CustomElementProps) => <ElementNode {...props} />,
@@ -74,7 +89,7 @@ const ArticleEditor = () => {
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
-    console.log(editor)
+    // console.log(editor);
     if (event.key === "Enter") {
         event.preventDefault();
         Transforms.insertNodes(editor, {
@@ -102,7 +117,7 @@ const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
                 break;
             }
             case "n": {
-                insertNotes(editor)
+                insertNotes(editor);
                 break;
             }
             default: {
@@ -116,10 +131,13 @@ const insertNotes = (editor: Editor) => {
     const notes: NotesElement = {
         type: "notes",
         children: [{ text: "" }],
-        notes: ""
+        notes: "",
     };
     Transforms.insertNodes(editor, notes);
-    Transforms.insertNodes(editor, { type: "paragraph", children: [{text: ""}]})
+    Transforms.insertNodes(editor, {
+        type: "paragraph",
+        children: [{ text: "" }],
+    });
 };
 
 export default ArticleEditor;
