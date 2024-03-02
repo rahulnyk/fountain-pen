@@ -1,6 +1,7 @@
 import React from "react";
 import { Spectral } from "next/font/google";
 import { BasicWrapperProps } from "./types";
+import { Inconsolata } from "next/font/google";
 
 const p = Spectral({
     weight: "400",
@@ -27,6 +28,11 @@ const h3 = Spectral({
     subsets: ["latin"],
     style: "italic",
 });
+
+export const notes = Inconsolata({
+    weight: '300',
+    subsets: ['latin']
+})
 
 
 

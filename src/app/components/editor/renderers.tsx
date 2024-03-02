@@ -1,9 +1,11 @@
 import { Title, NormalText, Heading1, Heading2, Heading3 } from "./typography";
-import { ElementProps, LeafProps, BasicWrapperProps } from "./types";
+import { CustomElementProps, LeafProps, BasicWrapperProps } from "./types";
+
+import Notes from "./notes";
 
 
-
-export const ElementNode = ({ attributes, children, element }: ElementProps) => {
+export const ElementNode = (props: CustomElementProps) => {
+    const { attributes, children, element } = props
     switch (element.type) {
         case "title":
             return <Title>{children}</Title>;
@@ -15,8 +17,8 @@ export const ElementNode = ({ attributes, children, element }: ElementProps) => 
             return <Heading2 {...attributes}>{children}</Heading2>;
         case "heading3":
             return <Heading3 {...attributes}>{children}</Heading3>;
-        case "section":
-            return <Section> {children} </Section>;
+        case "notes":
+            return <Notes {...props}/>;
         default:
             return <NormalText {...attributes}>{children}</NormalText>;
     }
@@ -43,16 +45,3 @@ export const LeafNode = ({ attributes, children, leaf }: LeafProps) => {
     );
 };
 
-export const Section: React.FC<BasicWrapperProps> = ({
-    children,
-    className,
-}) => {
-    return (
-        <div>
-            <hr
-                className={`my-12 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-900 to-transparent opacity-25 dark:opacity-100 ${className}`}
-            />
-            {children}
-        </div>
-    );
-};

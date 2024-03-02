@@ -1,10 +1,13 @@
 import { Editor } from "slate";
 
-export const withSection = (editor: Editor): Editor => {
+
+export const withEditableVoids = (editor: Editor) => {
+    const voidElements = ["notes", "sections"];
     const { isVoid } = editor;
-  
-    editor.isVoid = (element) =>
-      element.type === 'section' ? true : isVoid(element);
-  
+
+    editor.isVoid = (element) => {
+        return voidElements.includes(element.type) ? true : isVoid(element);
+    };
+
     return editor;
-  }
+};

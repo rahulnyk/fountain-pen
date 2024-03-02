@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, ChangeEvent } from "react";
 import pipe from "lodash/fp/pipe";
-import { withSection } from "./plugins";
+import { withEditableVoids } from "./plugins";
 import {
     createEditor,
     Transforms,
@@ -12,17 +12,24 @@ import {
     Element,
 } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
-import { CustomText, CustomElement, ElementProps, LeafProps } from "./types";
-import { ElementNode, LeafNode } from "./nodes";
-import { withHistory } from "slate-history";
+import {
+    CustomText,
+    CustomElement,
+    CustomElementProps,
+    LeafProps,
+    NotesElement,
+    EmptyText,
+} from "./types";
+import { ElementNode, LeafNode } from "./renderers";
+import { withHistory, HistoryEditor } from "slate-history";
 
-const createEditorWithPlugins = pipe(withReact, withHistory, withSection);
+const createEditorWithPlugins = pipe(withReact, withHistory, withEditableVoids);
 
 declare module "slate" {
     interface CustomTypes {
-        Editor: BaseEditor & ReactEditor;
+        Editor: BaseEditor & ReactEditor & HistoryEditor;
         Element: CustomElement;
-        Text: CustomText;
+        Text: CustomText | EmptyText;
     }
 }
 
@@ -41,7 +48,7 @@ const ArticleEditor = () => {
     ]);
 
     const renderElement = useCallback(
-        (props: ElementProps) => <ElementNode {...props} />,
+        (props: CustomElementProps) => <ElementNode {...props} />,
         []
     );
 
@@ -60,13 +67,14 @@ const ArticleEditor = () => {
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
                 onKeyDown={(event) => handleKeyDown(event, editor)}
-                className="focus:outline-none"
+                className="focus:outline-none ml-10"
             />
         </Slate>
     );
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
+    console.log(editor)
     if (event.key === "Enter") {
         event.preventDefault();
         Transforms.insertNodes(editor, {
@@ -74,45 +82,44 @@ const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
             children: [{ text: "" }],
         });
     }
-    if (event.key === "1" && event.ctrlKey) {
+    if (event.ctrlKey) {
         event.preventDefault();
-        Transforms.setNodes(
-            editor,
-            { type: "heading1" },
-            { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
-        );
+        switch (event.key) {
+            case "1": {
+                Transforms.setNodes(editor, { type: "heading1" });
+                break;
+            }
+            case "2": {
+                Transforms.setNodes(editor, { type: "heading2" });
+                break;
+            }
+            case "3": {
+                Transforms.setNodes(editor, { type: "heading3" });
+                break;
+            }
+            case "0": {
+                Transforms.setNodes(editor, { type: "paragraph" });
+                break;
+            }
+            case "n": {
+                insertNotes(editor)
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
-    if (event.key === "2" && event.ctrlKey) {
-        event.preventDefault();
-        Transforms.setNodes(
-            editor,
-            { type: "heading2" },
-            { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
-        );
-    }
-    if (event.key === "3" && event.ctrlKey) {
-        event.preventDefault();
-        Transforms.setNodes(
-            editor,
-            { type: "heading3" },
-            { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
-        );
-    }
-    if (event.key === "0" && event.ctrlKey) {
-        event.preventDefault();
-        Transforms.setNodes(
-            editor,
-            { type: "paragraph" },
-            { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
-        );
-    }
-    // if (event.key === "-" && event.ctrlKey) {
-    //     event.preventDefault();
-    //     Transforms.insertNodes(editor, {
-    //         type: "section",
-    //         children: [{ text: "" }],
-    //     });
-    // }
+};
+
+const insertNotes = (editor: Editor) => {
+    const notes: NotesElement = {
+        type: "notes",
+        children: [{ text: "" }],
+        notes: ""
+    };
+    Transforms.insertNodes(editor, notes);
+    Transforms.insertNodes(editor, { type: "paragraph", children: [{text: ""}]})
 };
 
 export default ArticleEditor;
