@@ -82,7 +82,7 @@ const ArticleEditor = () => {
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
                 onKeyDown={(event) => handleKeyDown(event, editor)}
-                className="focus:outline-none ml-10"
+                className="focus:outline-none ml-8 mr-8"
             />
         </Slate>
     );

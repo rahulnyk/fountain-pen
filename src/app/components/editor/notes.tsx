@@ -34,13 +34,13 @@ const Notes: React.FC<CustomElementProps> = (props: CustomElementProps) => {
         <div
             {...attributes}
             contentEditable={false}
-            className={`relative -ml-10 -mt-2 -mb-2 
+            className={`absolute -ml-10 -mt-3 -mb-3
             ${isFloatingDivVisible ? "h-auto w-2/3" : "h-1 w-1"}
              bg-green-100 p-2 rounded shadow-md shadow-transparent transition-all delay-0 duration-100 overflow-hidden`}
         >
             <button
                 // className="bg-transparent rounded-full p-2 focus:outline-none hover:bg-gray-200 transition"
-                className="absolute top-0 left-0 text-black p-2 rounded-full"
+                className="absolute top-0 left-0 text-black p-2 w-full bg-green-200"
                 onClick={toggleFloatingDiv}
             >
                 {/* <CiStickyNote /> */}
