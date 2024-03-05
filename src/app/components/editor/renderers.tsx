@@ -1,3 +1,4 @@
+'use client'
 import { Title, NormalText, Heading1, Heading2, Heading3 } from "./typography";
 import { CustomElementProps, LeafProps, BasicWrapperProps } from "./types";
 

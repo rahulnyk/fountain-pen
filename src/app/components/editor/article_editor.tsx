@@ -1,6 +1,7 @@
+"use client";
 // ArticleEditor.tsx
 
-import { useState, useMemo, useCallback, ChangeEvent, useEffect } from "react";
+import { useState, useMemo, useCallback, ChangeEvent, useEffect, use } from "react";
 import pipe from "lodash/fp/pipe";
 import { withEditableVoids } from "./plugins";
 import {
@@ -33,21 +34,17 @@ declare module "slate" {
     }
 }
 
-const saveToLocalStorage = (value: Descendant[]) => {
-    const content = JSON.stringify(value);
-    localStorage.setItem("editorContent", content);
-};
+const localContentKey = "localEditorContent";
 
-const loadFromLocalStorage = (): Descendant[] | null => {
-    const content = localStorage.getItem("editorContent");
-    // console.log("Content Load", content);
-    return content? JSON.parse(content): null;
-};
+
+// const loadFromLocalStorage = (): Descendant[] | null => {
+//     const content = localStorage.getItem("editorContent");
+//     // console.log("Content Load", content);
+//     return content? JSON.parse(content): null;
+// };
 
 const ArticleEditor = () => {
-    const editor = useMemo(() => createEditorWithPlugins(createEditor()), []);
-
-    const [value, setValue] = useState<Descendant[]>(loadFromLocalStorage() || [
+    const fallbackValue: Descendant[] = [
         {
             type: "title",
             children: [{ text: "Your Article Heading" }],
@@ -55,12 +52,23 @@ const ArticleEditor = () => {
             type: "paragraph",
             children: [{ text: "Start writing your article..." }],
         },
-    ]);
+    ]
+    const editor = useMemo(() => createEditorWithPlugins(createEditor()), []);
+
+    const [value, setValue] = useState<Descendant[]>(fallbackValue);
 
     useEffect(() => {
-        saveToLocalStorage(value);
-      }, [value]);
+        const stored = localStorage.getItem(localContentKey);
+        console.log("local stored value", stored)
+        const content = stored ? JSON.parse(stored) : fallbackValue
+        setValue(content);
+        editor.children = content
+    }, []);
 
+    const saveOnChange = (value: Descendant[]) => {
+        const content = JSON.stringify(value);
+        localStorage.setItem(localContentKey, content);
+    };
 
     const renderElement = useCallback(
         (props: CustomElementProps) => <ElementNode {...props} />,
@@ -76,7 +84,7 @@ const ArticleEditor = () => {
         <Slate
             editor={editor}
             initialValue={value}
-            onChange={(newValue) => setValue(newValue)}
+            onChange={saveOnChange}
         >
             <Editable
                 renderElement={renderElement}
