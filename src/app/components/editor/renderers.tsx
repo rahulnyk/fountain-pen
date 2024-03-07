@@ -3,9 +3,10 @@ import { Title, NormalText, Heading1, Heading2, Heading3 } from "./typography";
 import { CustomElementProps, LeafProps, BasicWrapperProps } from "./types";
 
 import Notes from "./notes";
+import { forwardRef } from "react";
 
 
-export const ElementNode = (props: CustomElementProps) => {
+export const ElementNode = forwardRef((props: CustomElementProps, ref) => {
     const { attributes, children, element } = props
     switch (element.type) {
         case "title":
@@ -23,7 +24,7 @@ export const ElementNode = (props: CustomElementProps) => {
         default:
             return <NormalText {...attributes}>{children}</NormalText>;
     }
-};
+});
 
 export const LeafNode = ({ attributes, children, leaf }: LeafProps) => {
     let style: React.CSSProperties = {};

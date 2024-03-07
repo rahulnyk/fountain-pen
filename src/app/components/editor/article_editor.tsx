@@ -1,7 +1,14 @@
 "use client";
 // ArticleEditor.tsx
 
-import { useState, useMemo, useCallback, ChangeEvent, useEffect, use } from "react";
+import {
+    useState,
+    useMemo,
+    useCallback,
+    ChangeEvent,
+    useEffect,
+    use,
+} from "react";
 import pipe from "lodash/fp/pipe";
 import { withEditableVoids } from "./plugins";
 import {
@@ -36,33 +43,31 @@ declare module "slate" {
 
 const localContentKey = "localEditorContent";
 
-
-// const loadFromLocalStorage = (): Descendant[] | null => {
-//     const content = localStorage.getItem("editorContent");
-//     // console.log("Content Load", content);
-//     return content? JSON.parse(content): null;
-// };
-
+const fallbackValue: Descendant[] = [
+    {
+        type: "title",
+        children: [{ text: "Your Article Heading" }],
+    },
+    {
+        type: "paragraph",
+        children: [{ text: "Start writing your article..." }],
+    },
+];
 const ArticleEditor = () => {
-    const fallbackValue: Descendant[] = [
-        {
-            type: "title",
-            children: [{ text: "Your Article Heading" }],
-        },        {
-            type: "paragraph",
-            children: [{ text: "Start writing your article..." }],
-        },
-    ]
+    const [winReady, setWinReady] = useState(false);
+    useEffect(() => {
+        setWinReady(true);
+    }, []);
+
     const editor = useMemo(() => createEditorWithPlugins(createEditor()), []);
 
     const [value, setValue] = useState<Descendant[]>(fallbackValue);
 
     useEffect(() => {
         const stored = localStorage.getItem(localContentKey);
-        console.log("local stored value", stored)
-        const content = stored ? JSON.parse(stored) : fallbackValue
+        const content = stored ? JSON.parse(stored) : fallbackValue;
         setValue(content);
-        editor.children = content
+        editor.children = content;
     }, []);
 
     const saveOnChange = (value: Descendant[]) => {
@@ -81,18 +86,22 @@ const ArticleEditor = () => {
     );
 
     return (
-        <Slate
-            editor={editor}
-            initialValue={value}
-            onChange={saveOnChange}
-        >
-            <Editable
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-                onKeyDown={(event) => handleKeyDown(event, editor)}
-                className="focus:outline-none ml-8 mr-8"
-            />
-        </Slate>
+        <>
+            {winReady && (
+                <Slate
+                    editor={editor}
+                    initialValue={value}
+                    onChange={saveOnChange}
+                >
+                    <Editable
+                        renderElement={renderElement}
+                        renderLeaf={renderLeaf}
+                        onKeyDown={(event) => handleKeyDown(event, editor)}
+                        className="focus:outline-none ml-8 mr-8"
+                    />
+                </Slate>
+            )}
+        </>
     );
 };
 
