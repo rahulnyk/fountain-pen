@@ -1,26 +1,22 @@
-'use client'
-import { Title, NormalText, Heading1, Heading2, Heading3 } from "./typography";
+"use client";
 import { CustomElementProps, LeafProps, BasicWrapperProps } from "./types";
-
-import Notes from "./notes";
+import { NormalText } from "./element_components/normal_text";
+import Notes from "./element_components/notes";
+import { Heading } from "./element_components/headings";
 import { forwardRef } from "react";
 
-
 export const ElementNode = forwardRef((props: CustomElementProps, ref) => {
-    const { attributes, children, element } = props
+    const { attributes, children, element } = props;
     switch (element.type) {
-        case "title":
-            return <Title>{children}</Title>;
         case "paragraph":
-            return <NormalText {...attributes}>{children}</NormalText>;
+            return <NormalText {...props} />;
+        case "title":
         case "heading1":
-            return <Heading1 {...attributes}>{children}</Heading1>;
         case "heading2":
-            return <Heading2 {...attributes}>{children}</Heading2>;
         case "heading3":
-            return <Heading3 {...attributes}>{children}</Heading3>;
+            return <Heading {...props} />;
         case "notes":
-            return <Notes {...props}/>;
+            return <Notes {...props} />;
         default:
             return <NormalText {...attributes}>{children}</NormalText>;
     }
@@ -31,19 +27,15 @@ export const LeafNode = ({ attributes, children, leaf }: LeafProps) => {
     if (leaf.bold) {
         style = { ...style, fontWeight: "bold" };
     }
-
     if (leaf.italic) {
         style = { ...style, fontStyle: "italic" };
     }
-
     if (leaf.underline) {
         style = { ...style, textDecoration: "underline" };
     }
-
     return (
         <span {...attributes} style={style}>
             {children}
         </span>
     );
 };
-
