@@ -1,14 +1,28 @@
+import { useContext } from "react";
+import { BasicWrapperProps } from "../types";
+import { paragraphStyle } from "../typography";
+import { ModeContext } from "../article_editor";
+import { EditorGutter } from "../../editable_gutter";
 
-import { BasicWrapperProps } from '../types'
-import { paragraphStyle } from '../typography';
+export const NormalText: React.FC<BasicWrapperProps> = ({ children }) => {
+    const editorMode = useContext(ModeContext);
 
+    const notEditable = (mode: string) => {
+        return ["outline", "readonly"].includes(mode);
+    };
 
-export const NormalText: React.FC<BasicWrapperProps> = ({
-    children
-}) => {
     return (
-        <div className={paragraphStyle}>
-            {children}
+        <div
+            className={`flex justify-between justify-items-start ${
+                notEditable(editorMode) ? "select-none" : ""
+            }`}
+            contentEditable={!notEditable(editorMode)}
+        >
+            <EditorGutter visible={!notEditable(editorMode)} />
+
+            <div className={`flex-grow p-4 ${paragraphStyle} }`}>
+                {children}
+            </div>
         </div>
     );
 };

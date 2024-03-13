@@ -104,7 +104,7 @@ const ArticleEditor = () => {
                     onChange={saveOnChange}
                 >
                     <ModeContext.Provider value={editorMode}>
-                        <div className="ml-5 mr-0">
+                        <div className="m-10">
                             <EditorModeSwitch
                                 className="mt-5 mb-5"
                                 onClick={handleModeChange}
