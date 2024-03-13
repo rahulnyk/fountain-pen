@@ -1,10 +1,10 @@
-import { CustomElementProps } from "./types";
+import { CustomElementProps } from "../types";
 import { useEffect, useState } from "react";
 import { CiStickyNote } from "react-icons/ci";
-import { NotesElement } from "./types";
+import { NotesElement } from "../types";
 import { ReactEditor, Slate, useSlate } from "slate-react";
 import { Transforms } from "slate";
-import { notes } from "./typography";
+import { notes } from "../typography";
 
 const Notes: React.FC<CustomElementProps> = (props: CustomElementProps) => {
     const { attributes, children, element } = props;
@@ -39,7 +39,6 @@ const Notes: React.FC<CustomElementProps> = (props: CustomElementProps) => {
              bg-green-100 p-2 rounded shadow-md shadow-transparent transition-all delay-0 duration-100 overflow-hidden`}
         >
             <button
-                // className="bg-transparent rounded-full p-2 focus:outline-none hover:bg-gray-200 transition"
                 className="absolute top-0 left-0 text-black p-2 w-full bg-green-200"
                 onClick={toggleFloatingDiv}
             >

@@ -5,43 +5,34 @@ import {
     useState,
     useMemo,
     useCallback,
-    ChangeEvent,
     useEffect,
-    use,
+    createContext,
 } from "react";
 import pipe from "lodash/fp/pipe";
-import { withEditableVoids } from "./plugins";
+import { withEditableVoids } from "./plugins/withEditableVoids";
+import { createEditor, Transforms, Editor, Descendant } from "slate";
+import { Slate, Editable, withReact } from "slate-react";
 import {
-    createEditor,
-    Transforms,
-    Editor,
-    BaseEditor,
-    Descendant,
-    Element,
-} from "slate";
-import { Slate, Editable, withReact, ReactEditor } from "slate-react";
-import {
-    CustomText,
-    CustomElement,
     CustomElementProps,
     LeafProps,
     NotesElement,
-    EmptyText,
+    editorModes,
 } from "./types";
 import { ElementNode, LeafNode } from "./renderers";
-import { withHistory, HistoryEditor } from "slate-history";
+import { withHistory } from "slate-history";
+import { withCustomBehavior } from "./plugins/withCustomBehavior";
+import EditorModeSwitch from "../editor_mode_switch";
 
-const createEditorWithPlugins = pipe(withReact, withHistory, withEditableVoids);
-
-declare module "slate" {
-    interface CustomTypes {
-        Editor: BaseEditor & ReactEditor & HistoryEditor;
-        Element: CustomElement;
-        Text: CustomText | EmptyText;
-    }
-}
+const createEditorWithPlugins = pipe(
+    withCustomBehavior,
+    withEditableVoids,
+    withReact,
+    withHistory
+);
 
 const localContentKey = "localEditorContent";
+
+export const ModeContext = createContext<editorModes>("edit");
 
 const fallbackValue: Descendant[] = [
     {
@@ -55,6 +46,7 @@ const fallbackValue: Descendant[] = [
 ];
 const ArticleEditor = () => {
     const [winReady, setWinReady] = useState(false);
+
     useEffect(() => {
         setWinReady(true);
     }, []);
@@ -75,6 +67,24 @@ const ArticleEditor = () => {
         localStorage.setItem(localContentKey, content);
     };
 
+    // Editor Mode
+    const [editorMode, setMode] = useState<editorModes>("edit");
+
+    const handleModeChange = () => {
+        let newMode: editorModes = "edit";
+        if (editorMode === "edit") {
+            newMode = "outline";
+        }
+        if (editorMode === "outline") {
+            newMode = "readonly";
+        }
+        if (editorMode === "readonly") {
+            newMode = "edit";
+        }
+        setMode(newMode);
+    };
+    //
+
     const renderElement = useCallback(
         (props: CustomElementProps) => <ElementNode {...props} />,
         []
@@ -93,12 +103,25 @@ const ArticleEditor = () => {
                     initialValue={value}
                     onChange={saveOnChange}
                 >
-                    <Editable
-                        renderElement={renderElement}
-                        renderLeaf={renderLeaf}
-                        onKeyDown={(event) => handleKeyDown(event, editor)}
-                        className="focus:outline-none ml-8 mr-8"
-                    />
+                    <ModeContext.Provider value={editorMode}>
+                        <div className="m-10">
+                            <EditorModeSwitch
+                                className="mt-5 mb-5"
+                                onClick={handleModeChange}
+                            />
+                            <Editable
+                                renderElement={renderElement}
+                                renderLeaf={renderLeaf}
+                                onKeyDown={(event) =>
+                                    handleKeyDown(event, editor)
+                                }
+                                className="focus:outline-none"
+                                readOnly={
+                                    editorMode === "readonly" ? true : false
+                                }
+                            />
+                        </div>
+                    </ModeContext.Provider>
                 </Slate>
             )}
         </>
@@ -106,7 +129,6 @@ const ArticleEditor = () => {
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
-    // console.log(editor);
     if (event.key === "Enter") {
         event.preventDefault();
         Transforms.insertNodes(editor, {
