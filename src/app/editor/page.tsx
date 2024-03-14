@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import ArticleEditor from "../components/editor/article_editor";
+import FprEditor from "../components/fpr_editor";
 
 export default function Editor() {
     return (
@@ -8,7 +7,7 @@ export default function Editor() {
             {/* First Column (2/3 width) */}
             <div className="w-2/3 bg-white">
                 <div className="pt-10">
-                    <ArticleEditor />
+                    <FprEditor />
                 </div>
             </div>
 
