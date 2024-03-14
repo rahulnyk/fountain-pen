@@ -63,14 +63,14 @@ export type ParagraphElement = {
     children: CustomDescendant[];
 };
 
-export const headings = [
+export const Headings = [
     'title',
     'heading1', 
     'heading2',
     'heading3',
   ] as const;
 
-export type HeadingTypes = typeof headings[number];
+export type HeadingTypes = typeof Headings[number];
 
 export type HeadingElement = Omit<ParagraphElement, "type"> & {
     type: HeadingTypes;

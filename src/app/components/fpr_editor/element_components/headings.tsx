@@ -6,8 +6,8 @@ import {
     heading3Style,
     titleStyle,
 } from "../typography";
-import { ModeContext } from "../article_editor";
-import { EditorGutter } from "../../editable_gutter";
+import { ModeContext } from "..";
+import { EditorGutter } from "../../editor_gutter";
 
 export const Heading: React.FC<CustomElementProps> = (
     props: CustomElementProps

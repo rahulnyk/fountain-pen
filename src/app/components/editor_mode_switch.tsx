@@ -5,7 +5,7 @@ import { BsParagraph, BsCardHeading } from "react-icons/bs";
 import { TfiParagraph } from "react-icons/tfi";
 import { CiLock } from "react-icons/ci";
 import { RxHeading } from "react-icons/rx";
-import { ModeContext } from "./editor/article_editor";
+import { ModeContext } from "./fpr_editor";
 
 
 const EditorModeSwitch = ({ className, onClick }: {  className: string, onClick: MouseEventHandler }) => {

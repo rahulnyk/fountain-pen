@@ -1,6 +1,6 @@
 import { Editor, Transforms, Range } from "slate";
 import { Element } from "slate";
-import { HeadingElement, HeadingTypes, headings, editorModes } from "../types";
+import { HeadingElement, HeadingTypes, Headings, editorModes } from "../types";
 
 export const withCustomBehavior = (editor: Editor) => {
     // editor.editorMode = "edit";
@@ -20,12 +20,12 @@ export const withCustomBehavior = (editor: Editor) => {
     // };
 
     editor.getCurrentNode = () => {
-        const [node] = Editor.parent(editor, editor.selection || []);
+        const [node] = Editor.parent(editor, editor.selection || [0]);
         return node;
     };
 
     editor.getCurrentNodePath = () => {
-        const [, path] = Editor.parent(editor, editor.selection || []);
+        const [, path] = Editor.parent(editor, editor.selection || [0]);
         return path;
     };
 
@@ -47,10 +47,10 @@ export const withCustomBehavior = (editor: Editor) => {
             match: (n) => Element.isElement(n),
         });
         const [element] = entry;
-        return headings.includes((element as HeadingElement).type);
+        return Headings.includes((element as HeadingElement).type);
     };
 
-    // This method makes sure that when the user presses the back button, the headings are not deleted.
+    // This method makes sure that when the user presses the back button, the Headings are not deleted.
     // const { deleteBackward } = editor;
     // editor.deleteBackward = (unit) => {
     //     const { selection } = editor;

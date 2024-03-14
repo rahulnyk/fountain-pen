@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { BasicWrapperProps } from "../types";
 import { paragraphStyle } from "../typography";
-import { ModeContext } from "../article_editor";
-import { EditorGutter } from "../../editable_gutter";
+import { ModeContext } from "..";
+import { EditorGutter } from "../../editor_gutter";
 
 export const NormalText: React.FC<BasicWrapperProps> = ({ children }) => {
     const editorMode = useContext(ModeContext);
@@ -20,7 +20,7 @@ export const NormalText: React.FC<BasicWrapperProps> = ({ children }) => {
         >
             <EditorGutter visible={!notEditable(editorMode)} />
 
-            <div className={`flex-grow p-4 ${paragraphStyle} }`}>
+            <div className={`flex-grow p-4 ${paragraphStyle}`}>
                 {children}
             </div>
         </div>

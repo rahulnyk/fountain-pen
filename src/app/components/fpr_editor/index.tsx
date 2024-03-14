@@ -10,6 +10,7 @@ import {
 } from "react";
 import pipe from "lodash/fp/pipe";
 import { withEditableVoids } from "./plugins/withEditableVoids";
+import { withNormalisedHeadings } from "./plugins/withNormalisedHeadings";
 import { createEditor, Transforms, Editor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import {
@@ -22,8 +23,10 @@ import { ElementNode, LeafNode } from "./renderers";
 import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./plugins/withCustomBehavior";
 import EditorModeSwitch from "../editor_mode_switch";
+import { Element, Path } from "slate";
 
 const createEditorWithPlugins = pipe(
+    withNormalisedHeadings,
     withCustomBehavior,
     withEditableVoids,
     withReact,
@@ -44,7 +47,7 @@ const fallbackValue: Descendant[] = [
         children: [{ text: "Start writing your article..." }],
     },
 ];
-const ArticleEditor = () => {
+const FprEditor = () => {
     const [winReady, setWinReady] = useState(false);
 
     useEffect(() => {
@@ -129,6 +132,11 @@ const ArticleEditor = () => {
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
+    // const path = editor.getCurrentNodePath()
+    // console.log('Path', path)
+    // const next_node = Editor.next(editor, {at: path})
+    // console.log(next_node)
+
     if (event.key === "Enter") {
         event.preventDefault();
         Transforms.insertNodes(editor, {
@@ -179,4 +187,4 @@ const insertNotes = (editor: Editor) => {
     });
 };
 
-export default ArticleEditor;
+export default FprEditor;
