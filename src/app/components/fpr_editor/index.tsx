@@ -10,7 +10,7 @@ import {
 } from "react";
 import pipe from "lodash/fp/pipe";
 import { withEditableVoids } from "./plugins/withEditableVoids";
-import { withNormalisedHeadings } from "./plugins/withNormalisedHeadings";
+import { withParaAfterHeadings } from "./plugins/withParaAfterHeadings";
 import { createEditor, Transforms, Editor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import {
@@ -22,11 +22,14 @@ import {
 import { ElementNode, LeafNode } from "./renderers";
 import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./plugins/withCustomBehavior";
-import EditorModeSwitch from "../editor_mode_switch";
 import { Element, Path } from "slate";
+import { withEnforcedTitle } from "./plugins/withEnforcedTitle";
+import { withOnlyOneTitle } from "./plugins/withOnlyOneTitle";
 
 const createEditorWithPlugins = pipe(
-    withNormalisedHeadings,
+    withEnforcedTitle,
+    withParaAfterHeadings,
+    withOnlyOneTitle,
     withCustomBehavior,
     withEditableVoids,
     withReact,
@@ -70,24 +73,6 @@ const FprEditor = () => {
         localStorage.setItem(localContentKey, content);
     };
 
-    // Editor Mode
-    const [editorMode, setMode] = useState<editorModes>("edit");
-
-    const handleModeChange = () => {
-        let newMode: editorModes = "edit";
-        if (editorMode === "edit") {
-            newMode = "outline";
-        }
-        if (editorMode === "outline") {
-            newMode = "readonly";
-        }
-        if (editorMode === "readonly") {
-            newMode = "edit";
-        }
-        setMode(newMode);
-    };
-    //
-
     const renderElement = useCallback(
         (props: CustomElementProps) => <ElementNode {...props} />,
         []
@@ -106,25 +91,15 @@ const FprEditor = () => {
                     initialValue={value}
                     onChange={saveOnChange}
                 >
-                    <ModeContext.Provider value={editorMode}>
-                        <div className="m-10">
-                            <EditorModeSwitch
-                                className="mt-5 mb-5"
-                                onClick={handleModeChange}
-                            />
-                            <Editable
-                                renderElement={renderElement}
-                                renderLeaf={renderLeaf}
-                                onKeyDown={(event) =>
-                                    handleKeyDown(event, editor)
-                                }
-                                className="focus:outline-none"
-                                readOnly={
-                                    editorMode === "readonly" ? true : false
-                                }
-                            />
-                        </div>
-                    </ModeContext.Provider>
+                    <div className="m-10">
+                        <Editable
+                            renderElement={renderElement}
+                            renderLeaf={renderLeaf}
+                            onKeyDown={(event) => handleKeyDown(event, editor)}
+                            className="focus:outline-none"
+                            readOnly={false}
+                        />
+                    </div>
                 </Slate>
             )}
         </>
@@ -132,11 +107,6 @@ const FprEditor = () => {
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
-    // const path = editor.getCurrentNodePath()
-    // console.log('Path', path)
-    // const next_node = Editor.next(editor, {at: path})
-    // console.log(next_node)
-
     if (event.key === "Enter") {
         event.preventDefault();
         Transforms.insertNodes(editor, {

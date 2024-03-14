@@ -6,8 +6,6 @@ import {
     heading3Style,
     titleStyle,
 } from "../typography";
-import { ModeContext } from "..";
-import { EditorGutter } from "../../editor_gutter";
 
 export const Heading: React.FC<CustomElementProps> = (
     props: CustomElementProps
@@ -15,8 +13,6 @@ export const Heading: React.FC<CustomElementProps> = (
     const { attributes, children, element } = props;
 
     const [headingClassName, setHeadingClassName] = useState<string>("");
-
-    const editorMode = useContext(ModeContext);
 
     // useEffect(() => console.log("From Headings", editorMode), [editorMode]);
 
@@ -41,19 +37,7 @@ export const Heading: React.FC<CustomElementProps> = (
         setHeadingClassName(className);
     }, [element]);
 
-    const notEditable = (mode: string) => {
-        return ["edit", "readonly"].includes(mode);
-    };
-
     return (
-        <div
-            className={`flex ${notEditable(editorMode) ? "select-none" : ""}`}
-            contentEditable={!notEditable(editorMode)}
-        >
-            <EditorGutter visible={!notEditable(editorMode)} />
-            <div className={`flex-grow p-4 ${headingClassName}`}>
-                {children}
-            </div>
-        </div>
+        <div className={`flex-grow p-4 ${headingClassName}`}>{children}</div>
     );
 };

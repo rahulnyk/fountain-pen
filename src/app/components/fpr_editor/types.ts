@@ -5,13 +5,9 @@ import { Descendant, BaseEditor, Ancestor, Path } from "slate";
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
 
-export const editorModeValues = [
-    'readonly',
-    'outline',
-    'edit',
-] as const;
+export const editorModeValues = ["readonly", "outline", "edit"] as const;
 
-export type editorModes = typeof editorModeValues[number];
+export type editorModes = (typeof editorModeValues)[number];
 
 export interface FprEditor extends ReactEditor {
     getCurrentNodePath(): Path;
@@ -63,14 +59,15 @@ export type ParagraphElement = {
     children: CustomDescendant[];
 };
 
-export const Headings = [
-    'title',
-    'heading1', 
-    'heading2',
-    'heading3',
-  ] as const;
+export const Headings = ["title", "heading1", "heading2", "heading3"] as const;
 
-export type HeadingTypes = typeof Headings[number];
+export const HeadingsWithoutTitle = [
+    "heading1",
+    "heading2",
+    "heading3",
+] as const;
+
+export type HeadingTypes = (typeof Headings)[number];
 
 export type HeadingElement = Omit<ParagraphElement, "type"> & {
     type: HeadingTypes;

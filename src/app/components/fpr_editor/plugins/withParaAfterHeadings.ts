@@ -1,7 +1,7 @@
 import { Transforms, Element, Node, Editor, Path } from "slate";
 import { Headings } from "../types";
 
-export const withNormalisedHeadings = (editor: Editor) => {
+export const withParaAfterHeadings = (editor: Editor) => {
     const { normalizeNode } = editor;
 
     editor.normalizeNode = (entry) => {
