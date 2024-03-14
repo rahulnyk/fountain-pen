@@ -18,7 +18,7 @@ export const ElementNode = forwardRef((props: CustomElementProps, ref) => {
         case "notes":
             return <Notes {...props} />;
         default:
-            return <NormalText {...attributes}>{children}</NormalText>;
+            return <NormalText {...props} />;
     }
 });
 

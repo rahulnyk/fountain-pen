@@ -6,6 +6,7 @@ import {
     heading3Style,
     titleStyle,
 } from "../typography";
+import { useSelected, useFocused } from "slate-react";
 
 export const Heading: React.FC<CustomElementProps> = (
     props: CustomElementProps
@@ -14,7 +15,16 @@ export const Heading: React.FC<CustomElementProps> = (
 
     const [headingClassName, setHeadingClassName] = useState<string>("");
 
-    // useEffect(() => console.log("From Headings", editorMode), [editorMode]);
+    // Show gutter line when active
+    const [showGutter, setShowGutter] = useState(false);
+    const selected = useSelected();
+    const focused = useFocused();
+
+    useEffect(() => {
+        setShowGutter(selected && focused);
+    }, [selected, focused]);
+
+    //
 
     useEffect(() => {
         let className = "";
@@ -38,6 +48,14 @@ export const Heading: React.FC<CustomElementProps> = (
     }, [element]);
 
     return (
-        <div className={`flex-grow p-4 ${headingClassName}`}>{children}</div>
+        <div
+            className={`flex-grow p-4 ${headingClassName} p-4 rounded hover:border-gray-200 ${
+                showGutter
+                    ? "border-l-4 border-gray-200"
+                    : "border-l-4 border-transparent"
+            }`}
+        >
+            {children}
+        </div>
     );
 };
