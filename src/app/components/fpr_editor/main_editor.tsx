@@ -2,9 +2,9 @@
 // ArticleEditor.tsx
 
 import { useCallback } from "react";
-import { createEditor, Transforms, Editor, Descendant } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
-import { CustomElementProps, LeafProps, NotesElement } from "./types";
+import { Transforms, Editor } from "slate";
+import { Editable } from "slate-react";
+import { CustomElementProps, LeafProps } from "./types";
 import { ElementNode, LeafNode } from "./renderers";
 
 const MainEditor = ({ editor }: { editor: Editor }) => {

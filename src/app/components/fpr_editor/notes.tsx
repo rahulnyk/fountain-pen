@@ -40,14 +40,18 @@ const Notes = ({ className }: { className: string }) => {
 
         if (node && Object.hasOwn(node, "notes")) {
             setText((node as CustomBaseElement).notes[0]);
-            setNotesHeading(
-                editor.getCurrentElementText().slice(0, 30) + "..."
-            );
+            setNotesHeading(chop(editor.getCurrentElementText()));
         } else {
             setText("Notes ... ");
             setNotesHeading("");
         }
     }, [editor.selection]);
+
+    const chop = (txt: string): string => {
+        const chop_length = 50;
+        let dots = txt.length > 50 ? "..." : "";
+        return txt.slice(0, 50) + dots;
+    };
 
     return (
         <>
@@ -61,9 +65,9 @@ const Notes = ({ className }: { className: string }) => {
                         : "invisible"
                 } ${className}`}
             >
-                <button className="h-6 rounded-t overflow-hidden mt-t mx-0 w-full text-xs text-left pl-2 text-white bg-gradient-to-l from-indigo-400 via-indigo-400 to-indigo-600">
+                <div className="flex h-6 rounded-t overflow-hidden mt-t mx-0 w-full text-xs text-left items-center pl-2 text-white bg-gradient-to-l from-indigo-400 via-indigo-400 to-indigo-600">
                     {notesHeading}
-                </button>
+                </div>
 
                 <div className="mt-0 p-2 text-gray-600">
                     <textarea

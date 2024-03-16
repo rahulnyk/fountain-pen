@@ -20,10 +20,10 @@ export const NormalText: React.FC<CustomElementProps> = ({
     return (
         <div
             // className={`p-4 ${paragraphStyle} rounded border-transparent hover:border-gray-400  focus:border-black transition border-l-4`}
-            className={`p-4 pr-10 rounded hover:border-gray-300 ${paragraphStyle} ${
+            className={`p-4 pr-10 rounded ${paragraphStyle} ${
                 showGutter
-                    ? "border-l-4 border-gray-300 bg-gray-50"
-                    : "border-l-4 border-transparent"
+                    ? "border-l-4 border-gray-400 bg-gray-50"
+                    : "border-l-4 border-transparent  hover:border-gray-200"
             }`}
         >
             <p>{showGutter}</p>
