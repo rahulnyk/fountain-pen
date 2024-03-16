@@ -1,7 +1,7 @@
 // import { Text } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 import { ReactNode } from "react";
-import { Descendant, BaseEditor, Ancestor, Path } from "slate";
+import { Descendant, BaseEditor, Ancestor, Path, Node } from "slate";
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
 
@@ -14,8 +14,10 @@ export interface FprEditor extends ReactEditor {
     isCollapsed(): boolean;
     getSelectedText(): string;
     getCurrentElementType(): string | undefined;
-    getCurrentNode(): Ancestor;
+    getCurrentNode(): Node | undefined;
     isCurrentNodeHeadding(): boolean;
+    getCurrentElement(): Node | undefined;
+    getCurrentElementNotes(): string[];
     // editorMode: editorModes;
     // toggleEditorMode(): void;
 }
@@ -31,6 +33,7 @@ export type CustomElement =
 
 export type CustomDescendant = Descendant | CustomText | EmptyText;
 
+// Custom text types
 export type CustomText = {
     bold?: boolean;
     italic?: boolean;
@@ -38,6 +41,9 @@ export type CustomText = {
     text: string;
 };
 
+export type EmptyText = { text: string };
+
+// Editable void type
 export type EditableVoidElement = {
     type: "editable-void";
     children: EmptyText[];
@@ -47,16 +53,15 @@ export type NotesElement = Omit<EditableVoidElement, "type"> & {
     notes: string;
 };
 
-export type EmptyText = { text: string };
-
-// export type BaseElement = {
-
-// }
-
-export type ParagraphElement = {
+// Base Element type
+export type CustomBaseElement = {
+    type: string;
+    children: CustomDescendant[];
+    notes: string[];
+};
+export type ParagraphElement = Omit<CustomBaseElement, "type"> & {
     type: "paragraph";
     align?: string;
-    children: CustomDescendant[];
 };
 
 export const Headings = ["title", "heading1", "heading2", "heading3"] as const;
@@ -69,7 +74,7 @@ export const HeadingsWithoutTitle = [
 
 export type HeadingTypes = (typeof Headings)[number];
 
-export type HeadingElement = Omit<ParagraphElement, "type"> & {
+export type HeadingElement = Omit<CustomBaseElement, "type"> & {
     type: HeadingTypes;
 };
 

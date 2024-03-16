@@ -7,8 +7,13 @@ import { CiLock } from "react-icons/ci";
 import { RxHeading } from "react-icons/rx";
 import { ModeContext } from "./fpr_editor";
 
-
-const EditorModeSwitch = ({ className, onClick }: {  className: string, onClick: MouseEventHandler }) => {
+const EditorModeSwitch = ({
+    className,
+    onClick,
+}: {
+    className: string;
+    onClick: MouseEventHandler;
+}) => {
     const mode = useContext(ModeContext);
 
     return (

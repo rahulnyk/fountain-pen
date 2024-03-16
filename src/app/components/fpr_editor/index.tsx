@@ -13,12 +13,6 @@ import { withEditableVoids } from "./plugins/withEditableVoids";
 import { withParaAfterHeadings } from "./plugins/withParaAfterHeadings";
 import { createEditor, Transforms, Editor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
-import {
-    CustomElementProps,
-    LeafProps,
-    NotesElement,
-    editorModes,
-} from "./types";
 import { ElementNode, LeafNode } from "./renderers";
 import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./plugins/withCustomBehavior";
@@ -36,18 +30,21 @@ const createEditorWithPlugins = pipe(
     withHistory
 );
 
-const localContentKey = "localEditorContent";
+import MainEditor from "./main_editor";
+import SidePanel from "./side_panel";
 
-export const ModeContext = createContext<editorModes>("edit");
+const localContentKey = "localEditorContent";
 
 const fallbackValue: Descendant[] = [
     {
         type: "title",
         children: [{ text: "Your Article Heading" }],
+        notes: [""],
     },
     {
         type: "paragraph",
         children: [{ text: "Start writing your article..." }],
+        notes: [""],
     },
 ];
 const FprEditor = () => {
@@ -73,16 +70,6 @@ const FprEditor = () => {
         localStorage.setItem(localContentKey, content);
     };
 
-    const renderElement = useCallback(
-        (props: CustomElementProps) => <ElementNode {...props} />,
-        []
-    );
-
-    const renderLeaf = useCallback(
-        (props: LeafProps) => <LeafNode {...props} />,
-        []
-    );
-
     return (
         <>
             {winReady && (
@@ -91,70 +78,21 @@ const FprEditor = () => {
                     initialValue={value}
                     onChange={saveOnChange}
                 >
-                    <div className="m-10">
-                        <Editable
-                            renderElement={renderElement}
-                            renderLeaf={renderLeaf}
-                            onKeyDown={(event) => handleKeyDown(event, editor)}
-                            className="focus:outline-none"
-                            readOnly={false}
-                        />
+                    <div className="flex h-screen flex-grow">
+                        {/* First Column (2/3 width) */}
+                        <div className="w-2/3 bg-white overflow-y-auto">
+                            <MainEditor editor={editor} />
+                        </div>
+
+                        {/* Second Column (1/3 width) */}
+                        <div className="w-1/3 bg-gray-50 overflow-y-auto">
+                            <SidePanel />
+                        </div>
                     </div>
                 </Slate>
             )}
         </>
     );
-};
-
-const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        Transforms.insertNodes(editor, {
-            type: "paragraph",
-            children: [{ text: "" }],
-        });
-    }
-    if (event.ctrlKey) {
-        event.preventDefault();
-        switch (event.key) {
-            case "1": {
-                Transforms.setNodes(editor, { type: "heading1" });
-                break;
-            }
-            case "2": {
-                Transforms.setNodes(editor, { type: "heading2" });
-                break;
-            }
-            case "3": {
-                Transforms.setNodes(editor, { type: "heading3" });
-                break;
-            }
-            case "0": {
-                Transforms.setNodes(editor, { type: "paragraph" });
-                break;
-            }
-            case "n": {
-                insertNotes(editor);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-};
-
-const insertNotes = (editor: Editor) => {
-    const notes: NotesElement = {
-        type: "notes",
-        children: [{ text: "" }],
-        notes: "",
-    };
-    Transforms.insertNodes(editor, notes);
-    Transforms.insertNodes(editor, {
-        type: "paragraph",
-        children: [{ text: "" }],
-    });
 };
 
 export default FprEditor;

@@ -1,6 +1,8 @@
 import React from "react";
 import { Spectral } from "next/font/google";
 import { Inconsolata } from "next/font/google";
+import { Shantell_Sans } from "next/font/google";
+import { Playpen_Sans } from "next/font/google";
 
 export const p = Spectral({
     weight: "400",
@@ -28,13 +30,14 @@ export const h3 = Spectral({
     style: "italic",
 });
 
-export const notes = Inconsolata({
+export const notes = Playpen_Sans({
     weight: "300",
     subsets: ["latin"],
 });
 
-export const paragraphStyle = `${p.className} text-xl my-2`,
-    titleStyle = `${title.className} text-6xl my-2 pt-6 pb-0`,
-    heading1Style = `${h1.className} text-4xl my-2 pt-6 pb-0`,
+export const paragraphStyle = `${p.className} text-xl my-1`,
+    heading3Style = `${h3.className} text-2xl my-2 pt-6 pb-0`,
     heading2Style = `${h2.className} text-3xl my-2 pt-6 pb-0`,
-    heading3Style = `${h3.className} text-2xl my-2 pt-6 pb-0`;
+    heading1Style = `${h1.className} text-4xl my-2 pt-6 pb-0`,
+    titleStyle = `${title.className} text-6xl my-2 pt-6 pb-0`,
+    notesStyle = `${notes.className}`;

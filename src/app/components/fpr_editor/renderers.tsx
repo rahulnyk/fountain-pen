@@ -1,7 +1,6 @@
 "use client";
 import { CustomElementProps, LeafProps, BasicWrapperProps } from "./types";
 import { NormalText } from "./element_components/normal_text";
-import Notes from "./element_components/notes";
 import { Heading } from "./element_components/headings";
 import { forwardRef } from "react";
 
@@ -15,8 +14,6 @@ export const ElementNode = forwardRef((props: CustomElementProps, ref) => {
         case "heading2":
         case "heading3":
             return <Heading {...props} />;
-        case "notes":
-            return <Notes {...props} />;
         default:
             return <NormalText {...props} />;
     }
