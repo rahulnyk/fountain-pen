@@ -16,15 +16,16 @@ export interface FprEditor extends ReactEditor {
     getCurrentElementType(): string | undefined;
     getCurrentNode(): Node | undefined;
     isCurrentNodeHeadding(): boolean;
-    getCurrentElement(): Node | undefined;
+    getCurrentElement(): CustomElement | undefined;
     getCurrentElementNotes(): string[];
+    getSelectedText(): string;
+    getCurrentElementText(): string;
     // editorMode: editorModes;
     // toggleEditorMode(): void;
 }
 export type CustomEditor = ReactEditor & HistoryEditor & FprEditor;
 
 export type CustomElement =
-    | NotesElement
     | ParagraphElement
     | TitleElement
     | Heading1Element
@@ -59,9 +60,10 @@ export type CustomBaseElement = {
     children: CustomDescendant[];
     notes: string[];
 };
-export type ParagraphElement = Omit<CustomBaseElement, "type"> & {
+export type ParagraphElement = Omit<CustomBaseElement, "type" | "children"> & {
     type: "paragraph";
     align?: string;
+    children: CustomText[];
 };
 
 export const Headings = ["title", "heading1", "heading2", "heading3"] as const;

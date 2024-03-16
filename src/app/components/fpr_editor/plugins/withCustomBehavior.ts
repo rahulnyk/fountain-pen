@@ -2,6 +2,7 @@ import { Editor, Transforms, Range } from "slate";
 import { Element } from "slate";
 import {
     CustomBaseElement,
+    CustomText,
     HeadingElement,
     HeadingTypes,
     Headings,
@@ -27,32 +28,26 @@ export const withCustomBehavior = (editor: Editor) => {
     };
 
     editor.getCurrentElement = () => {
-        const [entry] = Editor.nodes(editor, {
-            match: (n) => Element.isElement(n),
-        });
-        const [element] = entry;
-        return element;
+        try {
+            const [node] = Editor.parent(editor, editor.selection || [0]);
+            if (Element.isElement(node)) {
+                return node;
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
-    // editor.getCurrentElementNotes = () => {
-    //     const [entry] = Editor.nodes(editor, {
-    //         match: (n) => Element.isElement(n),
-    //     });
-    //     const [element] = entry;
-    //     return ["Write your notes here ..."];
-    //     // let notes = (element as CustomBaseElement).notes;
-    //     // if (notes && notes.length) {
-    //     //     return notes;
-    //     // } else {
-    //     //     notes = ["Write your notes here ..."];
-    //     //     Transforms.setNodes(
-    //     //         editor,
-    //     //         { notes: notes },
-    //     //         { at: editor.getCurrentNodePath() }
-    //     //     );
-    //     //     return notes;
-    //     // }
-    // };
+    editor.getCurrentElementText = () => {
+        const element = editor.getCurrentElement();
+        if (element && element.children.length) {
+            let text = element.children
+                .map((child) => (child as CustomText).text)
+                .join("");
+            return text;
+        }
+        return "";
+    };
 
     editor.getCurrentElementType = () => {
         const [entry] = Editor.nodes(editor, {
@@ -68,6 +63,14 @@ export const withCustomBehavior = (editor: Editor) => {
         });
         const [element] = entry;
         return Headings.includes((element as HeadingElement).type);
+    };
+
+    editor.getSelectedText = (anchorOffset = 0, focusOffset?: any): string => {
+        const { selection } = editor;
+
+        if (selection) return Editor.string(editor, selection);
+
+        return "";
     };
 
     return editor;
