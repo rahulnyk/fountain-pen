@@ -1,24 +1,16 @@
 "use client";
 // ArticleEditor.tsx
 
-import {
-    useState,
-    useMemo,
-    useCallback,
-    useEffect,
-    createContext,
-} from "react";
+import { useState, useMemo, useEffect } from "react";
 import pipe from "lodash/fp/pipe";
-import { withEditableVoids } from "./plugins/withEditableVoids";
-import { withParaAfterHeadings } from "./plugins/withParaAfterHeadings";
-import { createEditor, Transforms, Editor, Descendant } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
-import { ElementNode, LeafNode } from "./renderers";
+import { withEditableVoids } from "./main_editor/plugins/withEditableVoids";
+import { withParaAfterHeadings } from "./main_editor/plugins/withParaAfterHeadings";
+import { createEditor, Descendant } from "slate";
+import { Slate, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-import { withCustomBehavior } from "./plugins/withCustomBehavior";
-import { Element, Path } from "slate";
-import { withEnforcedTitle } from "./plugins/withEnforcedTitle";
-import { withOnlyOneTitle } from "./plugins/withOnlyOneTitle";
+import { withCustomBehavior } from "./main_editor/plugins/withCustomBehavior";
+import { withEnforcedTitle } from "./main_editor/plugins/withEnforcedTitle";
+import { withOnlyOneTitle } from "./main_editor/plugins/withOnlyOneTitle";
 
 const createEditorWithPlugins = pipe(
     withEnforcedTitle,

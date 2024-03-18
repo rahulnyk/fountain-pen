@@ -1,9 +1,8 @@
-import { BlockquoteHTMLAttributes, EventHandler, useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSlate } from "slate-react";
 import { Transforms, Node } from "slate";
-import { CustomBaseElement } from "./types";
-import { notesStyle } from "./typography";
+import { CustomBaseElement } from "../main_editor/types";
+import { notesStyle } from "../main_editor/typography";
 
 const Notes = ({ className }: { className: string }) => {
     const editor = useSlate();
@@ -56,7 +55,7 @@ const Notes = ({ className }: { className: string }) => {
     return (
         <>
             <div
-                className={`flex-col h-auto  bg-blue-50 rounded shadow-sm p-0 ${
+                className={`flex-col h-auto  bg-blue-50 rounded shadow-sm ${
                     !(
                         (currentElement as CustomBaseElement)?.type ===
                         "paragraph"
@@ -65,7 +64,7 @@ const Notes = ({ className }: { className: string }) => {
                         : "invisible"
                 } ${className}`}
             >
-                <div className="flex h-6 rounded-t overflow-hidden mt-t mx-0 w-full text-xs text-left items-center pl-2 text-white bg-gradient-to-l from-indigo-400 via-indigo-400 to-indigo-600">
+                <div className="flex h-6 rounded-t overflow-hidden w-full text-xs text-left items-center pl-2 text-white bg-gradient-to-l from-indigo-400 via-indigo-400 to-indigo-600">
                     {notesHeading}
                 </div>
 

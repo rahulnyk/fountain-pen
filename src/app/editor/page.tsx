@@ -1,5 +1,6 @@
-"use client";
-import FprEditor from "../components/fpr_editor";
+// "use client";
+
+import FprEditor from "../_components/fpr_editor";
 
 export default function Editor() {
     return (
