@@ -1,7 +1,7 @@
 "use client";
 // ArticleEditor.tsx
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import pipe from "lodash/fp/pipe";
 import { withEditableVoids } from "./main_editor/plugins/withEditableVoids";
 import { withParaAfterHeadings } from "./main_editor/plugins/withParaAfterHeadings";
@@ -11,6 +11,10 @@ import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./main_editor/plugins/withCustomBehavior";
 import { withEnforcedTitle } from "./main_editor/plugins/withEnforcedTitle";
 import { withOnlyOneTitle } from "./main_editor/plugins/withOnlyOneTitle";
+import { getArticleContent, saveArticleContent } from "../_actions/db_actions";
+import debounce from "lodash/debounce";
+import MainEditor from "./main_editor";
+import SidePanel from "./side_panel";
 
 const createEditorWithPlugins = pipe(
     withEnforcedTitle,
@@ -21,11 +25,6 @@ const createEditorWithPlugins = pipe(
     withReact,
     withHistory
 );
-
-import MainEditor from "./main_editor";
-import SidePanel from "./side_panel";
-
-const localContentKey = "localEditorContent";
 
 const fallbackValue: Descendant[] = [
     {
@@ -39,28 +38,35 @@ const fallbackValue: Descendant[] = [
         notes: [""],
     },
 ];
+
 const FprEditor = () => {
     const [winReady, setWinReady] = useState(false);
-
-    useEffect(() => {
-        setWinReady(true);
-    }, []);
 
     const editor = useMemo(() => createEditorWithPlugins(createEditor()), []);
 
     const [value, setValue] = useState<Descendant[]>(fallbackValue);
 
     useEffect(() => {
-        const stored = localStorage.getItem(localContentKey);
-        const content = stored ? JSON.parse(stored) : fallbackValue;
-        setValue(content);
-        editor.children = content;
+        // Load from server
+        const getContent = async () => {
+            const content = await getArticleContent({ id: 0 });
+            const contentValue = content ? content : fallbackValue;
+            setValue(contentValue);
+            setWinReady(true);
+        };
+        getContent();
     }, []);
 
-    const saveOnChange = (value: Descendant[]) => {
-        const content = JSON.stringify(value);
-        localStorage.setItem(localContentKey, content);
-    };
+    const debouncedSave = useCallback(
+        debounce((value) => {
+            saveArticleContent(value);
+        }, 1500),
+        []
+    );
+
+    function saveOnChange(value: Descendant[]) {
+        debouncedSave({ content: value });
+    }
 
     return (
         <>
@@ -72,12 +78,14 @@ const FprEditor = () => {
                 >
                     <div className="flex h-screen flex-grow">
                         {/* First Column (2/3 width) */}
-                        <div className="w-2/3 bg-white overflow-y-auto">
+                        <div className="w-2/3 bg-gradient-to-r bg-white overflow-y-auto">
+                            {/* <SaveBadge /> */}
                             <MainEditor editor={editor} />
                         </div>
 
                         {/* Second Column (1/3 width) */}
-                        <div className="w-1/3 bg-gray-50 overflow-y-auto">
+                        <div className="w-1/3 bg-slate-white overflow-y-auto">
+                            {/* <div className=" w-1/3 bg-gradient-to-l from-white from-95% gray-50 via-98% to-gray-100 to-100%"> */}
                             <SidePanel />
                         </div>
                     </div>
