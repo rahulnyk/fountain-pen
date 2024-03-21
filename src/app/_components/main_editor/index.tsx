@@ -19,7 +19,7 @@ const MainEditor = ({ editor }: { editor: Editor }) => {
     );
 
     return (
-        <div className="pt-20 ml-10">
+        <div className="pt-20 ml-10 mr-10">
             <div className="">
                 <Editable
                     renderElement={renderElement}

@@ -1,11 +1,10 @@
-import { BlockquoteHTMLAttributes, EventHandler, useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSlate } from "slate-react";
 import { Transforms, Node } from "slate";
-import { CustomBaseElement } from "./types";
-import { notesStyle } from "./typography";
+import { CustomBaseElement } from "../main_editor/types";
+import { notesStyle } from "../main_editor/typography";
 
-const Notes = ({ className }: { className: string }) => {
+const Notes = ({ className }: { className?: string }) => {
     const editor = useSlate();
 
     const [lines, setLines] = useState<number>(2);
@@ -14,7 +13,7 @@ const Notes = ({ className }: { className: string }) => {
     const [currentElement, setCurrentElement] = useState<Node>();
 
     useEffect(() => {
-        setLines(text ? (text.match(/\n/g) || "").length + 1 : 2);
+        setLines(text ? Math.min((text.match(/\n/g) || "").length + 1, 15) : 2);
     }, [text]);
 
     // text area helpers
@@ -56,7 +55,7 @@ const Notes = ({ className }: { className: string }) => {
     return (
         <>
             <div
-                className={`flex-col h-auto  bg-blue-50 rounded shadow-sm p-0 ${
+                className={`flex-col h-auto bg-indigo-50 border-l-4 border-indigo-400 rounded shadow-sm ${
                     !(
                         (currentElement as CustomBaseElement)?.type ===
                         "paragraph"
@@ -65,15 +64,15 @@ const Notes = ({ className }: { className: string }) => {
                         : "invisible"
                 } ${className}`}
             >
-                <div className="flex h-6 rounded-t overflow-hidden mt-t mx-0 w-full text-xs text-left items-center pl-2 text-white bg-gradient-to-l from-indigo-400 via-indigo-400 to-indigo-600">
-                    {notesHeading}
+                <div className="flex h-6 overflow-hidden w-full text-left text-xs items-center p-4 text-indigo-300">
+                    NOTES | {notesHeading}
                 </div>
 
-                <div className="mt-0 p-2 text-gray-600">
+                <div className="mt-0 p-2 text-gray-700">
                     <textarea
                         value={text}
                         onChange={handleInputChange}
-                        className={`w-full p-2 bg-blue-50 focus:outline-none ${notesStyle}`}
+                        className={`w-full p-2 bg-indigo-50 focus:outline-none ${notesStyle}`}
                         rows={lines}
                     />
                 </div>

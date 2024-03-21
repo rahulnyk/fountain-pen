@@ -49,7 +49,7 @@ export const Heading: React.FC<CustomElementProps> = (
 
     return (
         <div
-            className={`flex-grow p-4 ${headingClassName} p-4 rounded-l ${
+            className={`flex-grow p-4 ${headingClassName} p-4 rounded ${
                 showGutter
                     ? "border-l-4 border-indigo-600 bg-gray-50"
                     : "border-l-4 border-transparent  hover:border-gray-200"
