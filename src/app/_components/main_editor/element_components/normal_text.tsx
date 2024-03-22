@@ -13,7 +13,7 @@ export const NormalText: React.FC<CustomElementProps> = ({
     const focused = useFocused();
 
     useEffect(() => {
-        setShowGutter(selected && focused);
+        setShowGutter(selected);
     }, [selected, focused]);
     // const showGutter = selected && useFocused;
 

@@ -21,7 +21,7 @@ export const Heading: React.FC<CustomElementProps> = (
     const focused = useFocused();
 
     useEffect(() => {
-        setShowGutter(selected && focused);
+        setShowGutter(selected);
     }, [selected, focused]);
 
     //

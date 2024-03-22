@@ -55,7 +55,7 @@ const Notes = ({ className }: { className?: string }) => {
     return (
         <>
             <div
-                className={`flex-col h-auto bg-indigo-50 border-l-4 border-indigo-400 rounded shadow-sm ${
+                className={`flex-col h-auto bg-indigo-50 border-l-4 border-indigo-600 rounded shadow-sm ${
                     !(
                         (currentElement as CustomBaseElement)?.type ===
                         "paragraph"
