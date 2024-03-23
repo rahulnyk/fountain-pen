@@ -36,5 +36,6 @@ yarn-error.log*
 next-env.d.ts
 todo.tsx
 db.json
-/data/*
+data/*
+documents/*
 

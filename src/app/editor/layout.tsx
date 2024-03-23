@@ -1,4 +1,4 @@
-import { Button } from "../_components/button";
+import { Button } from "../_components/toolbar/tool_button";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (

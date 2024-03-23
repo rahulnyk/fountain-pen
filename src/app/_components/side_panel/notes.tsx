@@ -3,6 +3,7 @@ import { useSlate } from "slate-react";
 import { Transforms, Node } from "slate";
 import { CustomBaseElement } from "../main_editor/types";
 import { notesStyle } from "../main_editor/typography";
+import clsx from "clsx";
 
 const Notes = ({ className }: { className?: string }) => {
     const editor = useSlate();
@@ -11,6 +12,7 @@ const Notes = ({ className }: { className?: string }) => {
     const [text, setText] = useState<string>("");
     const [notesHeading, setNotesHeading] = useState<string>("");
     const [currentElement, setCurrentElement] = useState<Node>();
+    const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
         setLines(text ? Math.min((text.match(/\n/g) || "").length + 1, 15) : 2);
@@ -51,6 +53,10 @@ const Notes = ({ className }: { className?: string }) => {
         let dots = txt.length > 50 ? "..." : "";
         return txt.slice(0, 50) + dots;
     };
+    const foldNotes = () => {
+        setCollapsed(!collapsed);
+        console.log(collapsed);
+    };
 
     return (
         <>
@@ -64,17 +70,22 @@ const Notes = ({ className }: { className?: string }) => {
                         : "invisible"
                 } ${className}`}
             >
-                <div className="flex h-6 overflow-hidden w-full text-left text-xs items-center p-4 text-indigo-300">
-                    NOTES | {notesHeading}
-                </div>
+                <div className={clsx(collapsed && "h-6", "transition-all")}>
+                    <div
+                        className="flex h-6 overflow-hidden w-full text-left text-xs items-center p-4 text-indigo-300"
+                        onClick={foldNotes}
+                    >
+                        NOTES | {notesHeading}
+                    </div>
 
-                <div className="mt-0 p-2 text-gray-700">
-                    <textarea
-                        value={text}
-                        onChange={handleInputChange}
-                        className={`w-full p-2 bg-indigo-50 focus:outline-none ${notesStyle}`}
-                        rows={lines}
-                    />
+                    <div className="mt-0 p-2 text-gray-700">
+                        <textarea
+                            value={text}
+                            onChange={handleInputChange}
+                            className={`w-full p-2 bg-indigo-50 focus:outline-none ${notesStyle}`}
+                            rows={lines}
+                        />
+                    </div>
                 </div>
             </div>
         </>

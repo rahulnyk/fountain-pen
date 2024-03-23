@@ -2,31 +2,14 @@
 
 import clsx from "clsx";
 
-export const FprAssistant = ({
-    className,
-    action,
-}: {
-    className?: string;
-    action: any;
-}) => {
-    const handleClick = () => {
-        action();
-    };
-
+export const FprAssistant = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-grow w-full rounded-md bg-gradient-to-r from-indigo-600 via-indigo-400 to-indigo-400 p-1",
+                "flex-grow w-full h-auto min-h-96 rounded bg-gradient-to-br from-slate-100 to-slate-50 p-1",
+                "border-l-4 border-indigo-500",
                 className
             )}
-            onClick={handleClick}
-        >
-            <div className="bg-gray-50 rounded-md p-0">
-                <textarea
-                    rows={1}
-                    className="p-1 rounded w-full resize-none bg-gray-50 focus:outline-none"
-                />
-            </div>
-        </div>
+        ></div>
     );
 };

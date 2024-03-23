@@ -1,8 +1,7 @@
 "use client";
-import { FprAssistant } from "../assistant";
 import Notes from "./notes";
-import { TestServer } from "@/app/_actions/test_server";
 import clsx from "clsx";
+import { FprAssistant } from "../assistant";
 
 const SidePanel = ({ className }: { className?: string }) => {
     return (
@@ -15,7 +14,7 @@ const SidePanel = ({ className }: { className?: string }) => {
             <div>
                 <Notes />
             </div>
-            {/* <FprAssistant action={TestServer} /> */}
+            <FprAssistant />
         </div>
     );
 };

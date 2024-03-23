@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
-import { NavBar } from "./_components/navbar";
+import { ToolBar } from "./_components/toolbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${inter.className} min-h-screen`}>
-                <NavBar />
+                <ToolBar />
                 {children}
             </body>
         </html>

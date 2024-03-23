@@ -78,13 +78,13 @@ const FprEditor = () => {
                 >
                     <div className="flex h-auto flex-grow">
                         {/* First Column (2/3 width) */}
-                        <div className="w-3/4 bg-gradient-to-r bg-white z-0">
+                        <div className="w-2/3 bg-gradient-to-r bg-white z-0">
                             {/* <SaveBadge /> */}
                             <MainEditor editor={editor} />
                         </div>
 
                         {/* Second Column (1/3 width) */}
-                        <div className="fixed z-10 w-1/4 pt-10 pl-0 pr-6 right-0">
+                        <div className="fixed z-10 w-1/3 pt-10 pl-0 pr-6 right-0">
                             {/* <div className=" w-1/3 bg-gradient-to-l from-white from-95% gray-50 via-98% to-gray-100 to-100%"> */}
                             <SidePanel />
                         </div>
