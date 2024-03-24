@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ToolButton } from "./tool_button";
-import { embeddDocuments } from "@/app/_actions/embedd_docs";
+import { embeddDocuments } from "@/app/_actions/vector_store";
 import { LoadingSpinner } from "../loading_spinner";
 
 export const AddDocumentsButton: React.FC = () => {

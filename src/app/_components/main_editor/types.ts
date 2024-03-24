@@ -20,6 +20,8 @@ export interface FprEditor extends ReactEditor {
     getCurrentElementNotes(): string[];
     getSelectedText(): string;
     getCurrentElementText(): string;
+    isSelectionExpanded(): boolean;
+    isSelectionCollapsed(): boolean;
     // editorMode: editorModes;
     // toggleEditorMode(): void;
 }

@@ -1,20 +1,18 @@
 "use client";
 import Notes from "./notes";
 import clsx from "clsx";
-import { FprAssistant } from "../assistant";
+import { Excerpts } from "./excerpts";
 
 const SidePanel = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col bg-transparent w-auto space-y-5",
+                "flex-col flex-grow bg-transparent space-y-3 h-screen overflow-y-auto pb-40 pt-32",
                 className
             )}
         >
-            <div>
-                <Notes />
-            </div>
-            <FprAssistant />
+            <Notes />
+            <Excerpts />
         </div>
     );
 };

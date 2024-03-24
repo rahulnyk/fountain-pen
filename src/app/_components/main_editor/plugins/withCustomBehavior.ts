@@ -10,6 +10,28 @@ import {
 } from "../types";
 
 export const withCustomBehavior = (editor: Editor) => {
+    /**
+     * Is the current editor selection a range, that is the focus and the anchor are different?
+     *
+     * @returns {boolean} true if the current selection is a range.
+     */
+    editor.isSelectionExpanded = (): boolean => {
+        return editor.selection ? Range.isExpanded(editor.selection) : false;
+    };
+
+    /**
+     * Returns true if current selection is collapsed, that is there is no selection at all
+     * (the focus and the anchor are the same).
+     *
+     * @returns {boolean} true if the selection is collapsed
+     */
+    editor.isSelectionCollapsed = (): boolean => {
+        return !editor.isSelectionExpanded();
+    };
+
+    /**
+     * Returns the first node at the current selection
+     */
     editor.getCurrentNode = () => {
         if (editor.selection) {
             const [node, path] = Editor.node(editor, editor.selection);

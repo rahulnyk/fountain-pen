@@ -60,34 +60,39 @@ const Notes = ({ className }: { className?: string }) => {
 
     return (
         <>
-            <div
-                className={`flex-col h-auto bg-indigo-50 border-l-4 border-indigo-600 rounded shadow-sm ${
-                    !(
-                        (currentElement as CustomBaseElement)?.type ===
-                        "paragraph"
-                    )
-                        ? "visible"
-                        : "invisible"
-                } ${className}`}
-            >
-                <div className={clsx(collapsed && "h-6", "transition-all")}>
-                    <div
-                        className="flex h-6 overflow-hidden w-full text-left text-xs items-center p-4 text-indigo-300"
-                        onClick={foldNotes}
-                    >
-                        NOTES | {notesHeading}
-                    </div>
+            {!((currentElement as CustomBaseElement)?.type === "paragraph") && (
+                <div
+                    className={clsx(
+                        "flex-col bg-indigo-50 border-l-4 border-indigo-600 rounded shadow-sm",
+                        className,
+                        collapsed && "h-10",
+                        "transition-all ease-in-out duration-150"
+                    )}
+                >
+                    <div>
+                        <div
+                            className="flex h-auto w-full text-left text-xs items-center p-4 text-indigo-300"
+                            onClick={foldNotes}
+                        >
+                            NOTES | {notesHeading}
+                        </div>
 
-                    <div className="mt-0 p-2 text-gray-700">
-                        <textarea
-                            value={text}
-                            onChange={handleInputChange}
-                            className={`w-full p-2 bg-indigo-50 focus:outline-none ${notesStyle}`}
-                            rows={lines}
-                        />
+                        <div className={clsx("mt-0 px-2 pt-0 text-gray-700")}>
+                            <textarea
+                                value={text}
+                                onChange={handleInputChange}
+                                className={clsx(
+                                    "w-full p-0 px-1 bg-indigo-50 focus:outline-none",
+                                    notesStyle,
+                                    collapsed && "hidden",
+                                    "delay-300 transition"
+                                )}
+                                rows={lines}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };
