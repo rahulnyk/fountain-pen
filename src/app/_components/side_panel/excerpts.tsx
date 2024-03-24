@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { ExcerptCard } from "./excerpt_card";
 import { Document } from "langchain/document";
 import { useState } from "react";
+import { HiOutlineDocumentSearch } from "react-icons/hi";
 
 export const Excerpts: React.FC = ({ className }: { className?: string }) => {
     const [documents, setDocuments] = useState<Document[]>([]);
@@ -25,7 +26,13 @@ export const Excerpts: React.FC = ({ className }: { className?: string }) => {
             )}
             onClick={searchDocs}
         >
-            <div className="space-y-5 my-5 mx-0 w-auto">
+            <div
+                className="flex h-auto w-full text-left text-xs items-center px-4 py-2 text-teal-400"
+                // onClick={foldNotes}
+            >
+                <HiOutlineDocumentSearch className="size-6 pr-2" /> SEARCH DOCS
+            </div>
+            <div className="space-y-2 my-0 mx-0 w-auto">
                 {documents.map((doc) => (
                     <ExcerptCard document={doc} />
                 ))}

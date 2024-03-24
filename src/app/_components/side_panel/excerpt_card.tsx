@@ -34,7 +34,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     {filenameFromPath(document.metadata?.source)}
                 </span>
                 <br />
-                Page number: {document?.metadata?.loc?.pageNumber}
+                Page: {document?.metadata?.loc?.pageNumber}
             </p>
             {/* <p className="whitespace-pre-wrap break-normal font-light">
                 {sanitizePDFText(document.pageContent)}
@@ -48,6 +48,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     __html: sanitizePDFText(document.pageContent),
                 }}
             />
+            <hr className="mt-2" />
         </div>
     );
 };

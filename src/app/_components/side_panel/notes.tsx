@@ -3,6 +3,7 @@ import { useSlate } from "slate-react";
 import { Transforms, Node } from "slate";
 import { CustomBaseElement } from "../main_editor/types";
 import { notesStyle } from "../main_editor/typography";
+import { MdOutlineSpeakerNotes } from "react-icons/md";
 import clsx from "clsx";
 
 const Notes = ({ className }: { className?: string }) => {
@@ -65,7 +66,7 @@ const Notes = ({ className }: { className?: string }) => {
                     className={clsx(
                         "flex-col bg-indigo-50 border-l-4 border-indigo-600 rounded shadow-sm",
                         className,
-                        collapsed && "h-10",
+                        collapsed && "h-12",
                         "transition-all ease-in-out duration-150"
                     )}
                 >
@@ -74,6 +75,7 @@ const Notes = ({ className }: { className?: string }) => {
                             className="flex h-auto w-full text-left text-xs items-center p-4 text-indigo-300"
                             onClick={foldNotes}
                         >
+                            <MdOutlineSpeakerNotes className="size-6 pr-2" />{" "}
                             NOTES | {notesHeading}
                         </div>
 
