@@ -1,13 +1,30 @@
-import { Editor, Transforms, Range } from "slate";
-import { Element } from "slate";
+import { Editor, Transforms, Range, Path } from "slate";
+import { Element, NodeEntry } from "slate";
 import {
     CustomBaseElement,
+    CustomElement,
     CustomText,
     HeadingElement,
     HeadingTypes,
     Headings,
     editorModes,
 } from "../types";
+import { ElementType } from "react";
+
+function* getPreviousSiblings(
+    editor: Editor,
+    path: Path
+): Generator<NodeEntry | undefined> {
+    if (path.length === 0) {
+        return undefined;
+    }
+    const parentPath = path.slice(0, path.length - 1);
+    const currentSiblingNumber = path[path.length - 1];
+    for (let i = currentSiblingNumber; i > 0; i--) {
+        const entry = Editor.node(editor, parentPath.concat(i));
+        yield entry;
+    }
+}
 
 export const withCustomBehavior = (editor: Editor) => {
     /**
@@ -44,12 +61,14 @@ export const withCustomBehavior = (editor: Editor) => {
         return path;
     };
 
-    editor.isCollapsed = () => {
-        const { selection } = editor;
-        return !!(selection && Range.isCollapsed(selection));
-    };
+    // editor.isCollapsed = () => {
+    //     const { selection } = editor;
+    //     return !!(selection && Range.isCollapsed(selection));
+    // };
 
     editor.getCurrentElement = () => {
+        const { selection } = editor;
+        if (!selection) return undefined;
         try {
             const [node] = Editor.parent(editor, editor.selection || [0]);
             if (Element.isElement(node)) {
@@ -93,6 +112,46 @@ export const withCustomBehavior = (editor: Editor) => {
         if (selection) return Editor.string(editor, selection);
 
         return "";
+    };
+
+    editor.getLastHeadingBeforeSelection = () => {
+        const { selection } = editor;
+
+        if (!selection) return undefined;
+
+        const [entry] = Editor.nodes(editor, {
+            at: selection,
+            match: (n) => Element.isElement(n),
+        });
+        const [element, path] = entry;
+    };
+
+    editor.getPreviousSibling = (types: string[]) => {
+        const { selection } = editor;
+
+        if (!selection) return undefined;
+
+        const [entry] = Editor.nodes(editor, {
+            at: selection,
+            match: (n) => Element.isElement(n),
+        });
+
+        const [node, path] = entry;
+
+        if (path.length === 0) {
+            return;
+        }
+
+        const parentPath = path.slice(0, path.length - 1);
+        const currentSiblingNumber = path[path.length - 1];
+
+        for (let i = currentSiblingNumber; i >= 0; i--) {
+            const entry = Editor.node(editor, parentPath.concat(i));
+            const [n, p] = entry;
+            if (Element.isElement(n) && types.some((t) => n.type === t)) {
+                return entry;
+            }
+        }
     };
 
     return editor;

@@ -34,6 +34,9 @@ const MainEditor = ({ editor }: { editor: Editor }) => {
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
+    console.log(
+        editor.getPreviousSibling(["heading1", "heading2", "heading3", "title"])
+    );
     if (event.key === "Enter") {
         event.preventDefault();
         Transforms.insertNodes(editor, {

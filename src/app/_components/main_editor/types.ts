@@ -1,9 +1,10 @@
 // import { Text } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 import { ReactNode } from "react";
-import { Descendant, BaseEditor, Ancestor, Path, Node } from "slate";
+import { Descendant, BaseEditor, Ancestor, Path, Node, NodeEntry } from "slate";
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
+import { Editor } from "slate";
 
 export const editorModeValues = ["readonly", "outline", "edit"] as const;
 
@@ -22,6 +23,8 @@ export interface FprEditor extends ReactEditor {
     getCurrentElementText(): string;
     isSelectionExpanded(): boolean;
     isSelectionCollapsed(): boolean;
+    getLastHeadingBeforeSelection(): NodeEntry | undefined;
+    getPreviousSibling(types: HeadingTypes[]): NodeEntry | undefined;
     // editorMode: editorModes;
     // toggleEditorMode(): void;
 }
