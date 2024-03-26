@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSlate } from "slate-react";
-import { Transforms, Node } from "slate";
+import { Transforms, Node, Path } from "slate";
 import { CustomBaseElement } from "../main_editor/types";
 import { notesStyle } from "../main_editor/typography";
+import { MdOutlineSpeakerNotes } from "react-icons/md";
+import { Headings } from "../main_editor/types";
 import clsx from "clsx";
 
 const Notes = ({ className }: { className?: string }) => {
@@ -11,8 +13,14 @@ const Notes = ({ className }: { className?: string }) => {
     const [lines, setLines] = useState<number>(2);
     const [text, setText] = useState<string>("");
     const [notesHeading, setNotesHeading] = useState<string>("");
-    const [currentElement, setCurrentElement] = useState<Node>();
     const [collapsed, setCollapsed] = useState(false);
+    const [currentElement, setCurrentElement] = useState<Node>();
+    const [currentSectionHeading, setCurrentSectionHeading] = useState<
+        CustomBaseElement | undefined
+    >();
+    const [currentSectionHeadingPath, setCurrentSectionHeadingPath] = useState<
+        Path | undefined
+    >();
 
     useEffect(() => {
         setLines(text ? Math.min((text.match(/\n/g) || "").length + 1, 15) : 2);
@@ -25,47 +33,58 @@ const Notes = ({ className }: { className?: string }) => {
         Transforms.setNodes(
             editor,
             { notes: [text] },
-            { at: editor.getCurrentNodePath() }
+            { at: currentSectionHeadingPath }
         );
         // console.log(element);
     };
 
     useEffect(() => {
-        const { selection } = editor;
-        if (!selection) {
-            setCurrentElement(undefined);
-            return;
+        const entry = editor.getPreviousSibling(
+            [...Headings],
+            editor.selection
+        );
+        if (entry) {
+            const [n, p] = entry;
+            setCurrentSectionHeading(n as CustomBaseElement);
+            setCurrentSectionHeadingPath(p);
+        } else {
+            setCurrentSectionHeading(undefined);
+            setCurrentSectionHeadingPath(undefined);
         }
-        const node = editor.getCurrentElement();
-        setCurrentElement(node);
+    }, [editor.selection]);
 
-        if (node && Object.hasOwn(node, "notes")) {
-            setText((node as CustomBaseElement).notes[0]);
-            setNotesHeading(chop(editor.getCurrentElementText()));
+    useEffect(() => {
+        if (currentSectionHeading) {
+            let txt = (currentSectionHeading as CustomBaseElement)?.notes?.[0];
+            setText(txt);
+            setNotesHeading(chop(editor.getElementText(currentSectionHeading)));
         } else {
             setText("Notes ... ");
             setNotesHeading("");
         }
-    }, [editor.selection]);
+    }, [currentSectionHeading]);
 
-    const chop = (txt: string): string => {
+    const chop = (txt: string | undefined): string => {
+        if (!txt) {
+            return "";
+        }
         const chop_length = 50;
-        let dots = txt.length > 50 ? "..." : "";
+        let dots = txt.length > chop_length ? "..." : "";
         return txt.slice(0, 50) + dots;
     };
     const foldNotes = () => {
         setCollapsed(!collapsed);
-        console.log(collapsed);
+        // console.log(collapsed);
     };
 
     return (
         <>
-            {!((currentElement as CustomBaseElement)?.type === "paragraph") && (
+            {currentSectionHeading && (
                 <div
                     className={clsx(
                         "flex-col bg-indigo-50 border-l-4 border-indigo-600 rounded shadow-sm",
                         className,
-                        collapsed && "h-10",
+                        collapsed && "h-12",
                         "transition-all ease-in-out duration-150"
                     )}
                 >
@@ -74,6 +93,7 @@ const Notes = ({ className }: { className?: string }) => {
                             className="flex h-auto w-full text-left text-xs items-center p-4 text-indigo-300"
                             onClick={foldNotes}
                         >
+                            <MdOutlineSpeakerNotes className="size-6 pr-2" />{" "}
                             NOTES | {notesHeading}
                         </div>
 

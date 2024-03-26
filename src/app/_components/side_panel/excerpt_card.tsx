@@ -29,12 +29,12 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
 
     return (
         <div className="flex-col flex-grow text-black rounded p-4 mx-0 text-pretty">
-            <p className="my-1 bg-teal-100 text-ellipsis overflow-hidden text-xs p-2 rounded">
+            <p className="my-1 -mx-1 bg-teal-100 text-ellipsis overflow-hidden text-xs p-2 rounded">
                 <span className="font-bold">
                     {filenameFromPath(document.metadata?.source)}
                 </span>
                 <br />
-                Page number: {document?.metadata?.loc?.pageNumber}
+                Page: {document?.metadata?.loc?.pageNumber}
             </p>
             {/* <p className="whitespace-pre-wrap break-normal font-light">
                 {sanitizePDFText(document.pageContent)}
@@ -48,6 +48,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     __html: sanitizePDFText(document.pageContent),
                 }}
             />
+            <hr className="mt-2" />
         </div>
     );
 };

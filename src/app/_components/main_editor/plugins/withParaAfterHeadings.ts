@@ -13,11 +13,14 @@ export const withParaAfterHeadings = (editor: Editor) => {
         ) {
             const next_entry = Editor.next(editor, { at: path });
             if (!next_entry) {
-                Transforms.insertNodes(
-                    editor,
-                    { type: "paragraph", children: [{ text: "" }] },
-                    { at: [editor.children.length] }
-                );
+                let paragraph: Node = {
+                    type: "paragraph",
+                    children: [{ text: "" }],
+                    notes: [""],
+                };
+                Transforms.insertNodes(editor, paragraph, {
+                    at: [editor.children.length],
+                });
                 return;
             } else {
                 const [next_node, next_path] = next_entry;
@@ -27,11 +30,14 @@ export const withParaAfterHeadings = (editor: Editor) => {
                 ) {
                     return;
                 } else {
-                    Transforms.insertNodes(
-                        editor,
-                        { type: "paragraph", children: [{ text: "" }] },
-                        { at: next_path }
-                    );
+                    let paragraph: Node = {
+                        type: "paragraph",
+                        children: [{ text: "" }],
+                        notes: [""],
+                    };
+                    Transforms.insertNodes(editor, paragraph, {
+                        at: next_path,
+                    });
                     return;
                 }
             }

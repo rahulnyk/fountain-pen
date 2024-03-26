@@ -1,13 +1,31 @@
-import { Editor, Transforms, Range } from "slate";
-import { Element } from "slate";
+import { Editor, Transforms, Range, Path, BaseRange } from "slate";
+import { Element, NodeEntry } from "slate";
 import {
     CustomBaseElement,
+    CustomElement,
     CustomText,
     HeadingElement,
     HeadingTypes,
     Headings,
     editorModes,
 } from "../types";
+import { ElementType } from "react";
+import { BaseSelection, Node } from "slate";
+
+function* getPreviousSiblings(
+    editor: Editor,
+    path: Path
+): Generator<NodeEntry | undefined> {
+    if (path.length === 0) {
+        return undefined;
+    }
+    const parentPath = path.slice(0, path.length - 1);
+    const currentSiblingNumber = path[path.length - 1];
+    for (let i = currentSiblingNumber; i > 0; i--) {
+        const entry = Editor.node(editor, parentPath.concat(i));
+        yield entry;
+    }
+}
 
 export const withCustomBehavior = (editor: Editor) => {
     /**
@@ -44,31 +62,15 @@ export const withCustomBehavior = (editor: Editor) => {
         return path;
     };
 
-    editor.isCollapsed = () => {
-        const { selection } = editor;
-        return !!(selection && Range.isCollapsed(selection));
-    };
-
-    editor.getCurrentElement = () => {
-        try {
-            const [node] = Editor.parent(editor, editor.selection || [0]);
-            if (Element.isElement(node)) {
-                return node;
-            }
-        } catch (e) {
-            console.log(e);
+    editor.getElementText = (element) => {
+        if (!Element.isElement(element)) {
+            return undefined;
         }
-    };
 
-    editor.getCurrentElementText = () => {
-        const element = editor.getCurrentElement();
-        if (element && element.children.length) {
-            let text = element.children
-                .map((child) => (child as CustomText).text)
-                .join("");
-            return text;
-        }
-        return "";
+        let text = element.children
+            .map((child) => (child as CustomText).text)
+            .join("");
+        return text;
     };
 
     editor.getCurrentElementType = () => {
@@ -79,20 +81,117 @@ export const withCustomBehavior = (editor: Editor) => {
         return (element as Element).type;
     };
 
-    editor.isCurrentNodeHeadding = () => {
-        const [entry] = Editor.nodes(editor, {
-            match: (n) => Element.isElement(n),
-        });
-        const [element] = entry;
-        return Headings.includes((element as HeadingElement).type);
-    };
-
     editor.getSelectedText = (anchorOffset = 0, focusOffset?: any): string => {
         const { selection } = editor;
 
         if (selection) return Editor.string(editor, selection);
 
         return "";
+    };
+
+    editor.getCurrentElement = () => {
+        const { selection } = editor;
+
+        if (!selection) return undefined;
+
+        const [entry] = Editor.nodes(editor, {
+            at: selection,
+            match: (n) => Element.isElement(n),
+        });
+        // const [element, path] = entry;
+        return entry;
+    };
+
+    /**
+     *
+     * @param types one of the types of element nodes, like paragraph, heading1 etc
+     * @param at the selection, if not provided, current selection is used.
+     * @returns Node entry of the previous element with given type.
+     */
+
+    editor.getPreviousSibling = (types: string[], at?: BaseSelection) => {
+        const selection = at ? at : editor.selection;
+
+        if (!selection) return undefined;
+
+        const [entry] = Editor.nodes(editor, {
+            at: selection,
+            match: (n) => Element.isElement(n),
+        });
+
+        const [node, path] = entry;
+
+        if (path.length === 0) {
+            return;
+        }
+
+        const parentPath = path.slice(0, path.length - 1);
+        const currentSiblingNumber = path[path.length - 1];
+
+        for (let i = currentSiblingNumber; i >= 0; i--) {
+            const entry = Editor.node(editor, parentPath.concat(i));
+            const [n, p] = entry;
+            if (Element.isElement(n) && types.some((t) => n.type === t)) {
+                return entry;
+            }
+        }
+    };
+
+    /**
+     * This method returns the text from the current section.
+     * Current section being the immediately proceeding heading
+     * and paragraphs till the next heading.
+     * @param at: Selection, if not provided, current selection is used.
+     * @returns
+     */
+
+    editor.getCurrentSectionText = (at?: BaseSelection) => {
+        const selection = at ? at : editor.selection;
+        if (editor.isSelectionExpanded()) {
+            return undefined;
+        }
+        const sectionHeadingEntry = editor.getPreviousSibling(
+            [...Headings],
+            selection
+        );
+        if (!sectionHeadingEntry) {
+            return undefined;
+        }
+        const [, hp] = sectionHeadingEntry;
+        const basePath = hp.slice(0, hp.length - 1);
+        const currentHeadingIndex = hp[hp.length - 1];
+        let i = currentHeadingIndex;
+        let text: string = "";
+        let nextPath = basePath.concat(i);
+        while (Editor.hasPath(editor, nextPath)) {
+            let [n, p] = Editor.node(editor, nextPath);
+            if (
+                i != currentHeadingIndex &&
+                Headings.some((t) => (n as CustomBaseElement).type === t)
+            ) {
+                break;
+            }
+            text = text.concat(Node.string(n), "\n---\n");
+            nextPath = basePath.concat(++i);
+        }
+        return text;
+    };
+
+    editor.getCurrentSectionNotes = (at?: BaseSelection) => {
+        const selection = at ? at : editor.selection;
+        if (editor.isSelectionExpanded()) {
+            return undefined;
+        }
+        const sectionHeadingEntry = editor.getPreviousSibling(
+            [...Headings],
+            selection
+        );
+        if (!sectionHeadingEntry) {
+            return undefined;
+        }
+        const [hn, hp] = sectionHeadingEntry;
+        const notes = (hn as HeadingElement).notes.join("\n");
+        return notes;
     };
 
     return editor;
