@@ -1,7 +1,16 @@
 // import { Text } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 import { ReactNode } from "react";
-import { Descendant, BaseEditor, Ancestor, Path, Node, NodeEntry } from "slate";
+import {
+    Descendant,
+    BaseEditor,
+    Ancestor,
+    Path,
+    Node,
+    NodeEntry,
+    BaseRange,
+    BaseSelection,
+} from "slate";
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
 import { Editor } from "slate";
@@ -12,21 +21,20 @@ export type editorModes = (typeof editorModeValues)[number];
 
 export interface FprEditor extends ReactEditor {
     getCurrentNodePath(): Path;
-    isCollapsed(): boolean;
     getSelectedText(): string;
     getCurrentElementType(): string | undefined;
     getCurrentNode(): Node | undefined;
-    isCurrentNodeHeadding(): boolean;
-    getCurrentElement(): CustomElement | undefined;
-    getCurrentElementNotes(): string[];
+    getCurrentElement(): NodeEntry | undefined;
     getSelectedText(): string;
-    getCurrentElementText(): string;
+    getElementText(element: CustomBaseElement): string | undefined;
     isSelectionExpanded(): boolean;
     isSelectionCollapsed(): boolean;
-    getLastHeadingBeforeSelection(): NodeEntry | undefined;
-    getPreviousSibling(types: HeadingTypes[]): NodeEntry | undefined;
-    // editorMode: editorModes;
-    // toggleEditorMode(): void;
+    getPreviousSibling(
+        types: HeadingTypes[],
+        at?: BaseSelection
+    ): NodeEntry | undefined;
+    getCurrentSectionNotes(at?: BaseSelection): string | undefined;
+    getCurrentSectionText(at?: BaseSelection): string | undefined;
 }
 export type CustomEditor = ReactEditor & HistoryEditor & FprEditor;
 
