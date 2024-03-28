@@ -10,63 +10,46 @@ import { CustomBaseElement } from "../main_editor/types";
 import { LoadingSpinner } from "../loading_spinner";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
+import { LuDog } from "react-icons/lu";
 
-export const Excerpts: React.FC = ({ className }: { className?: string }) => {
+export const Assistant: React.FC = ({ className }: { className?: string }) => {
     const [documents, setDocuments] = useState<Document[]>([]);
     const editor = useSlate();
     const [cardHeading, setCardHeading] = useState<string>("");
-    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+    const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
 
-    const searchDocs = async () => {
-        setIsCollapsed(!isCollapsed);
-        if (isCollapsed) {
-            setCardHeading("");
-            setDocuments([]);
-        } else {
-            setIsWaiting(true);
-            const text = await getSectionTextAndNotes();
-            const results = await semanticSearch({ text });
-            setCardHeading(chop(text));
-            setDocuments(results);
-            setIsWaiting(false);
-        }
-    };
+    const searchDocs = async () => {};
 
-    const getSectionTextAndNotes = async () => {
-        const sectionText = editor.getCurrentSectionText();
-        const sectionNotes = editor.getCurrentSectionNotes();
-        return [sectionText, sectionNotes].join("\n");
-    };
+    const getSectionTextAndNotes = async () => {};
 
-    const chop = (txt: string | undefined): string => {
-        if (!txt) {
-            return "";
-        }
-        const chop_length = 50;
-        let dots = txt.length > chop_length ? "..." : "";
-        return txt.slice(0, 50) + dots;
-    };
+    // const chop = (txt: string | undefined): string => {
+    //     if (!txt) {
+    //         return "";
+    //     }
+    //     const chop_length = 50;
+    //     let dots = txt.length > chop_length ? "..." : "";
+    //     return txt.slice(0, 50) + dots;
+    // };
 
     return (
         <div
             className={clsx(
-                "flex-col w-full rounded shadow-sm bg-gray-50 p-1 px-0 border-l-sky-500",
+                "flex-col w-full rounded shadow-sm bg-gray-50 p-1 px-0 border-l-pink-500",
                 "border-l-4 border-indigo-500",
                 className
             )}
             onClick={searchDocs}
         >
             <div
-                className="flex h-auto w-full text-left text-xs items-center justify-between px-4 py-2 text-sky-400"
+                className="flex h-auto w-full text-left text-xs items-center justify-between px-4 py-2 text-pink-400"
                 // onClick={foldNotes}
             >
                 <div className="flex items-center">
-                    <HiOutlineDocumentSearch className="size-6 pr-2" /> SEARCH
-                    DOCS
+                    <LuDog className="size-6 pr-2" /> ASSISTANT
                     {!isCollapsed ? "" : [" | ", cardHeading].join("")}
                     {isWaiting ? (
-                        <LoadingSpinner className="size-4 border-sky-400 mx-2" />
+                        <LoadingSpinner className="size-4 border-pink-400 mx-2" />
                     ) : null}
                 </div>
 
