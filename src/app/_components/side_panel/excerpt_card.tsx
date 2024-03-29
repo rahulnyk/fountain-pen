@@ -28,8 +28,18 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
     };
 
     return (
-        <div className="flex-col flex-grow text-black rounded p-4 mx-0 text-pretty">
-            <p className="my-1 -mx-1 bg-teal-100 text-ellipsis overflow-hidden text-xs p-2 rounded">
+        <div
+            className={clsx(
+                "flex-col flex-grow rounded p-4 mx-0 text-pretty ",
+                " text-black dark:text-zinc-400"
+            )}
+        >
+            <p
+                className={clsx(
+                    "my-1 -mx-1 text-ellipsis overflow-hidden text-xs p-2 rounded",
+                    "bg-cyan-100 dark:bg-cyan-900/30"
+                )}
+            >
                 <span className="font-bold">
                     {filenameFromPath(document.metadata?.source)}
                 </span>

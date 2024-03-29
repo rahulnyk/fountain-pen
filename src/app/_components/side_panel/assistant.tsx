@@ -10,8 +10,7 @@ import { CustomBaseElement } from "../main_editor/types";
 import { LoadingSpinner } from "../loading_spinner";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
-import { LuDog } from "react-icons/lu";
-
+import { PiDog } from "react-icons/pi";
 export const Assistant: React.FC = ({ className }: { className?: string }) => {
     const [documents, setDocuments] = useState<Document[]>([]);
     const editor = useSlate();
@@ -35,21 +34,25 @@ export const Assistant: React.FC = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col w-full rounded shadow-sm bg-gray-50 p-1 px-0 border-l-pink-500",
-                "border-l-4 border-indigo-500",
+                "flex-col border-l-4 rounded shadow-sm",
+                "border-fuchsia-600 dark:border-fuchsia-500",
+                "bg-zinc-50 dark:bg-zinc-600/20",
                 className
             )}
             onClick={searchDocs}
         >
             <div
-                className="flex h-auto w-full text-left text-xs items-center justify-between px-4 py-2 text-pink-400"
+                className={clsx(
+                    "flex h-auto w-full text-left text-xs items-center justify-between px-4 py-2",
+                    "text-fuchsia-400 dark:text-fuchsia-400/70"
+                )}
                 // onClick={foldNotes}
             >
                 <div className="flex items-center">
-                    <LuDog className="size-6 pr-2" /> ASSISTANT
+                    <PiDog className="size-6 pr-2" /> ASSISTANT
                     {!isCollapsed ? "" : [" | ", cardHeading].join("")}
                     {isWaiting ? (
-                        <LoadingSpinner className="size-4 border-pink-400 mx-2" />
+                        <LoadingSpinner className="size-4 border-fuchsia-400 mx-2" />
                     ) : null}
                 </div>
 

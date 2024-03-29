@@ -15,6 +15,7 @@ import { getArticleContent, saveArticleContent } from "../_actions/db_actions";
 import debounce from "lodash/debounce";
 import MainEditor from "./main_editor";
 import SidePanel from "./side_panel";
+import clsx from "clsx";
 
 const createEditorWithPlugins = pipe(
     withEnforcedTitle,
@@ -78,7 +79,7 @@ const FprEditor = () => {
                 >
                     <div className="flex h-auto flex-grow">
                         {/* First Column (2/3 width) */}
-                        <div className="w-2/3 bg-gradient-to-r bg-white z-0">
+                        <div className={clsx("w-2/3 z-0")}>
                             {/* <SaveBadge /> */}
                             <MainEditor editor={editor} />
                         </div>

@@ -36,9 +36,9 @@ export const notes = Playpen_Sans({
     subsets: ["latin"],
 });
 
-export const paragraphStyle = `${p.className} text-lg my-1`,
-    heading3Style = `${h3.className} text-2xl my-2 pt-6 pb-0`,
-    heading2Style = `${h2.className} text-3xl my-2 pt-6 pb-0`,
-    heading1Style = `${h1.className} text-4xl my-2 pt-6 pb-0`,
-    titleStyle = `${title.className} text-6xl my-2 pt-6 pb-0`,
-    notesStyle = `${notes.className} text-sm`;
+export const paragraphStyle = `${p.className} text-lg my-1 dark:text-zinc-200`,
+    heading3Style = `${h3.className} text-2xl my-2 pt-6 pb-0 dark:text-zinc-200`,
+    heading2Style = `${h2.className} text-3xl my-2 pt-6 pb-0 dark:text-zinc-200`,
+    heading1Style = `${h1.className} text-4xl my-2 pt-6 pb-0 dark:text-zinc-200`,
+    titleStyle = `${title.className} text-6xl my-2 pt-6 pb-0 dark:text-zinc-200`,
+    notesStyle = `${notes.className} text-sm dark:text-zinc-400`;

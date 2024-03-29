@@ -84,15 +84,18 @@ const Notes = ({ className }: { className?: string }) => {
             {currentSectionHeading && (
                 <div
                     className={clsx(
-                        "flex-col bg-gray-50 border-l-4 border-indigo-600 rounded shadow-sm",
-                        className,
-                        collapsed && "h-12",
-                        "transition-all ease-in-out duration-150"
+                        "flex-col border-l-4 rounded shadow-sm",
+                        "border-indigo-600 dark:border-indigo-500",
+                        "bg-zinc-50  dark:bg-zinc-600/20",
+                        className
                     )}
                 >
                     <div>
                         <div
-                            className="flex h-auto w-full text-left text-xs items-center justify-between p-4 text-indigo-300"
+                            className={clsx(
+                                "flex h-auto w-full text-left text-xs items-center justify-between p-4",
+                                "text-indigo-300 dark:text-indigo-400/60"
+                            )}
                             onClick={foldNotes}
                         >
                             <div className="flex items-center">
@@ -106,12 +109,12 @@ const Notes = ({ className }: { className?: string }) => {
                             )}
                         </div>
 
-                        <div className={clsx("mt-0 px-2 pt-0 text-gray-700")}>
+                        <div className={clsx("mt-0 px-2 pt-0")}>
                             <textarea
                                 value={text}
                                 onChange={handleInputChange}
                                 className={clsx(
-                                    "w-full p-0 px-1 bg-gray-50 focus:outline-none",
+                                    "w-full p-0 px-1 bg-transparent focus:outline-none",
                                     notesStyle,
                                     collapsed && "hidden",
                                     "delay-300 transition"

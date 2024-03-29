@@ -51,14 +51,18 @@ export const Excerpts: React.FC = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col w-full rounded shadow-sm bg-gray-50 p-1 px-0 border-l-sky-500",
-                "border-l-4 border-indigo-500",
+                "flex-col border-l-4 rounded shadow-sm",
+                "border-cyan-600 dark:border-cyan-500",
+                "bg-zinc-50  dark:bg-zinc-600/20",
                 className
             )}
             onClick={searchDocs}
         >
             <div
-                className="flex h-auto w-full text-left text-xs items-center justify-between px-4 py-2 text-sky-400"
+                className={clsx(
+                    "flex h-auto w-full text-left text-xs items-center justify-between p-4",
+                    "text-cyan-400 dark:text-cyan-600/70"
+                )}
                 // onClick={foldNotes}
             >
                 <div className="flex items-center">
@@ -66,7 +70,7 @@ export const Excerpts: React.FC = ({ className }: { className?: string }) => {
                     DOCS
                     {!isCollapsed ? "" : [" | ", cardHeading].join("")}
                     {isWaiting ? (
-                        <LoadingSpinner className="size-4 border-sky-400 mx-2" />
+                        <LoadingSpinner className="size-4 border-cyan-400 mx-2" />
                     ) : null}
                 </div>
 

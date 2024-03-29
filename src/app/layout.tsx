@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
 import { ToolBar } from "./_components/toolbar";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.className} min-h-screen`}>
+            <body className={clsx("min-h-screen", "dark:bg-zinc-900")}>
                 {/* <ToolBar /> */}
                 {children}
             </body>
