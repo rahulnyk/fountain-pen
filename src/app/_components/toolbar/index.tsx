@@ -24,7 +24,7 @@ export const ToolBar: React.FC = () => {
                         <PiPenNibStraightBold
                             className={clsx(
                                 "size-10 rounded-full p-2 absolute left-1 top-1",
-                                "text-black bg-white dark:text-zinc-100 dark:bg-zinc-500"
+                                "text-black bg-white dark:text-zinc-400 dark:bg-zinc-800"
                             )}
                         />
                         <div
