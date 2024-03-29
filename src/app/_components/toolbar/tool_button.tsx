@@ -10,7 +10,9 @@ export function ToolButton({ children, className, ...rest }: ButtonProps) {
             {...rest}
             type="button"
             className={clsx(
-                "text-indigo-200 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-1 focus:outline-none focus:ring-gray-100 font-light rounded-lg text-xs px-2 py-1 text-center inline-flex items-center dark:focus:ring-indigo-800 dark:bg-indigo-600 dark:border-indigo-600 dark:text-white dark:hover:bg-indigo-700 me-2",
+                "focus:ring-4 focus:outline-none font-light rounded-lg text-sm px-3 py-1 text-center inline-flex items-center",
+                "text-white bg-blue-600 hover:bg-blue-700  focus:ring-blue-300",
+                "dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900 dark:text-gray-200",
                 className
             )}
         >

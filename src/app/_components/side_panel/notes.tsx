@@ -84,9 +84,9 @@ const Notes = ({ className }: { className?: string }) => {
             {currentSectionHeading && (
                 <div
                     className={clsx(
-                        "flex-col border-l-4 rounded shadow-sm",
-                        "border-indigo-600 dark:border-indigo-500",
-                        "bg-zinc-50  dark:bg-zinc-600/20",
+                        "flex-col rounded shadow",
+                        "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
+                        "bg-gray-50 dark:bg-zinc-600/20",
                         className
                     )}
                 >
@@ -94,7 +94,7 @@ const Notes = ({ className }: { className?: string }) => {
                         <div
                             className={clsx(
                                 "flex h-auto w-full text-left text-xs items-center justify-between p-4",
-                                "text-indigo-300 dark:text-indigo-400/60"
+                                "text-zinc-400 dark:text-zinc-500"
                             )}
                             onClick={foldNotes}
                         >

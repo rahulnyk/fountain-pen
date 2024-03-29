@@ -31,13 +31,13 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
         <div
             className={clsx(
                 "flex-col flex-grow rounded p-4 mx-0 text-pretty ",
-                " text-black dark:text-zinc-400"
+                "text-zinc-500 dark:text-zinc-400"
             )}
         >
             <p
                 className={clsx(
                     "my-1 -mx-1 text-ellipsis overflow-hidden text-xs p-2 rounded",
-                    "bg-cyan-100 dark:bg-cyan-900/30"
+                    "bg-blue-100 dark:bg-blue-900/30"
                 )}
             >
                 <span className="font-bold">
@@ -58,7 +58,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     __html: sanitizePDFText(document.pageContent),
                 }}
             />
-            <hr className="mt-2" />
+            <hr className="dark:border-zinc-700 my-4" />
         </div>
     );
 };

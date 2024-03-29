@@ -51,9 +51,9 @@ export const Excerpts: React.FC = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col border-l-4 rounded shadow-sm",
-                "border-cyan-600 dark:border-cyan-500",
-                "bg-zinc-50  dark:bg-zinc-600/20",
+                "flex-col rounded shadow",
+                "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
+                "bg-gray-50 dark:bg-zinc-600/20",
                 className
             )}
             onClick={searchDocs}
@@ -61,7 +61,7 @@ export const Excerpts: React.FC = ({ className }: { className?: string }) => {
             <div
                 className={clsx(
                     "flex h-auto w-full text-left text-xs items-center justify-between p-4",
-                    "text-cyan-400 dark:text-cyan-600/70"
+                    "text-zinc-400 dark:text-zinc-500"
                 )}
                 // onClick={foldNotes}
             >

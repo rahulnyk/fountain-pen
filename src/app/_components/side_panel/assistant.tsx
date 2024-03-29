@@ -11,62 +11,112 @@ import { LoadingSpinner } from "../loading_spinner";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
 import { PiDog } from "react-icons/pi";
+
+type dropDownOption = {
+    action: string;
+    display: string;
+    id: string;
+};
+
+const dropDownOptions: dropDownOption[] = [
+    {
+        action: "generateHeadings",
+        display: "Generate Headings",
+        id: "dripdown_1",
+    },
+    {
+        action: "suggestFromResearch",
+        display: "Suggest Content From My Research",
+        id: "dripdown_2",
+    },
+];
+
 export const Assistant: React.FC = ({ className }: { className?: string }) => {
-    const [documents, setDocuments] = useState<Document[]>([]);
-    const editor = useSlate();
-    const [cardHeading, setCardHeading] = useState<string>("");
-    const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
-    const [isWaiting, setIsWaiting] = useState<boolean>(false);
+    const [dropDown, setDropDown] = useState(false);
 
-    const searchDocs = async () => {};
+    const handleClick = () => {
+        setDropDown(!dropDown);
+    };
 
-    const getSectionTextAndNotes = async () => {};
-
-    // const chop = (txt: string | undefined): string => {
-    //     if (!txt) {
-    //         return "";
-    //     }
-    //     const chop_length = 50;
-    //     let dots = txt.length > chop_length ? "..." : "";
-    //     return txt.slice(0, 50) + dots;
-    // };
+    const handleBlur = () => {
+        console.log("blur");
+        setDropDown(false);
+    };
 
     return (
-        <div
-            className={clsx(
-                "flex-col border-l-4 rounded shadow-sm",
-                "border-fuchsia-600 dark:border-fuchsia-500",
-                "bg-zinc-50 dark:bg-zinc-600/20",
-                className
-            )}
-            onClick={searchDocs}
-        >
-            <div
+        <div className="flex-col space-y-3 px-1 ">
+            <button
+                id="dropdownInformationButton"
                 className={clsx(
-                    "flex h-auto w-full text-left text-xs items-center justify-between px-4 py-2",
-                    "text-fuchsia-400 dark:text-fuchsia-400/70"
+                    "focus:ring-4 focus:outline-none font-light rounded-lg text-sm px-5 py-2.5 inline-flex",
+                    "dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-900 dark:text-gray-200",
+                    "text-white bg-blue-600 hover:bg-blue-700  focus:ring-blue-300",
+                    "w-full items-center text-center justify-center"
                 )}
-                // onClick={foldNotes}
+                type="button"
+                onClick={handleClick}
+                onBlur={handleBlur}
             >
-                <div className="flex items-center">
-                    <PiDog className="size-6 pr-2" /> ASSISTANT
-                    {!isCollapsed ? "" : [" | ", cardHeading].join("")}
-                    {isWaiting ? (
-                        <LoadingSpinner className="size-4 border-fuchsia-400 mx-2" />
-                    ) : null}
-                </div>
+                IA Assistant
+            </button>
 
-                {isCollapsed ? (
-                    <MdExpandLess className="size-6" />
-                ) : (
-                    <MdExpandMore className="size-6" />
+            <div
+                id="dropdownInformation"
+                className={clsx(
+                    "z-10 bg-gray-50 rounded-lg shadow dark:bg-gray-700 w-full",
+                    dropDown ? "visible" : "invisible"
                 )}
-            </div>
-            <div className="space-y-2 my-0 mx-0 w-auto">
-                {documents.map((doc) => (
-                    <ExcerptCard document={doc} />
-                ))}
+            >
+                <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                    <div>What would you like me to do?</div>
+                </div>
+                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 divide-y divide-gray-50 dark:divide-gray-600">
+                    {dropDownOptions.map((item) => (
+                        <MenuItem
+                            dropDownItem={item}
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        />
+                    ))}
+                    {/* <li>
+                        <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >
+                            Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >
+                            Earnings
+                        </a>
+                    </li> */}
+                </ul>
             </div>
         </div>
+    );
+};
+
+export const MenuItem = ({
+    className,
+    dropDownItem,
+}: {
+    className?: string;
+    dropDownItem: dropDownOption;
+}) => {
+    return (
+        <li>
+            <div className={clsx(className)}>{dropDownItem.display}</div>
+        </li>
     );
 };
