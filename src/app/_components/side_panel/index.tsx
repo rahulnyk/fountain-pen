@@ -2,7 +2,7 @@
 import Notes from "./notes";
 import clsx from "clsx";
 import { Excerpts } from "./excerpts";
-import { Assistant } from "./assistant";
+import { AssistantMenu } from "./assistant_menu";
 
 const SidePanel = ({ className }: { className?: string }) => {
     return (
@@ -13,8 +13,7 @@ const SidePanel = ({ className }: { className?: string }) => {
             )}
         >
             <Notes />
-            <Excerpts />
-            <Assistant />
+            <AssistantMenu />
         </div>
     );
 };

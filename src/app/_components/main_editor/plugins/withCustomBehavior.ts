@@ -160,18 +160,15 @@ export const withCustomBehavior = (editor: Editor) => {
         const [, hp] = sectionHeadingEntry;
         const basePath = hp.slice(0, hp.length - 1);
         const currentHeadingIndex = hp[hp.length - 1];
-        let i = currentHeadingIndex;
+        let i = currentHeadingIndex + 1;
         let text: string = "";
         let nextPath = basePath.concat(i);
         while (Editor.hasPath(editor, nextPath)) {
             let [n, p] = Editor.node(editor, nextPath);
-            if (
-                i != currentHeadingIndex &&
-                Headings.some((t) => (n as CustomBaseElement).type === t)
-            ) {
+            if (Headings.some((t) => (n as CustomBaseElement).type === t)) {
                 break;
             }
-            text = text.concat(Node.string(n), "\n---\n");
+            text = text.concat(Node.string(n), "\n\n");
             nextPath = basePath.concat(++i);
         }
         return text;
@@ -192,6 +189,11 @@ export const withCustomBehavior = (editor: Editor) => {
         const [hn, hp] = sectionHeadingEntry;
         const notes = (hn as HeadingElement).notes.join("\n");
         return notes;
+    };
+
+    editor.getTitleString = () => {
+        const [title] = editor.children;
+        return title ? Node.string(title) : undefined;
     };
 
     return editor;
