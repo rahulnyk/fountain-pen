@@ -33,7 +33,6 @@ export const Outline = ({
     const [outline, setOutline] = useState<outlineResponse[] | undefined>(
         undefined
     );
-    const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
 
     const getOutline = async () => {
         setIsWaiting(true);
@@ -50,10 +49,6 @@ export const Outline = ({
         getOutline();
     }, []);
 
-    useEffect(() => {
-        setRefreshVisible(true);
-    }, [title, heading, notes, text]);
-
     return (
         <div
             className={clsx(
@@ -66,7 +61,7 @@ export const Outline = ({
         >
             <div className="flex justify-between space-x-5 p-4">
                 <div>OUTLINE</div>
-                {refreshVisible && (
+                {!isWaiting && (
                     <IoMdRefreshCircle
                         className="size-6 text-gray-600 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-600"
                         onClick={getOutline}
@@ -74,7 +69,9 @@ export const Outline = ({
                 )}
             </div>
             <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
-                Results are based only on the Title, and the Title Notes.
+                Results are based only on the Title, and the Title Notes. <br />
+                For better results, write more about the article in the Title
+                Notes.
             </div>
             {isWaiting ? (
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
