@@ -74,6 +74,10 @@ export const Excerpts = ({
                     />
                 )}
             </div>
+            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
+                Results are based on Title, Current Section, and respective
+                Notes
+            </div>
             {isWaiting ? (
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
             ) : (
