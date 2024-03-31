@@ -7,6 +7,8 @@ import { MdOutlineSpeakerNotes } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
 import { Headings } from "../main_editor/types";
+import { generalTextStyle } from "../main_editor/typography";
+
 import clsx from "clsx";
 
 const Notes = ({ className }: { className?: string }) => {
@@ -93,14 +95,13 @@ const Notes = ({ className }: { className?: string }) => {
                     <div>
                         <div
                             className={clsx(
-                                "flex h-auto w-full text-left text-xs items-center justify-between p-4",
-                                "text-zinc-400 dark:text-zinc-500"
+                                "flex h-auto w-full text-left items-center justify-between p-4",
+                                generalTextStyle
                             )}
                             onClick={foldNotes}
                         >
                             <div className="flex items-center">
-                                <MdOutlineSpeakerNotes className="size-6 pr-2" />{" "}
-                                NOTES | {notesHeading}{" "}
+                                NOTES | {notesHeading}
                             </div>
                             {collapsed ? (
                                 <MdExpandMore className="size-6" />

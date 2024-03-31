@@ -61,7 +61,7 @@ const FprEditor = () => {
     const debouncedSave = useCallback(
         debounce((value) => {
             saveArticleContent(value);
-        }, 1500),
+        }, 1000),
         []
     );
 

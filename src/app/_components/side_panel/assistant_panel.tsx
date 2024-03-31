@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Headings } from "../main_editor/types";
 import { Node } from "slate";
 import { Excerpts } from "./excerpts";
+import { generateOutline } from "@/app/_actions/rag/generate_outline";
+import { Outline } from "./outline";
 
 export const AssistantPanel = ({
     dropDownItem,
@@ -16,8 +18,8 @@ export const AssistantPanel = ({
     const [text, setText] = useState<string>("");
     const [notes, setNotes] = useState<string>("");
     const [title, setTitle] = useState<string>("");
+    const [titleNotes, setTitleNotes] = useState<string>("");
     const [action, setAction] = useState<string | undefined>();
-
     const getSectionText = () => {
         const sectionText = editor.getCurrentSectionText();
         return sectionText ? sectionText : "";
@@ -43,13 +45,19 @@ export const AssistantPanel = ({
         return title ? title : "";
     };
 
+    const getTitleNotes = () => {
+        const titleNotes = editor.getTitleNotes();
+        return titleNotes ? titleNotes : "";
+    };
+
     useEffect(() => {
         setAction(dropDownItem.action);
         setHeading(getSectionHeading());
         setText(getSectionText());
         setNotes(getSectionNotes());
         setTitle(getTitle());
-    }, [dropDownItem.action]);
+        setTitleNotes(getTitleNotes());
+    }, [dropDownItem.action, editor.selection]);
 
     return (
         <div className="text-gray-800 dark:text-gray-200">
@@ -59,6 +67,7 @@ export const AssistantPanel = ({
                     heading={heading}
                     notes={notes}
                     text={text}
+                    titleNotes={titleNotes}
                 />
             )) ||
                 (action === "suggestFromResearch" && (
@@ -69,7 +78,14 @@ export const AssistantPanel = ({
                 )) ||
                 (action === "generateHeadings" && (
                     <div>
-                        Generate Headings: {[title, heading, notes].join("\n")}
+                        {/* Generate Headings: {[title, heading, notes].join("\n")} */}
+                        <Outline
+                            title={title}
+                            heading={heading}
+                            notes={notes}
+                            text={text}
+                            titleNotes={titleNotes}
+                        />
                     </div>
                 ))}
         </div>

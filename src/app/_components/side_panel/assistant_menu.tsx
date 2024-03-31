@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import { AssistantMenuItem, dropDownOptions } from "./assistant_menu_items";
 import { AssistantPanel } from "./assistant_panel";
-
+import { MdCancel } from "react-icons/md";
 const dropDownOptions: dropDownOptions[] = [
     {
         action: "generateHeadings",
@@ -36,8 +36,12 @@ export const AssistantMenu: React.FC = ({
         setDropDown(!dropDown);
     };
 
-    const onClick = (item: dropDownOptions) => {
+    const onItemClick = (item: dropDownOptions) => {
         setCurrentOption(item);
+        setDropDown(false);
+    };
+
+    const cancelMenu = () => {
         setDropDown(false);
     };
 
@@ -60,19 +64,22 @@ export const AssistantMenu: React.FC = ({
             <div
                 id="dropdownInformation"
                 className={clsx(
-                    "absolute w-auto z-10 rounded-lg shadow dark:bg-gray-700  bg-gray-50",
+                    "absolute w-auto z-10 rounded-lg shadow dark:bg-gray-700  bg-gray-50 right-10",
+                    "bg-opacity-70 backdrop-filter backdrop-blur-md border-[1px]",
+                    "border-zinc-200  bg-zinc-200 dark:bg-zinc-600/50 dark:border-zinc-800",
                     dropDown ? "visible" : "invisible"
                 )}
             >
-                <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex justify-between items-center space-x-10 px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                     <div>What would you like me to do?</div>
+                    <MdCancel onClick={cancelMenu} className="size-6" />
                 </div>
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 divide-y divide-gray-50 dark:divide-gray-600">
                     {dropDownOptions.map((item) => (
                         <AssistantMenuItem
                             key={item.id}
                             dropDownItems={item}
-                            onClick={() => onClick(item)}
+                            onClick={() => onItemClick(item)}
                             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         />
                     ))}

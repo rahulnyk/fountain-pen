@@ -195,7 +195,14 @@ export const withCustomBehavior = (editor: Editor) => {
         const [title] = editor.children;
         return title ? Node.string(title) : undefined;
     };
-
+    editor.getTitleNotes = () => {
+        const [title] = editor.children;
+        let notes: string | undefined = undefined;
+        if (Element.isElement(title)) {
+            notes = title.notes.join("\n");
+        }
+        return notes ? notes : undefined;
+    };
     return editor;
 };
 
