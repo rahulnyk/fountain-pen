@@ -4,7 +4,11 @@ import { Transforms, Node, Path } from "slate";
 import { CustomBaseElement } from "../main_editor/types";
 import { notesStyle } from "../main_editor/typography";
 import { MdOutlineSpeakerNotes } from "react-icons/md";
+import { MdExpandLess } from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 import { Headings } from "../main_editor/types";
+import { generalTextStyle } from "../main_editor/typography";
+
 import clsx from "clsx";
 
 const Notes = ({ className }: { className?: string }) => {
@@ -82,27 +86,36 @@ const Notes = ({ className }: { className?: string }) => {
             {currentSectionHeading && (
                 <div
                     className={clsx(
-                        "flex-col bg-indigo-50 border-l-4 border-indigo-600 rounded shadow-sm",
-                        className,
-                        collapsed && "h-12",
-                        "transition-all ease-in-out duration-150"
+                        "flex-col rounded shadow",
+                        "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
+                        "bg-gray-50 dark:bg-zinc-600/20",
+                        className
                     )}
                 >
                     <div>
                         <div
-                            className="flex h-auto w-full text-left text-xs items-center p-4 text-indigo-300"
+                            className={clsx(
+                                "flex h-auto w-full text-left items-center justify-between p-4",
+                                generalTextStyle
+                            )}
                             onClick={foldNotes}
                         >
-                            <MdOutlineSpeakerNotes className="size-6 pr-2" />{" "}
-                            NOTES | {notesHeading}
+                            <div className="flex items-center">
+                                NOTES | {notesHeading}
+                            </div>
+                            {collapsed ? (
+                                <MdExpandMore className="size-6" />
+                            ) : (
+                                <MdExpandLess className="size-6" />
+                            )}
                         </div>
 
-                        <div className={clsx("mt-0 px-2 pt-0 text-gray-700")}>
+                        <div className={clsx("mt-0 px-2 pt-0")}>
                             <textarea
                                 value={text}
                                 onChange={handleInputChange}
                                 className={clsx(
-                                    "w-full p-0 px-1 bg-indigo-50 focus:outline-none",
+                                    "w-full p-0 px-1 bg-transparent focus:outline-none",
                                     notesStyle,
                                     collapsed && "hidden",
                                     "delay-300 transition"

@@ -22,10 +22,17 @@ export async function embeddDocuments() {
 
 export async function semanticSearch({
     text,
+    numResults,
 }: {
     text: string;
+    numResults: number;
 }): Promise<Document<Record<string, any>>[]> {
     const store = await HNSWLib.load(DIRECTORY, embeddingFunction);
-    const result = await store.similaritySearch(text, 5);
+    const result = await store.similaritySearch(text, numResults);
     return result;
+}
+
+export async function vStore() {
+    const store = await HNSWLib.load(DIRECTORY, embeddingFunction);
+    return store;
 }
