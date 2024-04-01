@@ -12,7 +12,7 @@ const dropDownOptions: dropDownOptions[] = [
     },
     {
         action: "suggestFromResearch",
-        display: "Suggest Content From My Research",
+        display: "Suggest Content Using My Research",
         id: "dropdown_2",
     },
     {
