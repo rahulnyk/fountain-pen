@@ -14,7 +14,7 @@ export const ToolBar: React.FC = () => {
     return (
         <nav
             className={clsx(
-                "sticky rounded-full top-5 z-30 bg-opacity-70 mx-5 backdrop-filter backdrop-blur-lg px-10 border-[1px]",
+                "sticky rounded-full top-5 z-30 bg-opacity-60 mx-5 backdrop-filter backdrop-blur-lg px-10 border-[1px]",
                 "border-zinc-200  bg-zinc-200 dark:bg-zinc-600/50 dark:border-zinc-800"
             )}
         >

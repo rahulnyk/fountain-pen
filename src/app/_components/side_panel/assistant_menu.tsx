@@ -65,7 +65,7 @@ export const AssistantMenu: React.FC = ({
                 id="dropdownInformation"
                 className={clsx(
                     "absolute w-auto z-10 rounded-lg shadow dark:bg-gray-700  bg-gray-50 right-10",
-                    "bg-opacity-70 backdrop-filter backdrop-blur-md border-[1px]",
+                    "bg-opacity-60 backdrop-filter backdrop-blur-lg border-[1px]",
                     "border-zinc-200  bg-zinc-200 dark:bg-zinc-600/50 dark:border-zinc-800",
                     dropDown ? "visible" : "invisible"
                 )}
