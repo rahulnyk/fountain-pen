@@ -3,7 +3,7 @@ import { Open_Sans } from "next/font/google";
 import { Lato } from "next/font/google";
 import clsx from "clsx";
 import { outlineResponse } from "@/app/_actions/rag/generate_outline";
-import { generalTextStyle } from "../main_editor/typography";
+import { generalTextStyle } from "../../main_editor/typography";
 
 export const OutlineCard = ({ item }: { item: outlineResponse }) => {
     return (

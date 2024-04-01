@@ -1,8 +1,7 @@
 "use client";
 import Notes from "./notes";
 import clsx from "clsx";
-import { Excerpts } from "./excerpts";
-import { AssistantMenu } from "./assistant_menu";
+import { AssistantButton } from "./assistant_button/assistant_button";
 
 const SidePanel = ({ className }: { className?: string }) => {
     return (
@@ -13,7 +12,7 @@ const SidePanel = ({ className }: { className?: string }) => {
             )}
         >
             <Notes />
-            <AssistantMenu />
+            <AssistantButton />
         </div>
     );
 };
