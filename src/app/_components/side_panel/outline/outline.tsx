@@ -27,7 +27,6 @@ export const Outline = ({
     const [outline, setOutline] = useState<outlineResponse[] | undefined>(
         undefined
     );
-    const [render, setRender] = useState<number>(0);
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
 
     const getOutline = useCallback(async () => {
@@ -40,12 +39,13 @@ export const Outline = ({
 
     const refresh = async () => {
         setIsWaiting(true);
-        const outlineRes = await getOutline();
+        const outlineRes = [
+            { level: "heading", text: "sometext", description: "somedesc" },
+        ]; // await getOutline();
         setOutline(outlineRes);
-        setRender(render + 1);
         setIsWaiting(false);
         setRefreshVisible(false);
-        console.log("\n\nREFRESH", title, titleNotes, render);
+        console.log("\n\nREFRESH", title, titleNotes);
     };
 
     useEffect(() => {
@@ -54,6 +54,7 @@ export const Outline = ({
 
     useEffect(() => {
         setRefreshVisible(true);
+        console.log("editor changed");
     }, [title, titleNotes]);
 
     return (
