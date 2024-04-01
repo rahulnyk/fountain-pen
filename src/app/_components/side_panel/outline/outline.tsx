@@ -9,6 +9,7 @@ import {
 } from "@/app/_actions/rag/generate_outline";
 import { OutlineCard } from "./outline_card";
 import { generalTextStyle } from "../../main_editor/typography";
+import { useCallback } from "react";
 
 export const Outline = ({
     className,
@@ -26,21 +27,34 @@ export const Outline = ({
     const [outline, setOutline] = useState<outlineResponse[] | undefined>(
         undefined
     );
+    const [render, setRender] = useState<number>(0);
+    const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
 
-    const getOutline = async () => {
-        setIsWaiting(true);
-        const outline: outlineResponse[] = await generateOutline({
+    const getOutline = useCallback(async () => {
+        const outlineRes: outlineResponse[] = await generateOutline({
             title,
             notes: titleNotes,
         });
-        setOutline(outline);
+        return outlineRes;
+    }, [title, titleNotes]);
+
+    const refresh = async () => {
+        setIsWaiting(true);
+        const outlineRes = await getOutline();
+        setOutline(outlineRes);
+        setRender(render + 1);
         setIsWaiting(false);
-        console.log(outline);
+        setRefreshVisible(false);
+        console.log("\n\nREFRESH", title, titleNotes, render);
     };
 
     useEffect(() => {
-        getOutline();
+        refresh();
     }, []);
+
+    useEffect(() => {
+        setRefreshVisible(true);
+    }, [title, titleNotes]);
 
     return (
         <div
@@ -54,10 +68,10 @@ export const Outline = ({
         >
             <div className="flex justify-between space-x-5 p-4">
                 <div>OUTLINE</div>
-                {!isWaiting && (
+                {refreshVisible && (
                     <IoMdRefreshCircle
                         className="size-6 text-gray-600 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-600"
-                        onClick={getOutline}
+                        onClick={refresh}
                     />
                 )}
             </div>
@@ -71,7 +85,12 @@ export const Outline = ({
             ) : (
                 <div className="space-y-2 my-0 mx-0 w-auto">
                     {outline &&
-                        outline.map((item) => <OutlineCard item={item} />)}
+                        outline.map((item, index) => (
+                            <OutlineCard
+                                item={item}
+                                key={`${item.level}${index}`}
+                            />
+                        ))}
                 </div>
             )}
         </div>

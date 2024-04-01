@@ -20,25 +20,26 @@ export async function generateOutline({
     outline?: string[];
 }) {
     const system_prompt = [
-        "You are a writing assistant. The user will provide you with some inputs",
-        "Your job is to suggest a good outline for an article. ",
-        "Outline of an article is composed of multiple headings to cover all aspects of the topic of the article.",
-        "Within each heading there can be any number of sub headings. ",
-        "Respond with an array of objects as JSON where every object is of the following type \n",
-        `{
-            level: string (heading, or subheading),
+        "Develop an outline for an article discussing the topic give by the user.",
+        "Incorporate the rough notes (if provided by the user) into your outline.",
+        "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
+        "Create outline in the form of headings and subheadings",
+        "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
+        "Respond with an array of objects as JSON array where every object is of the following type \n",
+        `[{
+            level: string ("heading", or "subheading"),
             text: string,
             description: what to write about in this heading or subheading,
-        }`,
-        "Be detailed in your response.",
-    ].join("/n");
+        }, {...}]`,
+    ].join(" ");
 
     const user_prompt: string = [
-        `Suggest me a good outline for an article on the title" "${title}"`,
-        notes ? `Here are my initial thoughts about the article: ${notes}` : "",
+        `Topic: ${title}`,
+        notes ? `Rough Notes: ${notes}.` : "",
+        "Also suggest more ideas and headings (apart from my notes) that I can write about",
     ].join("\n");
 
-    console.log(user_prompt, system_prompt);
+    console.log(system_prompt, user_prompt);
     let outlineObject: outlineResponse[] = [];
     try {
         const completion = await openai.chat.completions.create({
@@ -50,7 +51,11 @@ export async function generateOutline({
             // response_format: { type: "json_object" },
         });
 
-        let outlineResponse = completion.choices[0].message.content;
+        let outlineResponse = completion.choices[0].message.content?.replace(
+            /```json\n?|```/g,
+            ""
+        );
+        console.log(outlineResponse);
         outlineObject = JSON.parse(outlineResponse ? outlineResponse : "[]");
     } catch (e) {
         outlineObject = [];

@@ -27,6 +27,7 @@ export async function semanticSearch({
     text: string;
     numResults: number;
 }): Promise<Document<Record<string, any>>[]> {
+    // console.log(text);
     const store = await HNSWLib.load(DIRECTORY, embeddingFunction);
     const result = await store.similaritySearch(text, numResults);
     return result;
