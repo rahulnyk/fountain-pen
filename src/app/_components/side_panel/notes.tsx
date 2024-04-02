@@ -3,7 +3,6 @@ import { useSlate } from "slate-react";
 import { Transforms, Node, Path } from "slate";
 import { CustomBaseElement } from "../main_editor/types";
 import { notesStyle } from "../main_editor/typography";
-import { MdOutlineSpeakerNotes } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
 import { MdExpandMore } from "react-icons/md";
 import { Headings } from "../main_editor/types";
@@ -18,7 +17,6 @@ const Notes = ({ className }: { className?: string }) => {
     const [text, setText] = useState<string>("");
     const [notesHeading, setNotesHeading] = useState<string>("");
     const [collapsed, setCollapsed] = useState(false);
-    const [currentElement, setCurrentElement] = useState<Node>();
     const [currentSectionHeading, setCurrentSectionHeading] = useState<
         CustomBaseElement | undefined
     >();
@@ -39,7 +37,6 @@ const Notes = ({ className }: { className?: string }) => {
             { notes: [text] },
             { at: currentSectionHeadingPath }
         );
-        // console.log(element);
     };
 
     useEffect(() => {

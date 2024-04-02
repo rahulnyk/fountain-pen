@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { AssistantMenuItem, dropDownOptions } from "./assistant_menu_items";
-import { AssistantPanel } from "./assistant_panel";
+import { AssistantPanel } from "../assistant_panel";
 import { MdCancel } from "react-icons/md";
 const dropDownOptions: dropDownOptions[] = [
     {
@@ -22,7 +22,7 @@ const dropDownOptions: dropDownOptions[] = [
     },
 ];
 
-export const AssistantMenu: React.FC = ({
+export const AssistantButton: React.FC = ({
     className,
 }: {
     className?: string;

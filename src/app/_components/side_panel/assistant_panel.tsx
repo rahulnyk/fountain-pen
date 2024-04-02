@@ -1,11 +1,11 @@
 import { useSlate } from "slate-react";
-import { dropDownOptions } from "./assistant_menu_items";
+import { dropDownOptions } from "./assistant_button/assistant_menu_items";
 import { useEffect, useState } from "react";
 import { Headings } from "../main_editor/types";
 import { Node } from "slate";
-import { Excerpts } from "./excerpts";
+import { Excerpts } from "./excerpts/excerpts";
 import { generateOutline } from "@/app/_actions/rag/generate_outline";
-import { Outline } from "./outline";
+import { Outline } from "./outline/outline";
 
 export const AssistantPanel = ({
     dropDownItem,

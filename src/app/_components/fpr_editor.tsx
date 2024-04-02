@@ -11,7 +11,12 @@ import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./main_editor/plugins/withCustomBehavior";
 import { withEnforcedTitle } from "./main_editor/plugins/withEnforcedTitle";
 import { withOnlyOneTitle } from "./main_editor/plugins/withOnlyOneTitle";
-import { getArticleContent, saveArticleContent } from "../_actions/db_actions";
+import {
+    backupArticleContent,
+    getArticleContent,
+    getBackupContent,
+    saveArticleContent,
+} from "../_actions/db_actions";
 import debounce from "lodash/debounce";
 import MainEditor from "./main_editor";
 import SidePanel from "./side_panel";
@@ -50,7 +55,11 @@ const FprEditor = () => {
     useEffect(() => {
         // Load from server
         const getContent = async () => {
-            const content = await getArticleContent({ id: 0 });
+            let content = await getArticleContent({ id: 0 });
+            if (!content) {
+                // check backup article content.
+                content = await getBackupContent({ id: 0 });
+            }
             const contentValue = content ? content : fallbackValue;
             setValue(contentValue);
             setWinReady(true);
@@ -65,8 +74,16 @@ const FprEditor = () => {
         []
     );
 
+    const debounceBackup = useCallback(
+        debounce((value) => {
+            backupArticleContent(value);
+        }, 3000),
+        []
+    );
+
     function saveOnChange(value: Descendant[]) {
         debouncedSave({ content: value });
+        debounceBackup({ content: value });
     }
 
     return (
