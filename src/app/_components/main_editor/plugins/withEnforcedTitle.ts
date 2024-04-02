@@ -13,6 +13,7 @@ export const withEnforcedTitle = (editor: Editor) => {
                 const title: HeadingElement = {
                     type: "title",
                     children: [{ text: "Title" }],
+                    notes: [],
                 };
                 Transforms.insertNodes(editor, title, {
                     at: path.concat(0),
@@ -24,6 +25,7 @@ export const withEnforcedTitle = (editor: Editor) => {
                 const paragraph: ParagraphElement = {
                     type: "paragraph",
                     children: [{ text: "" }],
+                    notes: [],
                 };
                 Transforms.insertNodes(editor, paragraph, {
                     at: path.concat(1),
