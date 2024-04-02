@@ -23,8 +23,8 @@ export async function generateOutline({
         "Develop an outline for an article discussing the topic give by the user.",
         "Incorporate the rough notes (if provided by the user) into your outline.",
         "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
-        "Create outline in the form of headings and subheadings",
         "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
+        "Remember to add conclusion and references headings towards the end of the outline",
         "Respond with an array of objects as JSON array where every object is of the following type \n",
         `[{
             level: string ("heading", or "subheading"),

@@ -66,8 +66,8 @@ export const Outline = ({
             )}
         >
             <div className="flex justify-between space-x-5 p-4">
-                <div>OUTLINE</div>
-                {refreshVisible && (
+                <div className={clsx("w-5/6")}>OUTLINE</div>
+                {!isWaiting && refreshVisible && (
                     <IoMdRefreshCircle
                         className="size-6 text-gray-600 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-600"
                         onClick={refresh}

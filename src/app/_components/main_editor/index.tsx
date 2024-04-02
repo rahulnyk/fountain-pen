@@ -45,25 +45,21 @@ const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
     if (event.ctrlKey) {
         event.preventDefault();
         switch (event.key) {
-            case "1": {
+            case "1":
                 Transforms.setNodes(editor, { type: "heading1" });
                 break;
-            }
-            case "2": {
+            case "2":
                 Transforms.setNodes(editor, { type: "heading2" });
                 break;
-            }
-            case "3": {
+            case "3":
                 Transforms.setNodes(editor, { type: "heading3" });
                 break;
-            }
-            case "0": {
+            case "`":
+            case "0":
                 Transforms.setNodes(editor, { type: "paragraph" });
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 };

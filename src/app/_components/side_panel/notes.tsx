@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import { useSlate } from "slate-react";
 import { Transforms, Node, Path } from "slate";
-import { CustomBaseElement } from "../main_editor/types";
-import { notesStyle } from "../main_editor/typography";
-import { MdExpandLess } from "react-icons/md";
-import { MdExpandMore } from "react-icons/md";
-import { Headings } from "../main_editor/types";
-import { generalTextStyle } from "../main_editor/typography";
-
+import { CustomBaseElement, Headings } from "../main_editor/types";
+import { notesStyle, generalTextStyle } from "../main_editor/typography";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import { notesContextType } from ".";
 import clsx from "clsx";
 
-const Notes = ({ className }: { className?: string }) => {
+const Notes = ({
+    className,
+    setContext,
+}: {
+    className?: string;
+    setContext: (value: notesContextType | undefined) => void;
+}) => {
     const editor = useSlate();
 
     const [lines, setLines] = useState<number>(2);
@@ -28,8 +31,6 @@ const Notes = ({ className }: { className?: string }) => {
         setLines(text ? Math.min((text.match(/\n/g) || "").length + 1, 15) : 2);
     }, [text]);
 
-    // text area helpers
-
     const handleInputChange = (event: any) => {
         setText(event.target.value);
         Transforms.setNodes(
@@ -37,6 +38,10 @@ const Notes = ({ className }: { className?: string }) => {
             { notes: [text] },
             { at: currentSectionHeadingPath }
         );
+        // Setting the context when notes are updated.
+        // This is a hacky way to broadcast notes updates,
+        // because editor does not update the context by itself on notes updates.
+        setContext({ notes: [text], at: currentSectionHeadingPath });
     };
 
     useEffect(() => {
@@ -75,7 +80,6 @@ const Notes = ({ className }: { className?: string }) => {
     };
     const foldNotes = () => {
         setCollapsed(!collapsed);
-        // console.log(collapsed);
     };
 
     return (
