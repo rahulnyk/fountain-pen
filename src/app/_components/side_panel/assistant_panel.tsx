@@ -75,7 +75,7 @@ export const AssistantPanel = ({
             )) ||
                 (action === "suggestFromResearch" && (
                     <div>
-                        Suggests From Research:{" "}
+                        This feature is coming soon:{" "}
                         {[title, heading, notes].join("\n")}
                     </div>
                 )) ||
