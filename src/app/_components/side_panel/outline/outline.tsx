@@ -39,9 +39,7 @@ export const Outline = ({
 
     const refresh = async () => {
         setIsWaiting(true);
-        const outlineRes = [
-            { level: "heading", text: "sometext", description: "somedesc" },
-        ]; // await getOutline();
+        const outlineRes = await getOutline();
         setOutline(outlineRes);
         setIsWaiting(false);
         setRefreshVisible(false);
