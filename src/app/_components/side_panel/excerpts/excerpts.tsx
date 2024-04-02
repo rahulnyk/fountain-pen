@@ -60,14 +60,14 @@ export const Excerpts = ({
                 className
             )}
         >
-            <div className="flex justify-between space-x-5 p-4 text-gray-800 dark:text-gray-100">
-                <div>
+            <div className="flex justify-between space-x-5 p-4 text-gray-800 dark:text-gray-100 ">
+                <div className="w-5/6">
                     Excerpts From Documents{" "}
                     {searchReferenceHeading
                         ? " | ".concat(searchReferenceHeading)
                         : ""}
                 </div>
-                {refreshVisible && (
+                {refreshVisible && !isWaiting && (
                     <IoMdRefreshCircle
                         className="size-6 text-gray-600 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-600"
                         onClick={refresh}

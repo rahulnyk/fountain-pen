@@ -7,17 +7,17 @@ import { MdCancel } from "react-icons/md";
 const dropDownOptions: dropDownOptions[] = [
     {
         action: "generateHeadings",
-        display: "Generate Headings",
+        display: "Generate Headings For the Article",
         id: "dropdown_1",
     },
     {
         action: "suggestFromResearch",
-        display: "Suggest Content Using My Research",
+        display: "Use My Documents to Suggest Text for Current Section",
         id: "dropdown_2",
     },
     {
         action: "semanticSearch",
-        display: "Search Exerpts In My Documents",
+        display: "Search Exerpts In My Documents Relevant to Current Section",
         id: "dropdown_3",
     },
 ];

@@ -1,11 +1,13 @@
 import { useSlate } from "slate-react";
 import { dropDownOptions } from "./assistant_button/assistant_menu_items";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Headings } from "../main_editor/types";
 import { Node } from "slate";
 import { Excerpts } from "./excerpts/excerpts";
 import { generateOutline } from "@/app/_actions/rag/generate_outline";
 import { Outline } from "./outline/outline";
+
+import { NotesContext } from ".";
 
 export const AssistantPanel = ({
     dropDownItem,
@@ -14,6 +16,7 @@ export const AssistantPanel = ({
 }) => {
     const editor = useSlate();
 
+    const notesUpdates = useContext(NotesContext);
     const [heading, setHeading] = useState<string>("");
     const [text, setText] = useState<string>("");
     const [notes, setNotes] = useState<string>("");
@@ -57,7 +60,7 @@ export const AssistantPanel = ({
         setNotes(getSectionNotes());
         setTitle(getTitle());
         setTitleNotes(getTitleNotes());
-    }, [dropDownItem.action, editor.selection]);
+    }, [dropDownItem.action, editor.selection, notesUpdates]);
 
     return (
         <div className="text-gray-800 dark:text-gray-200">
@@ -72,7 +75,7 @@ export const AssistantPanel = ({
             )) ||
                 (action === "suggestFromResearch" && (
                     <div>
-                        Suggests From Research:{" "}
+                        This feature is coming soon:{" "}
                         {[title, heading, notes].join("\n")}
                     </div>
                 )) ||
