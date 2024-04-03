@@ -14,7 +14,7 @@ const embeddingFunction = new OpenAIEmbeddings({
 
 export async function embeddDocuments() {
     const docs = await dirLoadAndSplit();
-    console.log("embedding docs", docs.length);
+    // console.log("embedding docs", docs.length);
     const vectorStore = await HNSWLib.fromDocuments(docs, embeddingFunction);
 
     await vectorStore.save(DIRECTORY);

@@ -3,44 +3,47 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../../loading_spinner";
 import { IoMdRefreshCircle } from "react-icons/io";
-import {
-    generateOutline,
-    outlineResponse,
-} from "@/app/_actions/rag/generate_outline";
-import { OutlineCard } from "./outline_card";
 import { generalTextStyle } from "../../main_editor/typography";
 import { useCallback } from "react";
+import { ChatCompletion } from "openai/resources/index.mjs";
+import { generateContent } from "@/app/_actions/rag/generate_content";
+import { ContentCard } from "./content_card";
 
-export const Outline = ({
+export const ContentSuggestion = ({
     className,
     title,
     titleNotes,
+    heading,
+    notes,
+    text,
 }: {
     className?: string;
     title: string;
+    titleNotes: string;
     heading: string;
     notes: string;
-    titleNotes: string;
     text: string;
 }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [outline, setOutline] = useState<outlineResponse[] | undefined>(
-        undefined
-    );
+    const [content, setContent] = useState<ChatCompletion.Choice[]>([]);
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
 
     const getOutline = useCallback(async () => {
-        const outlineRes: outlineResponse[] = await generateOutline({
+        const contentSuggestions = await generateContent({
             title,
-            notes: titleNotes,
+            titleNotes,
+            heading,
+            notes,
+            text,
         });
-        return outlineRes;
-    }, [title, titleNotes]);
+        return contentSuggestions;
+    }, [title, titleNotes, heading, notes, text]);
 
     const refresh = async () => {
         setIsWaiting(true);
-        const outlineRes = await getOutline();
-        setOutline(outlineRes);
+        const contentSuggestions = await getOutline();
+        setContent(contentSuggestions);
+        console.log("From Content Suggestion Component", contentSuggestions);
         setIsWaiting(false);
         setRefreshVisible(false);
     };
@@ -51,8 +54,8 @@ export const Outline = ({
 
     useEffect(() => {
         setRefreshVisible(true);
-        console.log("editor changed");
-    }, [title, titleNotes]);
+        // console.log("editor changed");
+    }, [title, titleNotes, heading, notes, text]);
 
     return (
         <div
@@ -74,21 +77,15 @@ export const Outline = ({
                 )}
             </div>
             <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
-                Results are based only on the Title, and the Title Notes. <br />
-                For better results, write more about the article in the Title
-                Notes.
+                Content Suggestions
             </div>
             {isWaiting ? (
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
             ) : (
                 <div className="space-y-2 my-0 mx-0 w-auto">
-                    {outline &&
-                        outline.map((item, index) => (
-                            <OutlineCard
-                                item={item}
-                                key={`${item.level}${index}`}
-                            />
-                        ))}
+                    {content.map((choice) => (
+                        <ContentCard choice={choice} />
+                    ))}
                 </div>
             )}
         </div>

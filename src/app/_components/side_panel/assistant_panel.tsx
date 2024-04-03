@@ -4,9 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { Headings } from "../main_editor/types";
 import { Node } from "slate";
 import { Excerpts } from "./excerpts/excerpts";
-import { generateOutline } from "@/app/_actions/rag/generate_outline";
 import { Outline } from "./outline/outline";
-
+import { ContentSuggestion } from "./content_suggestion";
 import { NotesContext } from ".";
 
 export const AssistantPanel = ({
@@ -74,10 +73,13 @@ export const AssistantPanel = ({
                 />
             )) ||
                 (action === "suggestFromResearch" && (
-                    <div>
-                        This feature is coming soon:{" "}
-                        {[title, heading, notes].join("\n")}
-                    </div>
+                    <ContentSuggestion
+                        title={title}
+                        heading={heading}
+                        notes={notes}
+                        text={text}
+                        titleNotes={titleNotes}
+                    />
                 )) ||
                 (action === "generateHeadings" && (
                     <div>

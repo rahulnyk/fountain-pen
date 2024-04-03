@@ -39,7 +39,7 @@ export async function generateOutline({
         "Also suggest more ideas and headings (apart from my notes) that I can write about",
     ].join("\n");
 
-    console.log(system_prompt, user_prompt);
+    // console.log(system_prompt, user_prompt);
     let outlineObject: outlineResponse[] = [];
     try {
         const completion = await openai.chat.completions.create({
@@ -55,7 +55,7 @@ export async function generateOutline({
             /```json\n?|```/g,
             ""
         );
-        console.log(outlineResponse);
+        // console.log(outlineResponse);
         outlineObject = JSON.parse(outlineResponse ? outlineResponse : "[]");
     } catch (e) {
         outlineObject = [];
