@@ -2,8 +2,8 @@
 import { JSONFilePreset } from "lowdb/node";
 import { Descendant } from "slate";
 
-const main_db_file = "db.json";
-const backup_db_file = "db_backup.json";
+const main_db_file = "article.json";
+const backup_db_file = "article_backup.json";
 type Article = {
     content: Descendant[];
 };

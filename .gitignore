@@ -37,5 +37,7 @@ next-env.d.ts
 todo.todo
 db.json
 data/*
+!data/.gitkeep
 documents/*
+!documents/.gitkeep
 
