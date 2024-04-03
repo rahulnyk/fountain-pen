@@ -27,8 +27,11 @@ export const ContentSuggestion = ({
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
     const [content, setContent] = useState<ChatCompletion.Choice[]>([]);
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
+    const [contenthReferenceHeading, setContentReferenceHeading] = useState<
+        string | undefined
+    >();
 
-    const getOutline = useCallback(async () => {
+    const getContentSuggestions = useCallback(async () => {
         const contentSuggestions = await generateContent({
             title,
             titleNotes,
@@ -41,8 +44,9 @@ export const ContentSuggestion = ({
 
     const refresh = async () => {
         setIsWaiting(true);
-        const contentSuggestions = await getOutline();
+        const contentSuggestions = await getContentSuggestions();
         setContent(contentSuggestions);
+        setContentReferenceHeading(heading);
         console.log("From Content Suggestion Component", contentSuggestions);
         setIsWaiting(false);
         setRefreshVisible(false);
@@ -68,7 +72,12 @@ export const ContentSuggestion = ({
             )}
         >
             <div className="flex justify-between space-x-5 p-4">
-                <div className={clsx("w-5/6")}>OUTLINE</div>
+                <div className={clsx("w-5/6")}>
+                    CONTENT SUGGESTIONS
+                    {contenthReferenceHeading
+                        ? " | ".concat(contenthReferenceHeading)
+                        : ""}
+                </div>
                 {!isWaiting && refreshVisible && (
                     <IoMdRefreshCircle
                         className="size-6 text-gray-600 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-600"

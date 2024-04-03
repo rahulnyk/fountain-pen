@@ -3,7 +3,7 @@ import { dropDownOptions } from "./assistant_button/assistant_menu_items";
 import { useContext, useEffect, useState } from "react";
 import { Headings } from "../main_editor/types";
 import { Node } from "slate";
-import { Excerpts } from "./excerpts/excerpts";
+import { Excerpts } from "./excerpts";
 import { Outline } from "./outline/outline";
 import { ContentSuggestion } from "./content_suggestion";
 import { NotesContext } from ".";
