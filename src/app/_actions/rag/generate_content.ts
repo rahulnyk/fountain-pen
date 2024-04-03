@@ -34,7 +34,7 @@ export async function generateContent({
         "notes: Notes about the current section.",
         "initial_content: Inital content of the current section.",
         "Generate content for the current section, incorporating the provided information.",
-        " Do not add conclusions at the end of your respoonse",
+        "Do not add conclusions at the end of your respoonse",
         "If initial_content for the current section is provided, use it as a starting point for suggesting the final content.",
     ].join("\n");
 
