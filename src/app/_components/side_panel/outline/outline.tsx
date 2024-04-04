@@ -54,6 +54,12 @@ export const Outline = ({
         console.log("editor changed");
     }, [title, titleNotes]);
 
+    const removeItem = (index: number) => {
+        const newOutline = outline;
+        newOutline?.splice(index, 1);
+        setOutline(newOutline);
+    };
+
     return (
         <div
             className={clsx(
@@ -73,7 +79,7 @@ export const Outline = ({
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5">
                 Results are based only on the Title, and the Title Notes. <br />
                 For better results, write more about the article in the Title
                 Notes.
@@ -86,6 +92,8 @@ export const Outline = ({
                         outline.map((item, index) => (
                             <OutlineCard
                                 item={item}
+                                index={index}
+                                removeItem={removeItem}
                                 key={`${item.level}${index}`}
                             />
                         ))}

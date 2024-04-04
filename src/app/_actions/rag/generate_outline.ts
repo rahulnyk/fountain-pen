@@ -10,6 +10,31 @@ export type outlineResponse = {
     description: string;
 };
 
+const dummy_data: outlineResponse[] = [
+    {
+        level: "heading",
+        text: "Dummy Heading 1",
+        description: "this is a dummy heading for dev",
+    },
+    {
+        level: "subheading",
+        text: "Dummy Sub-Heading 1",
+        description: "this is a dummy subheading for test",
+    },
+    {
+        level: "heading",
+        text: "Dummy Heading 2",
+        description: "this is a dummy heading 2 for dev",
+    },
+    {
+        level: "subheading",
+        text: "Dummy Sub-Heading 2",
+        description: "this is a dummy heading 2 for dev",
+    },
+];
+
+const env = "dev";
+
 export async function generateOutline({
     title,
     notes,
@@ -19,6 +44,9 @@ export async function generateOutline({
     notes?: string;
     outline?: string[];
 }) {
+    if (env === "dev") {
+        return dummy_data;
+    }
     const system_prompt = [
         "Develop an outline for an article discussing the topic give by the user.",
         "Incorporate the rough notes (if provided by the user) into your outline.",
