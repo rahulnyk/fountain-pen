@@ -11,7 +11,7 @@ export const Logo = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex space-x-3 text-black dark:text-zinc-400 align-middle p-1",
+                "flex space-x-3 text-black dark:text-zinc-300 align-middle p-1",
                 className
             )}
         >
