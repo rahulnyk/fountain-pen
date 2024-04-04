@@ -5,7 +5,7 @@ import { ToolButton } from "./tool_button";
 import { embeddDocuments } from "@/app/_actions/vector_store";
 import { LoadingSpinner } from "../loading_spinner";
 
-export const AddDocumentsButton: React.FC = () => {
+export const AddDocumentsButton = ({ className }: { className?: string }) => {
     const [isPending, setIsPending] = useState(false);
 
     const handleOnClick = async () => {

@@ -64,7 +64,7 @@ export const AssistantButton: React.FC = ({
                 type="button"
                 onClick={handleClick}
             >
-                IA Assistant
+                AI Assistant
             </button>
 
             <div
