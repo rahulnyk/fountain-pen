@@ -122,6 +122,7 @@ const Notes = ({
                                     "delay-300 transition"
                                 )}
                                 rows={lines}
+                                onBlur={handleInputChange}
                             />
                         </div>
                     </div>

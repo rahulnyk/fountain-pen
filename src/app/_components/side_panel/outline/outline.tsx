@@ -79,7 +79,7 @@ export const Outline = ({
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5">
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
                 Results are based only on the Title, and the Title Notes. <br />
                 For better results, write more about the article in the Title
                 Notes.

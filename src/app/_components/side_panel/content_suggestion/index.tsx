@@ -86,7 +86,9 @@ export const ContentSuggestion = ({
                 )}
             </div>
             <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
-                Content Suggestions
+                Content suggestions are based on the current heading and the
+                current section notes. <br /> For better results, add more info
+                to the current section notes.
             </div>
             {isWaiting ? (
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />

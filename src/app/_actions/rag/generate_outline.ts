@@ -44,9 +44,9 @@ export async function generateOutline({
     notes?: string;
     outline?: string[];
 }) {
-    if (env === "dev") {
-        return dummy_data;
-    }
+    // if (env === "dev") {
+    //     return dummy_data;
+    // }
     const system_prompt = [
         "Develop an outline for an article discussing the topic give by the user.",
         "Incorporate the rough notes (if provided by the user) into your outline.",
