@@ -96,13 +96,19 @@ export const Excerpts = ({
                                     tabIndex == index && "tab-active"
                                 )}
                                 onClick={() => setTabIndex(index)}
+                                key={`exerpts-tab-${index}`}
                             >
                                 {index + 1}
                             </a>
                         ))}
                     </div>
                     <div className="space-y-2 my-0 mx-0 w-auto">
-                        <ExcerptCard document={documents?.[tabIndex]} />
+                        {documents[tabIndex] && (
+                            <ExcerptCard
+                                document={documents[tabIndex]}
+                                key={`excerpt-${tabIndex}`}
+                            />
+                        )}
                     </div>
                 </>
             )}

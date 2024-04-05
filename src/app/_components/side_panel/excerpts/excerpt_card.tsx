@@ -41,7 +41,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                 )}
             >
                 <span className="font-bold">
-                    {filenameFromPath(document.metadata?.source)}
+                    {filenameFromPath(document?.metadata?.source)}
                 </span>
                 <br />
                 Page: {document?.metadata?.loc?.pageNumber}
@@ -55,7 +55,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     textStyle
                 )}
                 dangerouslySetInnerHTML={{
-                    __html: sanitizePDFText(document.pageContent),
+                    __html: sanitizePDFText(document?.pageContent),
                 }}
             />
             <hr className="dark:border-zinc-700 my-4" />
