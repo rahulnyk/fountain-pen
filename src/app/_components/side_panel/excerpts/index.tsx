@@ -28,6 +28,7 @@ export const Excerpts = ({
         string | undefined
     >();
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
+    const [tabIndex, setTabIndex] = useState<number>(0);
 
     const searchDocs = async () => {
         setIsWaiting(true);
@@ -56,7 +57,7 @@ export const Excerpts = ({
             className={clsx(
                 "flex-col rounded shadow",
                 "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
-                "bg-gray-50 dark:bg-zinc-600/20",
+                "bg-gray-50 dark:bg-zinc-600/20 pb-5",
                 className
             )}
         >
@@ -78,14 +79,32 @@ export const Excerpts = ({
                 Results are based on Title, Current Section, and respective
                 Notes
             </div>
+
             {isWaiting ? (
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
             ) : (
-                <div className="space-y-2 my-0 mx-0 w-auto">
-                    {documents.map((doc) => (
-                        <ExcerptCard document={doc} />
-                    ))}
-                </div>
+                <>
+                    <div
+                        role="tablist"
+                        className="tabs tabs-bordered pb-4 px-4"
+                    >
+                        {documents.map((_, index) => (
+                            <a
+                                role="tab"
+                                className={clsx(
+                                    "tab",
+                                    tabIndex == index && "tab-active"
+                                )}
+                                onClick={() => setTabIndex(index)}
+                            >
+                                {index + 1}
+                            </a>
+                        ))}
+                    </div>
+                    <div className="space-y-2 my-0 mx-0 w-auto">
+                        <ExcerptCard document={documents?.[tabIndex]} />
+                    </div>
+                </>
             )}
         </div>
     );

@@ -44,9 +44,9 @@ export const ContentSuggestion = ({
 
     const refresh = async () => {
         setIsWaiting(true);
+        setContentReferenceHeading(heading);
         const contentSuggestions = await getContentSuggestions();
         setContent(contentSuggestions);
-        setContentReferenceHeading(heading);
         console.log("From Content Suggestion Component", contentSuggestions);
         setIsWaiting(false);
         setRefreshVisible(false);

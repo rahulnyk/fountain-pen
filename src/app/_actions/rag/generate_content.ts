@@ -26,21 +26,22 @@ export async function generateContent({
     const docsString = docs.map((doc) => doc.pageContent);
 
     const system_prompt = [
-        "You are an expert at writing professional content. Your job is to assist the user write a part (section) of an article",
-        "The user will provide you with the following inputs (delimited by ###) pertaining to the current section of the article:",
-        "title: Title of the article.",
-        "docs: Semantic search documents related to the current section of the article.",
-        "heading: Heading of the current section of the article.",
+        "You are an expert at writing professional content. Your job is to assist the user write a small section of an article",
+        "The user will provide you with the following inputs (delimited by ###):",
+        // "title: Title of the article.",
+        "docs: Semantic search documents pertinent to the current section.",
+        "heading: Heading of the current section.",
         "notes: Notes about the current section.",
-        "initial_content: Inital content of the current section.",
-        "Generate content for the current section, incorporating the provided information.",
+        "initial_content: Inital content for the current section. May be blank.",
+        "Write the section content incorporating the provided information.",
+        "Remember to write ONLY about the current section (Do now write complete article)",
         "Do not add conclusions at the end of your respoonse",
-        "If initial_content for the current section is provided, use it as a starting point for suggesting the final content.",
+        "Answer Succinctly as far as possible.",
     ].join("\n");
 
     const user_prompt: string = [
         "Help me write this section of the article",
-        `title: ### ${title} ###`,
+        // `title: ### ${title} ###`,
         `docs: ### ${docsString} ###`,
         `heading: ### ${heading} ###`,
         `notes: ### ${notes} ###`,
