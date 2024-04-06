@@ -4,7 +4,7 @@ import { textSplitter } from "./text_splitter";
 import { Document } from "langchain/document";
 /* Load all PDFs within the specified directory */
 
-const DATA_DIRECTORY = "documents/";
+const DATA_DIRECTORY = "public/documents/";
 const splitter = textSplitter();
 
 export async function dirLoadAndSplit(): Promise<

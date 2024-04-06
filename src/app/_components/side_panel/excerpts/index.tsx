@@ -32,7 +32,8 @@ export const Excerpts = ({
 
     const searchDocs = async () => {
         setIsWaiting(true);
-        const content = [title, titleNotes, heading, text, notes].join("\n");
+        setDocuments([]);
+        const content = [heading, text, notes].join("\n");
         const results = await semanticSearch({ text: content, numResults: 10 });
         setDocuments(results);
         setSearchReferenceHeading(heading);

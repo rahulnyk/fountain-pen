@@ -23,29 +23,26 @@ export async function generateContent({
 }): Promise<ChatCompletion.Choice[]> {
     const searchString = `${title} \n ${titleNotes} \n ${heading} \n ${notes} \n ${text}`;
     const docs = await semanticSearch({ text: searchString, numResults: 3 });
-    const docsString = docs.map((doc) => doc.pageContent);
+    const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
 
     const system_prompt = [
         "You are an expert at writing professional content. Your job is to assist the user write a small section of an article",
-        "The user will provide you with the following inputs (delimited by ###):",
-        // "title: Title of the article.",
+        "The user will provide you with the following inputs:",
+        "section heading: Heading of the current section.",
+        "notes: Very important. Notes about the current section.",
+        "initial content: Inital content for the current section.",
         "docs: Semantic search documents pertinent to the current section.",
-        "heading: Heading of the current section.",
-        "notes: Notes about the current section.",
-        "initial_content: Inital content for the current section. May be blank.",
         "Write the section content incorporating the provided information.",
-        "Remember to write ONLY about the current section (Do now write complete article)",
-        "Do not add conclusions at the end of your respoonse",
-        "Answer Succinctly as far as possible.",
+        "Do not add conclusions or summary at the end of your respoonse",
+        "Write a detailed response.",
     ].join("\n");
 
     const user_prompt: string = [
         "Help me write this section of the article",
-        // `title: ### ${title} ###`,
-        `docs: ### ${docsString} ###`,
-        `heading: ### ${heading} ###`,
-        `notes: ### ${notes} ###`,
-        `initial_content: ### ${text} ###`,
+        `section heading -> \n ${heading} \n -------`,
+        `notes -> \n ${notes} \n -------`,
+        `initial content -> \n ${text} \n -------`,
+        `docs -> \n ${docsString} \n -------`,
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
