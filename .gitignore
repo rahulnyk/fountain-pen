@@ -38,6 +38,7 @@ todo.todo
 db.json
 data/*
 !data/.gitkeep
+data/embeddings/*
 !data/embeddings/.gitkeep
 documents/*
 !documents/.gitkeep
