@@ -21,7 +21,8 @@ export async function generateContent({
     notes: string;
     text: string;
 }): Promise<ChatCompletion.Choice[]> {
-    const searchString = `${title} \n ${titleNotes} \n ${heading} \n ${notes} \n ${text}`;
+    // const searchString = `${title} \n ${titleNotes} \n ${heading} \n ${notes} \n ${text}`;
+    const searchString = `${heading} \n ${notes} \n ${text}`;
     const docs = await semanticSearch({ text: searchString, numResults: 3 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
 

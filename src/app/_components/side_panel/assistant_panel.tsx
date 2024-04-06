@@ -5,7 +5,8 @@ import { Headings } from "../main_editor/types";
 import { Node } from "slate";
 import { Excerpts } from "./excerpts";
 import { Outline } from "./outline/outline";
-import { ContentSuggestion } from "./content_suggestion";
+import { ContentSuggestions } from "./content_suggestions";
+import { WritingPointsSuggestions } from "./writing_points_suggestions";
 import { NotesContext } from ".";
 
 export const AssistantPanel = ({
@@ -73,7 +74,7 @@ export const AssistantPanel = ({
                 />
             )) ||
                 (action === "suggestFromResearch" && (
-                    <ContentSuggestion
+                    <ContentSuggestions
                         title={title}
                         heading={heading}
                         notes={notes}
@@ -85,6 +86,18 @@ export const AssistantPanel = ({
                     <div>
                         {/* Generate Headings: {[title, heading, notes].join("\n")} */}
                         <Outline
+                            title={title}
+                            heading={heading}
+                            notes={notes}
+                            text={text}
+                            titleNotes={titleNotes}
+                        />
+                    </div>
+                )) ||
+                (action === "suggestWritingPoints" && (
+                    <div>
+                        {/* Generate Headings: {[title, heading, notes].join("\n")} */}
+                        <WritingPointsSuggestions
                             title={title}
                             heading={heading}
                             notes={notes}

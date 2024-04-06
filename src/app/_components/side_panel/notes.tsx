@@ -63,21 +63,21 @@ const Notes = ({
         if (currentSectionHeading) {
             let txt = (currentSectionHeading as CustomBaseElement)?.notes?.[0];
             setText(txt);
-            setNotesHeading(chop(editor.getElementText(currentSectionHeading)));
+            setNotesHeading(editor.getElementText(currentSectionHeading) || "");
         } else {
             setText("Notes ... ");
             setNotesHeading("");
         }
     }, [currentSectionHeading]);
 
-    const chop = (txt: string | undefined): string => {
-        if (!txt) {
-            return "";
-        }
-        const chop_length = 50;
-        let dots = txt.length > chop_length ? "..." : "";
-        return txt.slice(0, 50) + dots;
-    };
+    // const chop = (txt: string | undefined): string => {
+    //     if (!txt) {
+    //         return "";
+    //     }
+    //     const chop_length = 50;
+    //     let dots = txt.length > chop_length ? "..." : "";
+    //     return txt.slice(0, 50) + dots;
+    // };
     const foldNotes = () => {
         setCollapsed(!collapsed);
     };

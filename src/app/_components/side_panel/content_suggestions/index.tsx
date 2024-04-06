@@ -9,7 +9,7 @@ import { ChatCompletion } from "openai/resources/index.mjs";
 import { generateContent } from "@/app/_actions/rag/generate_content";
 import { ContentCard } from "./content_card";
 
-export const ContentSuggestion = ({
+export const ContentSuggestions = ({
     className,
     title,
     titleNotes,

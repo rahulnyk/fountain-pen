@@ -4,6 +4,11 @@ import { useState } from "react";
 import { AssistantMenuItem, dropDownOptions } from "./assistant_menu_items";
 import { AssistantPanel } from "../assistant_panel";
 import { MdCancel } from "react-icons/md";
+import { FaHeading } from "react-icons/fa";
+import { ImParagraphLeft } from "react-icons/im";
+import { MdOutlineDocumentScanner } from "react-icons/md";
+import { PiListBulletsBold } from "react-icons/pi";
+
 const dropDownOptions: dropDownOptions[] = [
     {
         action: "generateHeadings",
@@ -11,6 +16,7 @@ const dropDownOptions: dropDownOptions[] = [
         id: "dropdown_1",
         description:
             "Headings for the article based on the title and the title notes",
+        icon: <FaHeading className="mr-1 size-5 py-1" />,
     },
     {
         action: "suggestFromResearch",
@@ -18,6 +24,7 @@ const dropDownOptions: dropDownOptions[] = [
         id: "dropdown_2",
         description:
             "Content based on the current section heading, text and notes",
+        icon: <ImParagraphLeft className="mr-1 size-5 py-1" />,
     },
     {
         action: "semanticSearch",
@@ -25,6 +32,15 @@ const dropDownOptions: dropDownOptions[] = [
         id: "dropdown_3",
         description:
             "Search for exerpts in my documents relevant to current section",
+        icon: <MdOutlineDocumentScanner className="mr-1 size-6 py-1" />,
+    },
+    {
+        action: "suggestWritingPoints",
+        display: "Suggest Writing Points",
+        id: "dropdown_4",
+        description:
+            "Use my research to suggest writing points for the current section",
+        icon: <PiListBulletsBold className="mr-1 size-6 py-1" />,
     },
 ];
 
