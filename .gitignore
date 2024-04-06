@@ -39,9 +39,9 @@ db.json
 data/*
 !data/.gitkeep
 data/embeddings/*
-!data/embeddings/.gitkeep
 documents/*
 !documents/.gitkeep
+!data/embeddings/.gitkeep
 
 public/*
 !public/documents/.gitkeep
