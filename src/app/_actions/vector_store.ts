@@ -6,7 +6,7 @@ import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { Document } from "langchain/document";
 
-const DIRECTORY = "data/embeddings/";
+const DIRECTORY = "data/";
 
 const embeddingFunction = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
