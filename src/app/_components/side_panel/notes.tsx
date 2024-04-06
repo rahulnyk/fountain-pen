@@ -102,7 +102,7 @@ const Notes = ({
                             onClick={foldNotes}
                         >
                             <div className="flex items-center">
-                                NOTES | {notesHeading}
+                                NOTES {notesHeading && ` | ${notesHeading}`}
                             </div>
                             {collapsed ? (
                                 <MdExpandMore className="size-6" />
