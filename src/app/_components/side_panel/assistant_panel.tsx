@@ -8,6 +8,7 @@ import { Outline } from "./outline/outline";
 import { ContentSuggestions } from "./content_suggestions";
 import { WritingPointsSuggestions } from "./writing_points_suggestions";
 import { NotesContext } from ".";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
 export const AssistantPanel = ({
     dropDownItem,
@@ -15,27 +16,22 @@ export const AssistantPanel = ({
     dropDownItem: dropDownOptions;
 }) => {
     const editor = useSlate();
-
+    const setContext = useSectionContext((state) => state.setContext);
     const notesUpdates = useContext(NotesContext);
-    const [heading, setHeading] = useState<string>("");
-    const [text, setText] = useState<string>("");
-    const [notes, setNotes] = useState<string>("");
-    const [title, setTitle] = useState<string>("");
-    const [titleNotes, setTitleNotes] = useState<string>("");
     const [action, setAction] = useState<string | undefined>();
     const getSectionText = () => {
         const sectionText = editor.getCurrentSectionText();
-        return sectionText ? sectionText : "";
+        return sectionText ? sectionText : null;
     };
 
     const getSectionNotes = () => {
         const sectionNotes = editor.getCurrentSectionNotes();
-        return sectionNotes ? sectionNotes : "";
+        return sectionNotes ? sectionNotes : null;
     };
 
     const getSectionHeading = () => {
         const currentSectionHeading = editor.getPreviousSibling([...Headings]);
-        let text = "";
+        let text = null;
         if (currentSectionHeading) {
             const [n, _] = currentSectionHeading;
             text = Node.string(n);
@@ -45,66 +41,41 @@ export const AssistantPanel = ({
 
     const getTitle = () => {
         const title = editor.getTitleString();
-        return title ? title : "";
+        return title ? title : null;
     };
 
     const getTitleNotes = () => {
         const titleNotes = editor.getTitleNotes();
-        return titleNotes ? titleNotes : "";
+        return titleNotes ? titleNotes : null;
+    };
+
+    const updateContext = () => {
+        setContext({
+            title: getTitle(),
+            titleNotes: getTitleNotes(),
+            heading: getSectionHeading(),
+            notes: getSectionNotes(),
+            text: getSectionText(),
+        });
     };
 
     useEffect(() => {
         setAction(dropDownItem.action);
-        setHeading(getSectionHeading());
-        setText(getSectionText());
-        setNotes(getSectionNotes());
-        setTitle(getTitle());
-        setTitleNotes(getTitleNotes());
+        updateContext();
     }, [dropDownItem.action, editor.selection, notesUpdates]);
+    // notesUpdates context can be shifted to the zuatand store. For now I am using a react context provider.
+
+    useEffect(() => {
+        updateContext();
+    }, []);
 
     return (
         <div className="text-gray-800 dark:text-gray-200">
-            {(action === "semanticSearch" && (
-                <Excerpts
-                    title={title}
-                    heading={heading}
-                    notes={notes}
-                    text={text}
-                    titleNotes={titleNotes}
-                />
-            )) ||
-                (action === "suggestFromResearch" && (
-                    <ContentSuggestions
-                        title={title}
-                        heading={heading}
-                        notes={notes}
-                        text={text}
-                        titleNotes={titleNotes}
-                    />
-                )) ||
-                (action === "generateHeadings" && (
-                    <div>
-                        {/* Generate Headings: {[title, heading, notes].join("\n")} */}
-                        <Outline
-                            title={title}
-                            heading={heading}
-                            notes={notes}
-                            text={text}
-                            titleNotes={titleNotes}
-                        />
-                    </div>
-                )) ||
+            {(action === "semanticSearch" && <Excerpts />) ||
+                (action === "suggestFromResearch" && <ContentSuggestions />) ||
+                (action === "generateHeadings" && <Outline />) ||
                 (action === "suggestWritingPoints" && (
-                    <div>
-                        {/* Generate Headings: {[title, heading, notes].join("\n")} */}
-                        <WritingPointsSuggestions
-                            title={title}
-                            heading={heading}
-                            notes={notes}
-                            text={text}
-                            titleNotes={titleNotes}
-                        />
-                    </div>
+                    <WritingPointsSuggestions />
                 ))}
         </div>
     );

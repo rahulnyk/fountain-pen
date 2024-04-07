@@ -9,23 +9,7 @@ import {
     Headings,
     editorModes,
 } from "../types";
-import { ElementType } from "react";
 import { BaseSelection, Node } from "slate";
-
-function* getPreviousSiblings(
-    editor: Editor,
-    path: Path
-): Generator<NodeEntry | undefined> {
-    if (path.length === 0) {
-        return undefined;
-    }
-    const parentPath = path.slice(0, path.length - 1);
-    const currentSiblingNumber = path[path.length - 1];
-    for (let i = currentSiblingNumber; i > 0; i--) {
-        const entry = Editor.node(editor, parentPath.concat(i));
-        yield entry;
-    }
-}
 
 export const withCustomBehavior = (editor: Editor) => {
     /**
@@ -147,7 +131,7 @@ export const withCustomBehavior = (editor: Editor) => {
 
     editor.getCurrentSectionText = (at?: BaseSelection) => {
         const selection = at ? at : editor.selection;
-        if (editor.isSelectionExpanded()) {
+        if (!selection || editor.isSelectionExpanded()) {
             return undefined;
         }
         const sectionHeadingEntry = editor.getPreviousSibling(
@@ -164,7 +148,7 @@ export const withCustomBehavior = (editor: Editor) => {
         let text: string = "";
         let nextPath = basePath.concat(i);
         while (Editor.hasPath(editor, nextPath)) {
-            let [n, p] = Editor.node(editor, nextPath);
+            let [n] = Editor.node(editor, nextPath);
             if (Headings.some((t) => (n as CustomBaseElement).type === t)) {
                 break;
             }
@@ -176,7 +160,7 @@ export const withCustomBehavior = (editor: Editor) => {
 
     editor.getCurrentSectionNotes = (at?: BaseSelection) => {
         const selection = at ? at : editor.selection;
-        if (editor.isSelectionExpanded()) {
+        if (!selection || editor.isSelectionExpanded()) {
             return undefined;
         }
         const sectionHeadingEntry = editor.getPreviousSibling(
@@ -186,7 +170,7 @@ export const withCustomBehavior = (editor: Editor) => {
         if (!sectionHeadingEntry) {
             return undefined;
         }
-        const [hn, hp] = sectionHeadingEntry;
+        const [hn] = sectionHeadingEntry;
         const notes = (hn as HeadingElement).notes.join("\n");
         return notes;
     };

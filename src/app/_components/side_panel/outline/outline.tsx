@@ -10,29 +10,20 @@ import {
 import { OutlineCard } from "./outline_card";
 import { generalTextStyle } from "../../main_editor/typography";
 import { useCallback } from "react";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
-export const Outline = ({
-    className,
-    title,
-    titleNotes,
-}: {
-    className?: string;
-    title: string;
-    heading: string;
-    notes: string;
-    titleNotes: string;
-    text: string;
-}) => {
+export const Outline = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [outline, setOutline] = useState<outlineResponse[] | undefined>(
-        undefined
-    );
+    const [outline, setOutline] = useState<outlineResponse[] | null>(null);
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
 
+    const title = useSectionContext((state) => state.title);
+    const titleNotes = useSectionContext((state) => state.titleNotes);
+
     const getOutline = useCallback(async () => {
-        const outlineRes: outlineResponse[] = await generateOutline({
+        const outlineRes = await generateOutline({
             title,
-            notes: titleNotes,
+            titleNotes,
         });
         return outlineRes;
     }, [title, titleNotes]);
