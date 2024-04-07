@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Headings } from "../main_editor/types";
 import { Node } from "slate";
 import { Excerpts } from "./excerpts";
-import { Outline } from "./outline/outline";
+import { Outline } from "./outline";
 import { ContentSuggestions } from "./content_suggestions";
 import { WritingPointsSuggestions } from "./writing_points_suggestions";
 import { NotesContext } from ".";

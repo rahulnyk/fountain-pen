@@ -71,9 +71,8 @@ export const Excerpts = ({ className }: { className?: string }) => {
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
-                Results are based on Title, Current Section, and respective
-                Notes
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
+                Results are based current section heading and notes
             </div>
 
             {isWaiting ? (

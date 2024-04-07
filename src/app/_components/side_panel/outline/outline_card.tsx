@@ -30,7 +30,7 @@ export const OutlineCard = ({
         const element: CustomElement = {
             type,
             children: [{ text: item.text }],
-            notes: [item.description],
+            notes: [item.description ? item.description : ""],
         };
         const elementEntry = editor.getCurrentElement();
         if (elementEntry) {

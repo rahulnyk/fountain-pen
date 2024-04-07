@@ -82,7 +82,7 @@ export const WritingPointsSuggestions = ({
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
                 Writing points suggested based the current section notes and
                 document search. <br /> For better results, add more info to the
                 current section notes.
