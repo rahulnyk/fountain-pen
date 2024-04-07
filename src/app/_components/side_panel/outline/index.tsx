@@ -10,29 +10,20 @@ import {
 import { OutlineCard } from "./outline_card";
 import { generalTextStyle } from "../../main_editor/typography";
 import { useCallback } from "react";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
-export const Outline = ({
-    className,
-    title,
-    titleNotes,
-}: {
-    className?: string;
-    title: string;
-    heading: string;
-    notes: string;
-    titleNotes: string;
-    text: string;
-}) => {
+export const Outline = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [outline, setOutline] = useState<outlineResponse[] | undefined>(
-        undefined
-    );
+    const [outline, setOutline] = useState<outlineResponse[] | null>(null);
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
 
+    const title = useSectionContext((state) => state.title);
+    const titleNotes = useSectionContext((state) => state.titleNotes);
+
     const getOutline = useCallback(async () => {
-        const outlineRes: outlineResponse[] = await generateOutline({
+        const outlineRes = await generateOutline({
             title,
-            notes: titleNotes,
+            titleNotes,
         });
         return outlineRes;
     }, [title, titleNotes]);
@@ -63,7 +54,7 @@ export const Outline = ({
     return (
         <div
             className={clsx(
-                "flex-col rounded shadow",
+                "flex-col rounded shadow pb-10",
                 "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
                 "bg-gray-50 dark:bg-zinc-600/20",
                 className,
@@ -80,9 +71,9 @@ export const Outline = ({
                 )}
             </div>
             <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
-                Results are based only on the Title, and the Title Notes. <br />
-                For better results, write more about the article in the Title
-                Notes.
+                Results are based only on the title, and the title notes. <br />
+                For better results, write more about the article in the title
+                notes.
             </div>
             {isWaiting ? (
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />

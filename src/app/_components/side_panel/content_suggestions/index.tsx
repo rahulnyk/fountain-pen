@@ -8,39 +8,28 @@ import { useCallback } from "react";
 import { ChatCompletion } from "openai/resources/index.mjs";
 import { generateContent } from "@/app/_actions/rag/generate_content";
 import { ContentCard } from "./content_card";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
-export const ContentSuggestions = ({
-    className,
-    title,
-    titleNotes,
-    heading,
-    notes,
-    text,
-}: {
-    className?: string;
-    title: string;
-    titleNotes: string;
-    heading: string;
-    notes: string;
-    text: string;
-}) => {
+export const ContentSuggestions = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [content, setContent] = useState<ChatCompletion.Choice[]>([]);
+    const [content, setContent] = useState<ChatCompletion.Choice | null>(null);
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
     const [contenthReferenceHeading, setContentReferenceHeading] = useState<
-        string | undefined
+        string | null
     >();
+
+    const heading = useSectionContext((state) => state.heading);
+    const notes = useSectionContext((state) => state.notes);
+    const text = useSectionContext((state) => state.text);
 
     const getContentSuggestions = useCallback(async () => {
         const contentSuggestions = await generateContent({
-            title,
-            titleNotes,
             heading,
             notes,
             text,
         });
         return contentSuggestions;
-    }, [title, titleNotes, heading, notes, text]);
+    }, [heading, notes, text]);
 
     const refresh = async () => {
         setIsWaiting(true);
@@ -59,12 +48,12 @@ export const ContentSuggestions = ({
     useEffect(() => {
         setRefreshVisible(true);
         // console.log("editor changed");
-    }, [title, titleNotes, heading, notes, text]);
+    }, [heading, notes, text]);
 
     return (
         <div
             className={clsx(
-                "flex-col rounded shadow",
+                "flex-col rounded shadow pb-10",
                 "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
                 "bg-gray-50 dark:bg-zinc-600/20",
                 className,
@@ -85,7 +74,7 @@ export const ContentSuggestions = ({
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
                 Content suggestions are based on the current heading and the
                 current section notes. <br /> For better results, add more info
                 to the current section notes.
@@ -94,9 +83,7 @@ export const ContentSuggestions = ({
                 <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
             ) : (
                 <div className="space-y-2 my-0 mx-0 w-auto">
-                    {content.map((choice) => (
-                        <ContentCard choice={choice} />
-                    ))}
+                    {content && <ContentCard choice={content} />}
                 </div>
             )}
         </div>

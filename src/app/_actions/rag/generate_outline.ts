@@ -7,49 +7,48 @@ const openai = new OpenAI(); // Initialize OpenAI with your API key
 export type outlineResponse = {
     level: string;
     text: string;
-    description: string;
+    description?: string;
 };
 
-const dummy_data: outlineResponse[] = [
-    {
-        level: "heading",
-        text: "Dummy Heading 1",
-        description: "this is a dummy heading for dev",
-    },
-    {
-        level: "subheading",
-        text: "Dummy Sub-Heading 1",
-        description: "this is a dummy subheading for test",
-    },
-    {
-        level: "heading",
-        text: "Dummy Heading 2",
-        description: "this is a dummy heading 2 for dev",
-    },
-    {
-        level: "subheading",
-        text: "Dummy Sub-Heading 2",
-        description: "this is a dummy heading 2 for dev",
-    },
-];
+// const dummy_data: outlineResponse[] = [
+//     {
+//         level: "heading",
+//         text: "Dummy Heading 1",
+//         description: "this is a dummy heading for dev",
+//     },
+//     {
+//         level: "subheading",
+//         text: "Dummy Sub-Heading 1",
+//         description: "this is a dummy subheading for test",
+//     },
+//     {
+//         level: "heading",
+//         text: "Dummy Heading 2",
+//         description: "this is a dummy heading 2 for dev",
+//     },
+//     {
+//         level: "subheading",
+//         text: "Dummy Sub-Heading 2",
+//         description: "this is a dummy heading 2 for dev",
+//     },
+// ];
 
-const env = "dev";
+// const env = "dev";
 
 export async function generateOutline({
     title,
-    notes,
-    outline,
+    titleNotes,
 }: {
-    title: string;
-    notes?: string;
-    outline?: string[];
-}) {
-    // if (env === "dev") {
-    //     return dummy_data;
-    // }
+    title: string | null;
+    titleNotes?: string | null;
+}): Promise<outlineResponse[] | null> {
+    console.log("from generateOutline", title, titleNotes);
+    if (!title && !titleNotes) {
+        return null;
+    }
     const system_prompt = [
         "Develop an outline for an article discussing the topic give by the user.",
-        "Incorporate the rough notes (if provided by the user) into your outline.",
+        "Incorporate the rough titleNotes (if provided by the user) into your outline.",
         "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
         "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
         "Aim to create headings that cover distinct aspects of the topic that do not overlap with each other",
@@ -64,12 +63,12 @@ export async function generateOutline({
 
     const user_prompt: string = [
         `Topic: ${title}`,
-        notes ? `Rough Notes: ${notes}.` : "",
-        "Also suggest more ideas and headings (apart from my notes) that I can write about",
+        titleNotes ? `Rough titleNotes: ${titleNotes}.` : "",
+        "Also suggest more ideas and headings (apart from my titleNotes) that I can write about",
     ].join("\n");
 
     // console.log(system_prompt, user_prompt);
-    let outlineObject: outlineResponse[] = [];
+    let outlineObject = null;
     try {
         const completion = await openai.chat.completions.create({
             messages: [
@@ -87,7 +86,7 @@ export async function generateOutline({
         // console.log(outlineResponse);
         outlineObject = JSON.parse(outlineResponse ? outlineResponse : "[]");
     } catch (e) {
-        outlineObject = [];
+        outlineObject = null;
         console.log(e);
     } finally {
         return outlineObject;

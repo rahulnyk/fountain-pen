@@ -11,10 +11,13 @@ export async function generateWritingPoints({
     notes,
     text,
 }: {
-    heading: string;
-    notes: string;
-    text: string;
-}): Promise<wpSuggestion[]> {
+    heading?: string | null;
+    notes?: string | null;
+    text?: string | null;
+}): Promise<wpSuggestion[] | null> {
+    if (!heading && !notes && !text) {
+        return null;
+    }
     const searchString = `${heading} \n ${notes} \n ${text}`;
     const docs = await semanticSearch({ text: searchString, numResults: 3 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
@@ -38,7 +41,7 @@ export async function generateWritingPoints({
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
-    let wpResponse: wpSuggestion[] = [];
+    let wpResponse = null;
     try {
         const completion = await openai.chat.completions.create({
             messages: [
@@ -57,7 +60,7 @@ export async function generateWritingPoints({
         wpResponse = JSON.parse(writingPoints ? writingPoints : "[]");
     } catch (e) {
         console.log(e);
-        wpResponse = [];
+        wpResponse = null;
     } finally {
         return wpResponse;
     }

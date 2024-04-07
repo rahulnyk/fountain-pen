@@ -9,19 +9,17 @@ import { semanticSearch } from "../vector_store";
 import { ChatCompletion } from "openai/resources/index.mjs";
 
 export async function generateContent({
-    title,
-    titleNotes,
     heading,
     notes,
     text,
 }: {
-    title: string;
-    titleNotes: string;
-    heading: string;
-    notes: string;
-    text: string;
-}): Promise<ChatCompletion.Choice[]> {
-    // const searchString = `${title} \n ${titleNotes} \n ${heading} \n ${notes} \n ${text}`;
+    heading: string | null;
+    notes: string | null;
+    text: string | null;
+}): Promise<ChatCompletion.Choice | null> {
+    if (!heading && !notes && !text) {
+        return null;
+    }
     const searchString = `${heading} \n ${notes} \n ${text}`;
     const docs = await semanticSearch({ text: searchString, numResults: 3 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
@@ -47,7 +45,7 @@ export async function generateContent({
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
-    let contentResponse: ChatCompletion.Choice[] = [];
+    let contentResponse = null;
     try {
         const completion = await openai.chat.completions.create({
             messages: [
@@ -58,11 +56,11 @@ export async function generateContent({
             n: 1,
         });
 
-        contentResponse = completion.choices;
+        contentResponse = completion.choices[0];
         // console.log(contentResponse);
     } catch (e) {
         console.log(e);
-        contentResponse = [];
+        contentResponse = null;
     } finally {
         return contentResponse;
     }

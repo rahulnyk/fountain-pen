@@ -6,37 +6,32 @@ import { Document } from "langchain/document";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../../loading_spinner";
 import { IoMdRefreshCircle } from "react-icons/io";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
-export const Excerpts = ({
-    className,
-    title,
-    heading,
-    notes,
-    titleNotes,
-    text,
-}: {
-    className?: string;
-    title: string;
-    heading: string;
-    notes: string;
-    titleNotes: string;
-    text: string;
-}) => {
-    const [documents, setDocuments] = useState<Document[]>([]);
+export const Excerpts = ({ className }: { className?: string }) => {
+    const [documents, setDocuments] = useState<Document[] | null>(null);
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
     const [searchReferenceHeading, setSearchReferenceHeading] = useState<
-        string | undefined
+        string | null
     >();
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
     const [tabIndex, setTabIndex] = useState<number>(0);
 
+    const heading = useSectionContext((state) => state.heading);
+    const notes = useSectionContext((state) => state.notes);
+    const text = useSectionContext((state) => state.text);
+
     const searchDocs = async () => {
         setIsWaiting(true);
-        setDocuments([]);
-        const content = [heading, text, notes].join("\n");
-        const results = await semanticSearch({ text: content, numResults: 10 });
-        setDocuments(results);
-        setSearchReferenceHeading(heading);
+        if (heading || notes || text) {
+            const content = [heading, notes, text].join("\n");
+            const results = await semanticSearch({
+                text: content,
+                numResults: 10,
+            });
+            setDocuments(results);
+            setSearchReferenceHeading(heading);
+        }
         setRefreshVisible(false);
         setIsWaiting(false);
     };
@@ -76,9 +71,8 @@ export const Excerpts = ({
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
-                Results are based on Title, Current Section, and respective
-                Notes
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
+                Results are based current section heading and notes
             </div>
 
             {isWaiting ? (
@@ -87,24 +81,25 @@ export const Excerpts = ({
                 <>
                     <div
                         role="tablist"
-                        className="tabs tabs-bordered pb-4 px-4"
+                        className="tabs tabs-bordered pb-4 px-4 w-full overflow-auto"
                     >
-                        {documents.map((_, index) => (
-                            <a
-                                role="tab"
-                                className={clsx(
-                                    "tab",
-                                    tabIndex == index && "tab-active"
-                                )}
-                                onClick={() => setTabIndex(index)}
-                                key={`exerpts-tab-${index}`}
-                            >
-                                {index + 1}
-                            </a>
-                        ))}
+                        {documents &&
+                            documents.map((_, index) => (
+                                <a
+                                    role="tab"
+                                    className={clsx(
+                                        "tab",
+                                        tabIndex == index && "tab-active"
+                                    )}
+                                    onClick={() => setTabIndex(index)}
+                                    key={`exerpts-tab-${index}`}
+                                >
+                                    {index + 1}
+                                </a>
+                            ))}
                     </div>
                     <div className="space-y-2 my-0 mx-0 w-auto">
-                        {documents[tabIndex] && (
+                        {documents && documents[tabIndex] && (
                             <ExcerptCard
                                 document={documents[tabIndex]}
                                 key={`excerpt-${tabIndex}`}

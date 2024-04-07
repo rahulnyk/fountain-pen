@@ -8,26 +8,23 @@ import { useCallback } from "react";
 import { WritingPointsSuggestionsCard } from "./writing_points_suggestions_card";
 import { generateWritingPoints } from "@/app/_actions/rag/generate_writing_points";
 import { wpSuggestion } from "./writing_points_suggestions_card";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
 export const WritingPointsSuggestions = ({
     className,
-    heading,
-    notes,
-    text,
 }: {
     className?: string;
-    title: string;
-    titleNotes: string;
-    heading: string;
-    notes: string;
-    text: string;
 }) => {
+    const heading = useSectionContext((state) => state.heading);
+    const notes = useSectionContext((state) => state.notes);
+    const text = useSectionContext((state) => state.text);
+
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [writingPoints, setWritingPoints] = useState<wpSuggestion[]>([]);
+    const [writingPoints, setWritingPoints] = useState<wpSuggestion[] | null>(
+        null
+    );
     const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
-    const [referenceHeading, setReferenceHeading] = useState<
-        string | undefined
-    >();
+    const [referenceHeading, setReferenceHeading] = useState<string | null>();
 
     const getWritingPointsSuggestions = useCallback(async () => {
         const writingPointsSuggestions = await generateWritingPoints({
@@ -41,12 +38,15 @@ export const WritingPointsSuggestions = ({
     const refresh = async () => {
         setIsWaiting(true);
         setReferenceHeading(heading);
-        const writingPointsSuggestions = await getWritingPointsSuggestions();
-        setWritingPoints(writingPointsSuggestions);
-        console.log(
-            "From Writing Points Suggestion Component",
-            writingPointsSuggestions
-        );
+        if (heading && text && notes) {
+            const writingPointsSuggestions =
+                await getWritingPointsSuggestions();
+            setWritingPoints(writingPointsSuggestions);
+            console.log(
+                "From Writing Points Suggestion Component",
+                writingPointsSuggestions
+            );
+        }
         setIsWaiting(false);
         setRefreshVisible(false);
     };
@@ -82,7 +82,7 @@ export const WritingPointsSuggestions = ({
                     />
                 )}
             </div>
-            <div className="px-4 text-xs font-bold text-blue-500 dark:text-blue-400 mb-4">
+            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
                 Writing points suggested based the current section notes and
                 document search. <br /> For better results, add more info to the
                 current section notes.
