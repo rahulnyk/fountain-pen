@@ -20,7 +20,7 @@ export default function RootLayout({
             <body
                 className={clsx(
                     "min-h-screen",
-                    "dark:bg-zinc-900",
+                    "bg-white dark:bg-zinc-950",
                     lato.className
                 )}
             >

@@ -16,10 +16,9 @@ const Notes = ({
 }) => {
     const editor = useSlate();
 
-    const [lines, setLines] = useState<number>(2);
+    const [lines, setLines] = useState<number>(10);
     const [text, setText] = useState<string>("");
     const [notesHeading, setNotesHeading] = useState<string>("");
-    const [collapsed, setCollapsed] = useState(false);
     const [currentSectionHeading, setCurrentSectionHeading] = useState<
         CustomBaseElement | undefined
     >();
@@ -70,63 +69,46 @@ const Notes = ({
         }
     }, [currentSectionHeading]);
 
-    // const chop = (txt: string | undefined): string => {
-    //     if (!txt) {
-    //         return "";
-    //     }
-    //     const chop_length = 50;
-    //     let dots = txt.length > chop_length ? "..." : "";
-    //     return txt.slice(0, 50) + dots;
-    // };
-    const foldNotes = () => {
-        setCollapsed(!collapsed);
-    };
-
     return (
         <>
             {currentSectionHeading && (
-                <div
-                    className={clsx(
-                        "flex-col rounded shadow",
-                        "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
-                        "bg-gray-50 dark:bg-zinc-600/20",
-                        className
-                    )}
-                >
-                    <div>
-                        <div
-                            className={clsx(
-                                "flex h-auto w-full text-left items-center justify-between p-4",
-                                generalTextStyle
-                            )}
-                            onClick={foldNotes}
-                        >
-                            <div className="flex items-center">
-                                NOTES {notesHeading && ` | ${notesHeading}`}
-                            </div>
-                            {collapsed ? (
-                                <MdExpandMore className="size-6" />
-                            ) : (
-                                <MdExpandLess className="size-6" />
-                            )}
+                <>
+                    {/* <div
+                        className={clsx(
+                            "flex h-auto w-full text-left items-center justify-between p-0",
+                            // generalTextStyle,
+                            "text-zinc-600"
+                        )}
+                        // onClick={foldNotes}
+                    >
+                        <div className="flex items-center">
+                            NOTES {notesHeading && ` - ${notesHeading}`}
                         </div>
-
-                        <div className={clsx("mt-0 px-2 pt-0")}>
-                            <textarea
-                                value={text}
-                                onChange={handleInputChange}
-                                className={clsx(
-                                    "w-full p-0 px-1 bg-transparent focus:outline-none",
-                                    notesStyle,
-                                    collapsed && "hidden",
-                                    "delay-300 transition"
-                                )}
-                                rows={lines}
-                                onBlur={handleInputChange}
-                            />
+                    </div> */}
+                    <div
+                        className={clsx(
+                            "flex-col rounded-lg",
+                            "bg-white dark:bg-zinc-900/90 pb-3 pt-5",
+                            className
+                        )}
+                    >
+                        <div>
+                            <div className={clsx("mt-0 px-2 pt-0")}>
+                                <textarea
+                                    value={text}
+                                    onChange={handleInputChange}
+                                    className={clsx(
+                                        "w-full p-0 px-1 focus:outline-none text-sm",
+                                        "bg-transparent",
+                                        notesStyle
+                                    )}
+                                    rows={lines}
+                                    onBlur={handleInputChange}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                </>
             )}
         </>
     );

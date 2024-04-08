@@ -42,10 +42,6 @@ export const WritingPointsSuggestions = ({
             const writingPointsSuggestions =
                 await getWritingPointsSuggestions();
             setWritingPoints(writingPointsSuggestions);
-            console.log(
-                "From Writing Points Suggestion Component",
-                writingPointsSuggestions
-            );
         }
         setIsWaiting(false);
         setRefreshVisible(false);
@@ -57,7 +53,6 @@ export const WritingPointsSuggestions = ({
 
     useEffect(() => {
         setRefreshVisible(true);
-        // console.log("editor changed");
     }, [heading, notes, text]);
 
     return (

@@ -51,9 +51,8 @@ export const Excerpts = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col rounded shadow",
-                "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
-                "bg-gray-50 dark:bg-zinc-600/20 pb-5",
+                "flex-col rounded-lg",
+                "bg-white dark:bg-zinc-900/90 pb-3 pt-5",
                 className
             )}
         >
