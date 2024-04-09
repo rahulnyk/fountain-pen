@@ -1,14 +1,13 @@
 "use client";
 import Notes from "./notes";
 import clsx from "clsx";
-import { AssistantButton } from "./assistant_button/assistant_button";
 import { createContext, useState } from "react";
 import { Path } from "slate";
 // import { BsArrowsExpandVertical } from "react-icons/bs";
 import { RiExpandLeftRightLine } from "react-icons/ri";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
-import { AssistantPanel2 } from "./assistant_panel_2";
+import { AssistantPanel } from "./assistant_panel";
 
 export type notesContextType = {
     notes: string[];
@@ -44,7 +43,7 @@ const SidePanel = ({ className }: { className?: string }) => {
             className={clsx(
                 "fixed z-50 pt-0 pl-3 pr-3 right-0 top-0",
                 "bg-opacity-80 mx-0 py-1 px-2 backdrop-filter backdrop-blur-lg",
-                "bg-zinc-300/30 dark:bg-zinc-700/40",
+                "bg-zinc-300/30 dark:bg-zinc-900/80",
                 // "border-[1px] border-zinc-100 dark:border-zinc-900",
                 panelWidth,
                 "transition-[width] duration-300"
@@ -54,9 +53,9 @@ const SidePanel = ({ className }: { className?: string }) => {
                 className={clsx(
                     "flex items-center justify-around rounded-full size-8",
                     "bg-opacity-80 mx-0 py-1 px-2 backdrop-filter backdrop-blur-xl",
-                    "bg-zinc-300/30 dark:bg-zinc-700/40",
+                    "bg-zinc-300/30 dark:bg-zinc-900/80",
                     // "bg-blue-500 dark:bg-blue-600 ",
-                    "absolute -left-10 bottom-10"
+                    "absolute -left-10 top-16"
                     // "border-[1px] dark:border-zinc-700 border-white"
                 )}
                 onClick={toggleWidth}
@@ -74,9 +73,14 @@ const SidePanel = ({ className }: { className?: string }) => {
                         className
                     )}
                 >
+                    {/* Notes */}
                     <Notes setContext={setContext} />
+
                     {/* <AssistantButton /> */}
-                    <AssistantPanel2 />
+                    <div className="divider px-0 py-4 text-zinc-500 dark:text-zinc-600 text-xs font-bold">
+                        AI ASSISTANT
+                    </div>
+                    <AssistantPanel />
                 </div>
             </NotesContext.Provider>
         </div>

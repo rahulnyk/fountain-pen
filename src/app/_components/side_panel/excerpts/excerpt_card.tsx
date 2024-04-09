@@ -10,7 +10,8 @@ export const textStyle = Lato({
 
 export const ExcerptCard = ({ document }: { document: Document }) => {
     const filenameFromPath = (path: string) => {
-        const filename = path.split("/").pop();
+        let filename = path.split("/").pop();
+        filename = chopString(filename);
         return filename;
     };
 
@@ -27,28 +28,40 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
         return text;
     };
 
+    function chopString(str: string | undefined): string | undefined {
+        if (!str) {
+            return;
+        }
+        const maxLen = 40;
+        if (str.length <= maxLen) {
+            return str;
+        } else {
+            return str.substring(0, maxLen) + "...";
+        }
+    }
+
     return (
         <div
             className={clsx(
-                "flex-col flex-grow rounded p-4 mx-0 text-pretty ",
+                "flex-col flex-grow rounded p-4 mx-0 text-pretty w-full",
                 "text-zinc-500 dark:text-zinc-400"
             )}
         >
-            <p
+            {/* metadata */}
+            <div
                 className={clsx(
-                    "my-1 -mx-1 text-ellipsis overflow-hidden text-xs p-2 rounded",
+                    "flex-col space-y-1 justify-evenly text-sm px-2 py-2 rounded mb-4",
                     "bg-blue-100 dark:bg-blue-900/30"
                 )}
             >
-                <span className="font-bold">
+                <div className="font-bold">
                     {filenameFromPath(document?.metadata?.source)}
-                </span>
-                <br />
-                Page: {document?.metadata?.loc?.pageNumber}
-            </p>
-            {/* <p className="whitespace-pre-wrap break-normal font-light">
-                {sanitizePDFText(document.pageContent)}
-            </p> */}
+                </div>
+                <div className="">
+                    Page: {document?.metadata?.loc?.pageNumber}
+                </div>
+            </div>
+
             <div
                 className={clsx(
                     "whitespace-pre-wrap break-normal font-light text-sm",

@@ -9,9 +9,6 @@ export const textStyle = Lato({
 });
 
 export const ContentCard = ({ choice }: { choice: ChatCompletion.Choice }) => {
-    useEffect(() => {
-        console.log("From Content Card: ", choice);
-    });
     return (
         <div
             className={clsx(

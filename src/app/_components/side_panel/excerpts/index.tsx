@@ -36,9 +36,9 @@ export const Excerpts = ({ className }: { className?: string }) => {
         setIsWaiting(false);
     };
 
-    useEffect(() => {
-        searchDocs();
-    }, []);
+    // useEffect(() => {
+    //     searchDocs();
+    // }, []);
 
     const refresh = () => {
         searchDocs();
@@ -51,8 +51,8 @@ export const Excerpts = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col rounded-lg",
-                "bg-white dark:bg-zinc-900/90 pb-3 pt-5",
+                "flex-col rounded-lg w-full",
+                // "bg-white dark:bg-zinc-900/90 pb-3 pt-5 px-2",
                 className
             )}
         >
@@ -80,7 +80,7 @@ export const Excerpts = ({ className }: { className?: string }) => {
                 <>
                     <div
                         role="tablist"
-                        className="tabs tabs-bordered pb-4 px-4 w-full overflow-auto"
+                        className="tabs tabs-bordered pb-4 px-4 tabs-sm w-full overflow-y-auto"
                     >
                         {documents &&
                             documents.map((_, index) => (
@@ -97,7 +97,7 @@ export const Excerpts = ({ className }: { className?: string }) => {
                                 </a>
                             ))}
                     </div>
-                    <div className="space-y-2 my-0 mx-0 w-auto">
+                    <div className="space-y-2 my-0 mx-0 w-full">
                         {documents && documents[tabIndex] && (
                             <ExcerptCard
                                 document={documents[tabIndex]}

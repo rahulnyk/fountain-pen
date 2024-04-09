@@ -41,9 +41,9 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
         setRefreshVisible(false);
     };
 
-    useEffect(() => {
-        refresh();
-    }, []);
+    // useEffect(() => {
+    //     refresh();
+    // }, []);
 
     useEffect(() => {
         setRefreshVisible(true);
@@ -53,9 +53,9 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex-col rounded shadow pb-10",
-                "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
-                "bg-gray-50 dark:bg-zinc-600/20",
+                // "flex-col rounded shadow pb-10",
+                // "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
+                // "bg-gray-50 dark:bg-zinc-600/20",
                 className,
                 generalTextStyle
             )}
