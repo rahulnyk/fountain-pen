@@ -23,7 +23,7 @@ export const WritingPointsSuggestionsCard = ({
     return (
         <div
             className={clsx(
-                "flex-col flex-grow rounded p-4 py-2 mx-0 text-pretty ",
+                "flex-col flex-grow rounded py-2 mx-0 text-pretty ",
                 "text-zinc-500 dark:text-zinc-400"
             )}
         >

@@ -9,17 +9,17 @@ import { wpSuggestion } from "@/app/_components/side_panel/writing_points_sugges
 export async function generateWritingPoints({
     heading,
     notes,
-    text,
-}: {
+}: // text,
+{
     heading?: string | null;
     notes?: string | null;
-    text?: string | null;
+    // text?: string | null;
 }): Promise<wpSuggestion[] | null> {
-    if (!heading && !notes && !text) {
+    if (!heading && !notes) {
         return null;
     }
-    const searchString = `${heading} \n ${notes} \n ${text}`;
-    const docs = await semanticSearch({ text: searchString, numResults: 3 });
+    const searchString = `${heading} \n ${notes}`;
+    const docs = await semanticSearch({ text: searchString, numResults: 5 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
 
     const system_prompt = [
@@ -37,7 +37,7 @@ export async function generateWritingPoints({
         `docs -> \n ${docsString} \n -------`,
         `heading -> \n ${heading} \n -------`,
         `notes -> \n ${notes} \n -------`,
-        `content -> \n ${text} \n -------`,
+        // `content -> \n ${text} \n -------`,
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
