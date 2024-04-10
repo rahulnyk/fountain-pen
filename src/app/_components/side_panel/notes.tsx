@@ -10,7 +10,7 @@ const Notes = ({ className }: { className?: string }) => {
     const editor = useSlate();
     const setNotesString = useSectionContext((state) => state.setNotesString);
 
-    const [lines, setLines] = useState<number>(10);
+    // const [lines, setLines] = useState<number>(10);
     const [text, setText] = useState<string>("");
     const [currentSectionHeading, setCurrentSectionHeading] = useState<
         CustomBaseElement | undefined
@@ -19,9 +19,9 @@ const Notes = ({ className }: { className?: string }) => {
         Path | undefined
     >();
 
-    useEffect(() => {
-        setLines(text ? Math.min((text.match(/\n/g) || "").length + 1, 15) : 2);
-    }, [text]);
+    // useEffect(() => {
+    //     setLines(text ? Math.min((text.match(/\n/g) || "").length + 1, 15) : 2);
+    // }, [text]);
 
     const handleInputChange = (event: any) => {
         setText(event.target.value);
@@ -79,7 +79,7 @@ const Notes = ({ className }: { className?: string }) => {
                                         "bg-transparent",
                                         notesStyle
                                     )}
-                                    rows={lines}
+                                    rows={10}
                                     onBlur={handleInputChange}
                                 />
                             </div>

@@ -36,7 +36,7 @@ const SidePanel = ({ className }: { className?: string }) => {
                 className={clsx(
                     "flex items-center justify-around rounded-full size-8",
                     "bg-opacity-80 mx-0 py-1 px-2 backdrop-filter backdrop-blur-xl",
-                    "bg-zinc-300/30 dark:bg-zinc-900/80",
+                    "bg-zinc-200 dark:bg-zinc-800",
                     // "bg-blue-500 dark:bg-blue-600 ",
                     "absolute -left-10 top-16"
                     // "border-[1px] dark:border-zinc-700 border-white"

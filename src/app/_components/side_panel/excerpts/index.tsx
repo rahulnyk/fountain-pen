@@ -4,10 +4,9 @@ import clsx from "clsx";
 import { ExcerptCard } from "./excerpt_card";
 import { Document } from "langchain/document";
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "../../loading_spinner";
-import { IoMdRefreshCircle } from "react-icons/io";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
+import { AddDocumentsButton } from "./add_documents_button";
 
 export const Excerpts = ({ className }: { className?: string }) => {
     const [documents, setDocuments] = useState<Document[] | null>(null);
@@ -79,6 +78,9 @@ export const Excerpts = ({ className }: { className?: string }) => {
                             key={`excerpt-${tabIndex}`}
                         />
                     )}
+                </div>
+                <div className="flex w-full justify-end">
+                    <AddDocumentsButton />
                 </div>
             </>
         </TabPanel>

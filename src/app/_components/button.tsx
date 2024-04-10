@@ -2,10 +2,15 @@ import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
-    active: boolean;
+    active?: boolean;
 }
 
-export function Button({ children, className, active, ...rest }: ButtonProps) {
+export function Button({
+    children,
+    className,
+    active = true,
+    ...rest
+}: ButtonProps) {
     return (
         <button
             {...rest}

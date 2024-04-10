@@ -1,9 +1,6 @@
 "use client";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "../../loading_spinner";
-import { IoMdRefreshCircle } from "react-icons/io";
-import { generalTextStyle } from "../../main_editor/typography";
 import { useCallback } from "react";
 import { WritingPointsSuggestionsCard } from "./writing_points_suggestions_card";
 import { generateWritingPoints } from "@/app/_actions/rag/generate_writing_points";

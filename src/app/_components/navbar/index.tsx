@@ -1,4 +1,4 @@
-import { AddDocumentsButton } from "./add_documents_button";
+// import { AddDocumentsButton } from "./add_documents_button";
 import { Logo } from "./logo";
 import { ToolBar } from "./toolbar";
 import clsx from "clsx";
@@ -24,7 +24,7 @@ export const NavBar: React.FC = () => {
 
                 {/* Right Div*/}
                 <div className="flex space-x-5 text-zinc-900 mx-5">
-                    <AddDocumentsButton />
+                    {/* <AddDocumentsButton /> */}
                 </div>
             </div>
         </nav>
