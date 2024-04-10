@@ -10,30 +10,31 @@ export type outlineResponse = {
     description?: string;
 };
 
-// const dummy_data: outlineResponse[] = [
-//     {
-//         level: "heading",
-//         text: "Dummy Heading 1",
-//         description: "this is a dummy heading for dev",
-//     },
-//     {
-//         level: "subheading",
-//         text: "Dummy Sub-Heading 1",
-//         description: "this is a dummy subheading for test",
-//     },
-//     {
-//         level: "heading",
-//         text: "Dummy Heading 2",
-//         description: "this is a dummy heading 2 for dev",
-//     },
-//     {
-//         level: "subheading",
-//         text: "Dummy Sub-Heading 2",
-//         description: "this is a dummy heading 2 for dev",
-//     },
-// ];
+const dummy_data: outlineResponse[] = [
+    {
+        level: "heading",
+        text: "Dummy Heading 1",
+        description:
+            "tLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    },
+    {
+        level: "subheading",
+        text: "Dummy Sub-Heading 1",
+        description: "this is a dummy subheading for test",
+    },
+    {
+        level: "heading",
+        text: "Dummy Heading 2",
+        description: "this is a dummy heading 2 for dev",
+    },
+    {
+        level: "subheading",
+        text: "Dummy Sub-Heading 2",
+        description: "this is a dummy heading 2 for dev",
+    },
+];
 
-// const env = "dev";
+const env = "dev";
 
 export async function generateOutline({
     title,
@@ -46,6 +47,11 @@ export async function generateOutline({
     if (!title && !titleNotes) {
         return null;
     }
+    console.log("generate outline called");
+
+    // if (env === "dev") {
+    //     return dummy_data;
+    // }
     const system_prompt = [
         "Develop an outline for an article discussing the topic give by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",

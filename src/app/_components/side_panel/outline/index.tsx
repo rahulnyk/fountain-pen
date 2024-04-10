@@ -1,21 +1,23 @@
 "use client";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "../../loading_spinner";
-import { IoMdRefreshCircle } from "react-icons/io";
+import { useSlate } from "slate-react";
 import {
     generateOutline,
     outlineResponse,
 } from "@/app/_actions/rag/generate_outline";
 import { OutlineCard } from "./outline_card";
-import { generalTextStyle } from "../../main_editor/typography";
 import { useCallback } from "react";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
+import { TabPanel } from "../tab_panel";
+import { CustomElement } from "../../main_editor/types";
+import { Transforms, Path } from "slate";
+import { RiArrowLeftDoubleFill } from "react-icons/ri";
 
 export const Outline = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [outline, setOutline] = useState<outlineResponse[] | null>(null);
-    const [refreshVisible, setRefreshVisible] = useState<boolean>(false);
+    const [outline, setOutline] = useState<outlineResponse[]>([]);
+    const [active, setActive] = useState<boolean>(false);
 
     const title = useSectionContext((state) => state.title);
     const titleNotes = useSectionContext((state) => state.titleNotes);
@@ -25,7 +27,7 @@ export const Outline = ({ className }: { className?: string }) => {
             title,
             titleNotes,
         });
-        return outlineRes;
+        return outlineRes ? outlineRes : [];
     }, [title, titleNotes]);
 
     const refresh = async () => {
@@ -33,63 +35,85 @@ export const Outline = ({ className }: { className?: string }) => {
         const outlineRes = await getOutline();
         setOutline(outlineRes);
         setIsWaiting(false);
-        setRefreshVisible(false);
+        setActive(false);
     };
 
     useEffect(() => {
-        refresh();
-    }, []);
-
-    useEffect(() => {
-        setRefreshVisible(true);
-        console.log("editor changed");
+        setActive(true);
     }, [title, titleNotes]);
 
-    const removeItem = (index: number) => {
-        const newOutline = outline;
-        newOutline?.splice(index, 1);
-        setOutline(newOutline);
+    //// Copy heading to the editor.
+    const editor = useSlate();
+
+    const handleInsert = (item: outlineResponse, index: number) => {
+        if (!editor.selection) {
+            return;
+        }
+        insertInToEditor(item);
+        removeFromOutline(index);
     };
 
+    const removeFromOutline = (index: number) => {
+        let newOutline = outline;
+        newOutline?.splice(index, 1);
+        setOutline(newOutline);
+        console.log(outline);
+    };
+
+    const insertInToEditor = (item: outlineResponse) => {
+        const element: CustomElement = {
+            type: "heading1",
+            children: [{ text: item.text }],
+            notes: [item.description ? item.description : ""],
+        };
+        const elementEntry = editor.getCurrentElement();
+        if (elementEntry) {
+            const [, currentElementPath] = elementEntry;
+            Transforms.insertNodes(editor, element, {
+                at: Path.next(currentElementPath),
+            });
+            editor.select(Path.next(currentElementPath));
+        }
+    };
+    /////
+
     return (
-        <div
-            className={clsx(
-                "flex-col rounded shadow pb-10",
-                "rounded-l-sm border-l border-blue-500 dark:border-blue-500",
-                "bg-gray-50 dark:bg-zinc-600/20",
-                className,
-                generalTextStyle
-            )}
+        <TabPanel
+            isWaiting={isWaiting}
+            className={className}
+            subheadingText="Outline based on the Title and the Title Notes. For better results add more info to the Title Notes"
+            onClick={refresh}
+            buttonActive={active}
+            key="tab_panel_outline"
+            buttonText="GENERATE OUTLINE"
         >
-            <div className="flex justify-between space-x-5 p-4">
-                <div className={clsx("w-5/6")}>OUTLINE</div>
-                {!isWaiting && refreshVisible && (
-                    <IoMdRefreshCircle
-                        className="size-6 text-gray-600 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-600"
-                        onClick={refresh}
-                    />
-                )}
-            </div>
-            <div className="px-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-5 pb-5">
-                Results are based only on the title, and the title notes. <br />
-                For better results, write more about the article in the title
-                notes.
-            </div>
-            {isWaiting ? (
-                <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
-            ) : (
-                <div className="space-y-2 my-0 mx-0 w-auto">
-                    {outline &&
-                        outline.map((item, index) => (
-                            <OutlineCard
-                                item={item}
-                                index={index}
-                                removeItem={removeItem}
-                                key={`${item.level}${index}`}
+            <div className="space-y-2">
+                {outline.map((item, index) => (
+                    <div className="flex flex-grow space-x-2 items-center">
+                        {/* Icon */}
+                        <div
+                            className={clsx(
+                                "flex items-center justify-center rounded-full size-6 p-1",
+                                "focus:ring-4 focus:outline-none",
+                                "dark:bg-blue-700 dark:hover:bg-blue-900 dark:text-gray-200",
+                                "bg-blue-400 hover:bg-blue-600 text-white"
+                            )}
+                        >
+                            <RiArrowLeftDoubleFill
+                                onClick={() => handleInsert(item, index)}
+                                className="size-4"
                             />
-                        ))}
-                </div>
-            )}
-        </div>
+                        </div>
+                        {/* Card */}
+                        <OutlineCard
+                            item={item}
+                            index={index}
+                            // removeFromOutline={removeFromOutline}
+                            key={`${item.level}${index}`}
+                        />
+                    </div>
+                ))}
+            </div>
+        </TabPanel>
     );
 };

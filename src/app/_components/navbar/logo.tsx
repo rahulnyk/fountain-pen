@@ -11,14 +11,14 @@ export const Logo = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "flex space-x-3 text-black dark:text-zinc-300 align-middle p-1",
+                "flex space-x-1 text-black dark:text-zinc-300 align-middle p-1",
                 className
             )}
         >
             <PiPenNibStraightBold
                 className={clsx(
-                    "size-10 rounded-full p-2",
-                    "bg-white dark:bg-zinc-800"
+                    "size-10 rounded-full p-2"
+                    // "bg-white dark:bg-zinc-800"
                 )}
             ></PiPenNibStraightBold>
             <span>

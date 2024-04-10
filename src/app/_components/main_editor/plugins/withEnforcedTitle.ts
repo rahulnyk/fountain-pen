@@ -53,9 +53,9 @@ export const withEnforcedTitle = (editor: Editor) => {
                         type = "title";
                         enforceType(type);
                         break;
-                    case 1:
-                        type = "paragraph";
-                        enforceType(type);
+                    // case 1:
+                    //     type = "paragraph";
+                    //     enforceType(type);
                     default:
                         break;
                 }

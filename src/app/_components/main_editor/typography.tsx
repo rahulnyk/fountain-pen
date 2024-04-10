@@ -11,6 +11,11 @@ export const generalText = Lato({
     weight: "400",
 });
 
+export const generalTextLight = Lato({
+    subsets: ["latin"],
+    weight: "300",
+});
+
 export const p = Spectral({
     weight: "400",
     subsets: ["latin"],
@@ -48,4 +53,5 @@ export const paragraphStyle = `${p.className} text-lg my-1 dark:text-zinc-200`,
     heading1Style = `${h1.className} text-4xl my-2 pt-6 pb-0 dark:text-zinc-200`,
     titleStyle = `${title.className} text-6xl my-2 pt-6 pb-0 dark:text-zinc-200`,
     notesStyle = `${notes.className} text-sm text-zinc-500 dark:text-zinc-400`,
-    generalTextStyle = `${generalText.className} text-md text-zinc-700 dark:text-zinc-200`;
+    generalTextStyle = `${generalText.className} text-normal text-zinc-900 dark:text-zinc-100 text-ellipsis`,
+    generalTextStyleLight = `${generalTextLight.className} text-sm text-zinc-800 dark:text-zinc-200 text-ellipsis`;
