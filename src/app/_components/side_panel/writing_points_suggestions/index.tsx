@@ -27,7 +27,7 @@ export const WritingPointsSuggestions = ({
         const writingPointsSuggestions = await generateWritingPoints({
             heading,
             notes,
-            text,
+            // text,
         });
         return writingPointsSuggestions;
     }, [heading, notes, text]);
@@ -45,13 +45,13 @@ export const WritingPointsSuggestions = ({
 
     useEffect(() => {
         setActive(true);
-    }, [heading, notes, text]);
+    }, [heading, notes]);
 
     return (
         <TabPanel
             isWaiting={isWaiting}
             className={className}
-            subheadingText="Writing points are generated based on your documents and current section content and notes."
+            subheadingText="Writing points are generated based on your documents and current section title and notes."
             onClick={refresh}
             buttonActive={active}
             key="tab_panel_wp"
