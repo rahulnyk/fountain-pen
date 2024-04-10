@@ -47,10 +47,11 @@ export async function generateOutline({
     if (!title && !titleNotes) {
         return null;
     }
+    console.log("generate outline called");
 
-    if (env === "dev") {
-        return dummy_data;
-    }
+    // if (env === "dev") {
+    //     return dummy_data;
+    // }
     const system_prompt = [
         "Develop an outline for an article discussing the topic give by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",

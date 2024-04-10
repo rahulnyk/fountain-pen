@@ -1,24 +1,17 @@
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useSlate } from "slate-react";
-import { Transforms, Node, Path } from "slate";
+import { Transforms, Path } from "slate";
 import { CustomBaseElement, Headings } from "../main_editor/types";
-import { notesStyle, generalTextStyle } from "../main_editor/typography";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { notesContextType } from ".";
+import { notesStyle } from "../main_editor/typography";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 import clsx from "clsx";
 
-const Notes = ({
-    className,
-    setContext,
-}: {
-    className?: string;
-    setContext: (value: notesContextType | undefined) => void;
-}) => {
+const Notes = ({ className }: { className?: string }) => {
     const editor = useSlate();
+    const setNotesString = useSectionContext((state) => state.setNotesString);
 
     const [lines, setLines] = useState<number>(10);
     const [text, setText] = useState<string>("");
-    const [notesHeading, setNotesHeading] = useState<string>("");
     const [currentSectionHeading, setCurrentSectionHeading] = useState<
         CustomBaseElement | undefined
     >();
@@ -37,10 +30,7 @@ const Notes = ({
             { notes: [text] },
             { at: currentSectionHeadingPath }
         );
-        // Setting the context when notes are updated.
-        // This is a hacky way to broadcast notes updates,
-        // because editor does not update the context by itself on notes updates.
-        setContext({ notes: [text], at: currentSectionHeadingPath });
+        setNotesString(text);
     };
 
     useEffect(() => {
@@ -62,10 +52,8 @@ const Notes = ({
         if (currentSectionHeading) {
             let txt = (currentSectionHeading as CustomBaseElement)?.notes?.[0];
             setText(txt);
-            setNotesHeading(editor.getElementText(currentSectionHeading) || "");
         } else {
             setText("Notes ... ");
-            setNotesHeading("");
         }
     }, [currentSectionHeading]);
 
@@ -73,18 +61,6 @@ const Notes = ({
         <>
             {currentSectionHeading && (
                 <>
-                    {/* <div
-                        className={clsx(
-                            "flex h-auto w-full text-left items-center justify-between p-0",
-                            // generalTextStyle,
-                            "text-zinc-600"
-                        )}
-                        // onClick={foldNotes}
-                    >
-                        <div className="flex items-center">
-                            NOTES {notesHeading && ` - ${notesHeading}`}
-                        </div>
-                    </div> */}
                     <div
                         className={clsx(
                             "flex-col rounded-lg",

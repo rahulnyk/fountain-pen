@@ -6,7 +6,6 @@ import { Excerpts } from "./excerpts";
 import { Outline } from "./outline";
 import { ContentSuggestions } from "./content_suggestions";
 import { WritingPointsSuggestions } from "./writing_points_suggestions";
-import { NotesContext } from ".";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { FaHeading } from "react-icons/fa";
 import { ImParagraphLeft } from "react-icons/im";
@@ -65,9 +64,14 @@ const tabOptions: tabOption[] = [
 export const AssistantPanel = () => {
     const editor = useSlate();
     const [tabIndex, setTabIndex] = useState<number>(1);
-    const setContext = useSectionContext((state) => state.setContext);
-    const notesUpdates = useContext(NotesContext);
-    const [action, setAction] = useState<string | undefined>();
+    //
+    const setTitle = useSectionContext((state) => state.setTitle);
+    const setTitleNotes = useSectionContext((state) => state.setTitleNotes);
+    const setHeading = useSectionContext((state) => state.setHeading);
+    const setNotes = useSectionContext((state) => state.setNotes);
+    const setText = useSectionContext((state) => state.setText);
+
+    const notesString = useSectionContext((state) => state.notesString);
     const getSectionText = () => {
         const sectionText = editor.getCurrentSectionText();
         return sectionText ? sectionText : null;
@@ -99,26 +103,17 @@ export const AssistantPanel = () => {
     };
 
     const updateContext = () => {
-        setContext({
-            title: getTitle(),
-            titleNotes: getTitleNotes(),
-            heading: getSectionHeading(),
-            notes: getSectionNotes(),
-            text: getSectionText(),
-        });
+        setTitle(getTitle());
+        setTitleNotes(getTitleNotes());
+        setHeading(getSectionHeading());
+        setNotes(getSectionNotes());
+        setText(getSectionText());
     };
 
     useEffect(() => {
         updateContext();
-    }, [editor.selection, notesUpdates]);
-    // notesUpdates context can be shifted to the zuatand store.
-    // For now I am using a react context provider.
-
-    useEffect(() => {
-        if (tabIndex) {
-            setAction(tabOptions[tabIndex].action);
-        }
-    }, [tabIndex]);
+        console.log("Assitant Panel Context Updated");
+    }, [editor.selection, notesString]);
 
     useEffect(() => {
         updateContext();

@@ -9,6 +9,7 @@ interface CustomComponentProps {
     children: ReactNode;
     subheadingText: string;
     onClick: MouseEventHandler;
+    buttonText: string;
     buttonActive: boolean;
     isWaiting: boolean;
     className?: string;
@@ -21,6 +22,7 @@ export const TabPanel: React.FC<CustomComponentProps> = ({
     subheadingText,
     onClick,
     buttonActive,
+    buttonText,
 }) => {
     return (
         <>
@@ -37,7 +39,7 @@ export const TabPanel: React.FC<CustomComponentProps> = ({
                     active={buttonActive}
                     className="text-xs font-normal"
                 >
-                    GENERATE OUTLINE
+                    {buttonText}
                 </Button>
 
                 <div className="text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-5 pb-5 pt-4 w-full">
