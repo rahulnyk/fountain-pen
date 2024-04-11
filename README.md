@@ -21,6 +21,6 @@ npm run dev
 
 Open http://localhost:3000/editor in your browser. This is what it should look like.
 
-![Interface Light]('./public/interface_dark.png)
+![Interface Light]('public/interface_dark.png')
 
-![Interface Dark]('./public/interface_dark.png)
+![Interface Dark]('public/interface_dark.png')
