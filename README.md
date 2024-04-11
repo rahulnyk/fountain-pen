@@ -21,6 +21,8 @@ npm run dev
 
 Open http://localhost:3000/editor in your browser. This is what it should look like.
 
-![Interface Light]('public/interface_dark.png')
-
-![Interface Dark]('public/interface_dark.png')
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./public/interface_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./public/interface_dark.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="./public/interface_dark.png">
+</picture>
