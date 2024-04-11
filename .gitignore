@@ -41,5 +41,3 @@ data/*
 documents/*
 !documents/.gitkeep
 
-public/*
-!public/documents/.gitkeep
