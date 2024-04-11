@@ -2,6 +2,23 @@ This is an editor that can help you write better, faster, using AI. The purpose 
 
 ## Getting Started
 
+### Step 1:
+
+Get an [OpenAI API key](https://openai.com).
+
+Once you have the API key:
+
+```bash
+## go to the repository foler.
+cd path/to/this_repo
+## copy .env.local.example to .env.local
+cp .env.local.example .env.local
+```
+
+Update the .env.local file with your OpenAI API key.
+
+### Step 2:
+
 Build and start:
 
 ```bash
@@ -19,7 +36,11 @@ npm i
 npm run dev
 ```
 
-Open http://localhost:3000/editor in your browser. This is what it should look like.
+### Step 3:
+
+Open http://localhost:3000/editor in your browser.
+
+The editor should look like this.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./public/interface_dark.png">
