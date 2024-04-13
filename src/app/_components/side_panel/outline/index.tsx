@@ -73,6 +73,7 @@ export const Outline = ({ className }: { className?: string }) => {
                 at: Path.next(currentElementPath),
             });
             editor.select(Path.next(currentElementPath));
+            Transforms.collapse(editor, { edge: "start" });
         }
     };
     /////

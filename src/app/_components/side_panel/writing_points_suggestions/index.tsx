@@ -34,11 +34,10 @@ export const WritingPointsSuggestions = ({
 
     const refresh = async () => {
         setIsWaiting(true);
-        if (heading && text && notes) {
-            const writingPointsSuggestions =
-                await getWritingPointsSuggestions();
-            setWritingPoints(writingPointsSuggestions);
-        }
+
+        const writingPointsSuggestions = await getWritingPointsSuggestions();
+        setWritingPoints(writingPointsSuggestions);
+
         setIsWaiting(false);
         setActive(false);
     };

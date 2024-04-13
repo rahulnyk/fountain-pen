@@ -1,7 +1,7 @@
 "use server";
 
 import { OpenAI } from "openai"; // Import OpenAI library
-
+import { semanticSearch } from "../vector_store";
 const openai = new OpenAI(); // Initialize OpenAI with your API key
 
 export type outlineResponse = {
@@ -43,7 +43,6 @@ export async function generateOutline({
     title: string | null;
     titleNotes?: string | null;
 }): Promise<outlineResponse[] | null> {
-    console.log("from generateOutline", title, titleNotes);
     if (!title && !titleNotes) {
         return null;
     }
@@ -52,6 +51,9 @@ export async function generateOutline({
     // if (env === "dev") {
     //     return dummy_data;
     // }
+    const searchString = `${title} \n ${titleNotes}`;
+    const docs = await semanticSearch({ text: searchString, numResults: 5 });
+    const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
     const system_prompt = [
         "Develop an outline for an article discussing the topic give by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",
@@ -63,17 +65,18 @@ export async function generateOutline({
         `[{
             level: string ("heading"),
             text: string,
-            description: what to write about in this heading or subheading,
+            description: Text. Notes on what to write in this heading. be detailed when possible,
         }, {...}]`,
     ].join(" ");
 
     const user_prompt: string = [
         `Topic: ${title}`,
         titleNotes ? `Rough titleNotes: ${titleNotes}.` : "",
+        `docs: ${docsString} \n ----- \n`,
         "Also suggest more ideas and headings (apart from my titleNotes) that I can write about",
     ].join("\n");
 
-    // console.log(system_prompt, user_prompt);
+    console.log("SYS\n", system_prompt, "USER\n", user_prompt);
     let outlineObject = null;
     try {
         const completion = await openai.chat.completions.create({
