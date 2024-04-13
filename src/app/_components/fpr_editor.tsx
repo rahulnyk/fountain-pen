@@ -21,6 +21,7 @@ import debounce from "lodash/debounce";
 import MainEditor from "./main_editor";
 import SidePanel from "./side_panel";
 import clsx from "clsx";
+import { ToolBar } from "./navbar/toolbar";
 
 const createEditorWithPlugins = pipe(
     withEnforcedTitle,
@@ -94,6 +95,7 @@ const FprEditor = () => {
                     initialValue={value}
                     onChange={saveOnChange}
                 >
+                    <ToolBar />
                     <div className="flex h-auto flex-grow">
                         {/* First Column (2/3 width) */}
                         <div className={clsx("w-2/3 z-0")}>

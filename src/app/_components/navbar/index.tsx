@@ -22,11 +22,9 @@ export const NavBar: React.FC = () => {
                 </div>
 
                 {/* Right Div*/}
-                <div
-                    className="flex space-x-5 text-zinc-900 mx-5 right-1/3"
-                    id="toolbar-portal"
-                >
-                    <ToolBar />
+                <div className="flex space-x-5 text-zinc-900 mx-5 right-1/3">
+                    <div id="toolbar-portal"></div>
+                    {/* <ToolBar /> */}
                     {/* <AddDocumentsButton /> */}
                 </div>
             </div>
