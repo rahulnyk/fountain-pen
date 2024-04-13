@@ -1,7 +1,7 @@
 // import { AddDocumentsButton } from "./add_documents_button";
 import { Logo } from "./logo";
-import { ToolBar } from "./toolbar";
 import clsx from "clsx";
+import { ToolBar } from "./toolbar";
 
 export const NavBar: React.FC = () => {
     return (
@@ -19,11 +19,14 @@ export const NavBar: React.FC = () => {
                 {/* Left Div */}
                 <div className="flex left align-middle">
                     <Logo className="" />
-                    <ToolBar></ToolBar>
                 </div>
 
                 {/* Right Div*/}
-                <div className="flex space-x-5 text-zinc-900 mx-5">
+                <div
+                    className="flex space-x-5 text-zinc-900 mx-5 right-1/3"
+                    id="toolbar-portal"
+                >
+                    <ToolBar />
                     {/* <AddDocumentsButton /> */}
                 </div>
             </div>

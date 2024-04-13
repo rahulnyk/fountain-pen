@@ -101,6 +101,7 @@ const FprEditor = () => {
                             <MainEditor editor={editor} />
                         </div>
 
+                        {/* Second Column (1/3 width) */}
                         <SidePanel />
                     </div>
                 </Slate>

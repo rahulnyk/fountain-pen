@@ -15,11 +15,8 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
     };
 
     return (
-        <Button onClick={handleOnClick}>
-            {/* <HiOutlineDocumentAdd className="mx-2 size-5" /> */}
-            <div className="w-full">
-                {isPending ? <LoadingSpinner className="size-4" /> : "Add Docs"}
-            </div>
+        <Button onClick={handleOnClick} loading={isPending} className="w-40">
+            ADD DOCUMENTS
         </Button>
     );
 };

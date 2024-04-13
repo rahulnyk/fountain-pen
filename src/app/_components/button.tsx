@@ -1,14 +1,17 @@
 import clsx from "clsx";
+import { LoadingSpinner } from "./loading_spinner";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     active?: boolean;
+    loading?: boolean;
 }
 
 export function Button({
     children,
     className,
     active = true,
+    loading = false,
     ...rest
 }: ButtonProps) {
     return (
@@ -29,7 +32,7 @@ export function Button({
             )}
             disabled={!active}
         >
-            {children}
+            {loading ? <LoadingSpinner className="size-4" /> : children}
         </button>
     );
 }
