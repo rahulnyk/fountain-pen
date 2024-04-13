@@ -38,6 +38,7 @@ export const TabPanel: React.FC<CustomComponentProps> = ({
                     onClick={onClick}
                     active={buttonActive}
                     className="text-xs font-normal"
+                    loading={isWaiting}
                 >
                     {buttonText}
                 </Button>
@@ -47,11 +48,7 @@ export const TabPanel: React.FC<CustomComponentProps> = ({
                 </div>
 
                 {/* Main content */}
-                {isWaiting ? (
-                    <LoadingSpinner className="size-10 align-middle justify-center p-4 m-10" />
-                ) : (
-                    children
-                )}
+                {children}
             </div>
         </>
     );

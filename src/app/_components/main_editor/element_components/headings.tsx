@@ -7,6 +7,8 @@ import {
     titleStyle,
 } from "../typography";
 import { useSelected, useFocused } from "slate-react";
+import clsx from "clsx";
+import { GiGClef } from "react-icons/gi";
 
 export const Heading: React.FC<CustomElementProps> = (
     props: CustomElementProps
@@ -49,13 +51,16 @@ export const Heading: React.FC<CustomElementProps> = (
 
     return (
         <div
-            className={`flex-grow p-4 ${headingClassName} p-4 rounded border-l-4 ${
+            className={`p-4 pr-10 rounded border-l-4  ${headingClassName} ${
                 showGutter
                     ? "border-blue-500 dark:border-blue-600 bg-gray-50 dark:bg-zinc-800/25"
                     : "border-transparent  hover:border-zinc-400/25"
             }`}
         >
-            {children}
+            {/* {element.type === "title" && (
+                <div className="absolute -left-10 top-0 bg-zinc-400 dark:bg-zinc-500 w-3 h-28"></div>
+            )} */}
+            <div className="z-20">{children}</div>
         </div>
     );
 };

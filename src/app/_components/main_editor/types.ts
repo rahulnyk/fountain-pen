@@ -69,18 +69,7 @@ export type NotesElement = Omit<EditableVoidElement, "type"> & {
     notes: string;
 };
 
-// Base Element type
-export type CustomBaseElement = {
-    type: string;
-    children: CustomDescendant[];
-    notes: string[];
-};
-export type ParagraphElement = Omit<CustomBaseElement, "type" | "children"> & {
-    type: "paragraph";
-    align?: string;
-    children: CustomText[];
-};
-
+// Basic Types of elements that are displayed on the editor. This does not include the 'notes' type
 export const Headings = ["title", "heading1", "heading2", "heading3"] as const;
 
 export const HeadingsWithoutTitle = [
@@ -90,6 +79,20 @@ export const HeadingsWithoutTitle = [
 ] as const;
 
 export type HeadingTypes = (typeof Headings)[number];
+
+export type ElementTypes = HeadingTypes | "paragraph"; //| "quoted" | "item-list";
+
+// Base Element type
+export type CustomBaseElement = {
+    type: ElementTypes;
+    children: CustomDescendant[];
+    notes: string[];
+};
+export type ParagraphElement = Omit<CustomBaseElement, "type" | "children"> & {
+    type: "paragraph";
+    align?: string;
+    children: CustomText[];
+};
 
 export type HeadingElement = Omit<CustomBaseElement, "type"> & {
     type: HeadingTypes;

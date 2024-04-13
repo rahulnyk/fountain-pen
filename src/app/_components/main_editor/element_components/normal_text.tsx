@@ -3,6 +3,7 @@ import { BasicWrapperProps } from "../types";
 import { paragraphStyle } from "../typography";
 import { CustomElementProps, editorModes } from "../types";
 import { useState, useEffect } from "react";
+import clsx from "clsx";
 
 export const NormalText: React.FC<CustomElementProps> = ({
     children,
@@ -26,8 +27,7 @@ export const NormalText: React.FC<CustomElementProps> = ({
                     : "border-transparent  hover:border-zinc-400/25"
             }`}
         >
-            <p>{showGutter}</p>
-            {children}
+            <div className="z-20">{children}</div>
         </div>
     );
 };
