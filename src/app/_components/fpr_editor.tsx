@@ -9,7 +9,7 @@ import { createEditor, Descendant } from "slate";
 import { Slate, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./main_editor/plugins/withCustomBehavior";
-import { withEnforcedTitle } from "./main_editor/plugins/withEnforcedTitle";
+// import { withEnforcedTitle } from "./main_editor/plugins/withEnforcedTitle";
 import { withOnlyOneTitle } from "./main_editor/plugins/withOnlyOneTitle";
 import {
     backupArticleContent,
@@ -24,7 +24,7 @@ import clsx from "clsx";
 import { ToolBar } from "./navbar/toolbar";
 
 const createEditorWithPlugins = pipe(
-    withEnforcedTitle,
+    // withEnforcedTitle,
     withParaAfterHeadings,
     withOnlyOneTitle,
     withCustomBehavior,

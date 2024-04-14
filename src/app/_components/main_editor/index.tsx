@@ -2,7 +2,7 @@
 // ArticleEditor.tsx
 
 import { useCallback } from "react";
-import { Transforms, Editor } from "slate";
+import { Transforms, Editor, Element } from "slate";
 import { Editable } from "slate-react";
 import { CustomElementProps, LeafProps } from "./types";
 import { ElementNode, LeafNode } from "./renderers";
@@ -34,7 +34,8 @@ const MainEditor = ({ editor }: { editor: Editor }) => {
 };
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
-    if (event.key === "Enter") {
+    console.log(editor.isCurrentNodeHeading());
+    if (event.key === "Enter" && editor.isCurrentNodeHeading()) {
         event.preventDefault();
         Transforms.insertNodes(editor, {
             type: "paragraph",
