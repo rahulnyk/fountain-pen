@@ -11,8 +11,11 @@ export const withParaAfterHeadings = (editor: Editor) => {
             Element.isElement(node) &&
             Headings.some((heading) => node.type === heading)
         ) {
-            const next_entry = Editor.next(editor, { at: path });
+            // if the element is one of the headings.
+            const next_path = Path.next(path);
+            const next_entry = Editor.node(editor, next_path);
             if (!next_entry) {
+                // if there is no next entry, add a para element.
                 let paragraph: Node = {
                     type: "paragraph",
                     children: [{ text: "" }],
@@ -23,11 +26,13 @@ export const withParaAfterHeadings = (editor: Editor) => {
                 });
                 return;
             } else {
+                // if there is a element after the current element.
                 const [next_node, next_path] = next_entry;
                 if (
                     Element.isElement(next_node) &&
                     next_node.type === "paragraph"
                 ) {
+                    // if that element is a paragraph then return.
                     return;
                 } else {
                     let paragraph: Node = {

@@ -57,10 +57,7 @@ export const Heading: React.FC<CustomElementProps> = (
                     : "border-transparent  hover:border-zinc-400/25"
             }`}
         >
-            {/* {element.type === "title" && (
-                <div className="absolute -left-10 top-0 bg-zinc-400 dark:bg-zinc-500 w-3 h-28"></div>
-            )} */}
-            <div className="z-20">{children}</div>
+            {children}
         </div>
     );
 };

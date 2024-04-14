@@ -37,6 +37,7 @@ export interface FprEditor extends ReactEditor {
     getCurrentSectionText(at?: BaseSelection): string | undefined;
     getTitleString(): string | undefined;
     getTitleNotes(): string | undefined;
+    isCurrentNodeHeading(): boolean;
 }
 export type CustomEditor = ReactEditor & HistoryEditor & FprEditor;
 

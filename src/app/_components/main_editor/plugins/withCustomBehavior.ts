@@ -86,6 +86,22 @@ export const withCustomBehavior = (editor: Editor) => {
         return entry;
     };
 
+    editor.isCurrentNodeHeading = () => {
+        const selection = editor.selection;
+        if (!selection) {
+            return false;
+        }
+        const [heading_node] = Editor.nodes(editor, {
+            at: selection,
+            match: (n) =>
+                Element.isElement(n) && Headings.some((t) => n.type === t),
+        });
+        if (heading_node) {
+            return true;
+        }
+        return false;
+    };
+
     /**
      *
      * @param types one of the types of element nodes, like paragraph, heading1 etc

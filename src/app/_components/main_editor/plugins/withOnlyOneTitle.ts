@@ -6,12 +6,26 @@ export const withOnlyOneTitle = (editor: Editor) => {
     editor.normalizeNode = (entry) => {
         const [node, path] = entry;
         const isTitlePath = path.length == 1 && path[0] == 0;
-        if (Element.isElement(node) && !isTitlePath) {
-            if (node.type == "title") {
-                const newProperties: Partial<Element> = { type: "paragraph" };
-                Transforms.setNodes<Element>(editor, newProperties, {
-                    at: path,
-                });
+        // if path is title path then set the node to title.
+        // if path is not title path then ensure it is not a title.
+        if (Element.isElement(node)) {
+            if (isTitlePath) {
+                if (node.type != "title") {
+                    const newProperties: Partial<Element> = { type: "title" };
+                    Transforms.setNodes<Element>(editor, newProperties, {
+                        at: path,
+                    });
+                }
+            }
+            if (!isTitlePath) {
+                if (node.type == "title") {
+                    const newProperties: Partial<Element> = {
+                        type: "paragraph",
+                    };
+                    Transforms.setNodes<Element>(editor, newProperties, {
+                        at: path,
+                    });
+                }
             }
             return;
         }
