@@ -28,6 +28,7 @@ export const Excerpts = ({ className }: { className?: string }) => {
                 numResults: 10,
             });
             setDocuments(results);
+            results.map((r) => console.log(r.metadata));
         }
         setActive(false);
         setIsWaiting(false);

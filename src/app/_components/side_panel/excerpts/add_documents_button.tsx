@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { embeddDocuments } from "@/app/_actions/vector_store";
 import { Button } from "../../button";
+import { embeddAllDocuments } from "@/app/_actions/vector_store/embedd_all_documents";
 import { LoadingSpinner } from "../../loading_spinner";
 
 export const AddDocumentsButton = ({ className }: { className?: string }) => {
@@ -9,7 +9,7 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
 
     const handleOnClick = async () => {
         setIsPending(true);
-        await embeddDocuments();
+        await embeddAllDocuments();
         console.log("document embedding done");
         setIsPending(false);
     };

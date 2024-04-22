@@ -1,7 +1,5 @@
 "use server";
 
-import { dirLoadAndSplit } from "../_helpers/dir_load_and_split";
-
 import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { Document } from "langchain/document";
@@ -12,12 +10,22 @@ const embeddingFunction = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function embeddDocuments() {
-    const docs = await dirLoadAndSplit();
-    console.log("embedding docs", docs.length);
-    const vectorStore = await HNSWLib.fromDocuments(docs, embeddingFunction);
+export async function rebuildVectorStore(docs: Document[]) {
+    try {
+        const oldIndex = await HNSWLib.load(DIRECTORY, embeddingFunction);
+        oldIndex.delete({ directory: DIRECTORY });
+    } catch (e) {
+        console.log(e);
+    }
 
-    await vectorStore.save(DIRECTORY);
+    const vectorStore = await HNSWLib.fromDocuments(docs, embeddingFunction);
+    return await vectorStore.save(DIRECTORY);
+}
+
+export async function addDocuments(documents: Document[]) {
+    const store = await HNSWLib.load(DIRECTORY, embeddingFunction);
+    const result = await store.addDocuments(documents);
+    return result;
 }
 
 export async function semanticSearch({

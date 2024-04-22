@@ -5,6 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     active?: boolean;
     loading?: boolean;
+    type?: "submit" | "reset" | "button" | undefined;
 }
 
 export function Button({
@@ -12,12 +13,13 @@ export function Button({
     className,
     active = true,
     loading = false,
+    type = "button",
     ...rest
 }: ButtonProps) {
     return (
         <button
             {...rest}
-            type="button"
+            type={type}
             className={clsx(
                 "flex w-auto content-center justify-center",
                 "focus:ring-4 focus:outline-none rounded-lg px-3 py-2",

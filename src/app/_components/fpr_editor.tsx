@@ -16,7 +16,7 @@ import {
     getArticleContent,
     getBackupContent,
     saveArticleContent,
-} from "../_actions/db_actions";
+} from "../_actions/ldb";
 import debounce from "lodash/debounce";
 import MainEditor from "./main_editor";
 import SidePanel from "./side_panel";

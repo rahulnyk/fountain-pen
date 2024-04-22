@@ -9,7 +9,12 @@ export const textStyle = Lato({
 });
 
 export const ExcerptCard = ({ document }: { document: Document }) => {
-    const filenameFromPath = (path: string) => {
+    const filenameFromSource = (path: string) => {
+        // const linkPatern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/\S*)?$/i;
+        // if (linkPatern.test(path)) {
+        //     return path;
+        // }
+
         let filename = path.split("/").pop();
         filename = chopString(filename);
         return filename;
@@ -55,8 +60,13 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                 )}
             >
                 <div className="font-bold">
-                    {filenameFromPath(document?.metadata?.source)}
+                    {filenameFromSource(document?.metadata?.source)}
                 </div>
+                {document?.metadata?.type === "weblink" && (
+                    <a href={document?.metadata?.source}>
+                        {document?.metadata?.source}
+                    </a>
+                )}
                 <div className="">
                     Page: {document?.metadata?.loc?.pageNumber}
                 </div>
