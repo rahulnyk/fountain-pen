@@ -63,7 +63,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     {filenameFromSource(document?.metadata?.source)}
                 </div>
                 {document?.metadata?.type === "weblink" && (
-                    <a href={document?.metadata?.source}>
+                    <a href={document?.metadata?.source} target="_blank">
                         {document?.metadata?.source}
                     </a>
                 )}
