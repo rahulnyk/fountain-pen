@@ -30,7 +30,7 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
         setIsWaiting(true);
         const contentSuggestions = await getContentSuggestions();
         setContent(contentSuggestions);
-        console.log("From Content Suggestion Component", contentSuggestions);
+        // console.log("From Content Suggestion Component", contentSuggestions);
         setIsWaiting(false);
         setActive(false);
     };

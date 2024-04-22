@@ -11,6 +11,8 @@
     "dependencies": {
         "@langchain/community": "^0.0.41",
         "@langchain/openai": "^0.0.23",
+        "axios": "^1.6.8",
+        "cheerio": "^1.0.0-rc.12",
         "clsx": "^2.1.0",
         "hnswlib-node": "^1.4.2",
         "langchain": "^0.1.28",
@@ -26,6 +28,7 @@
         "slate": "^0.102.0",
         "slate-history": "^0.100.0",
         "slate-react": "^0.102.0",
+        "supports-color": "^8.1.1",
         "usehooks-ts": "^2.15.1",
         "uuid": "^9.0.1",
         "zustand": "^4.5.2"

@@ -17,9 +17,6 @@ export const WritingPointsSuggestionsCard = ({
 }: {
     item: wpSuggestion;
 }) => {
-    useEffect(() => {
-        console.log("From Content Card: ", item);
-    });
     return (
         <div
             className={clsx(

@@ -11,6 +11,8 @@ import { FaHeading } from "react-icons/fa";
 import { ImParagraphLeft } from "react-icons/im";
 import { MdOutlineDocumentScanner } from "react-icons/md";
 import { PiListBulletsBold } from "react-icons/pi";
+import { MdAddLink } from "react-icons/md";
+import { ReferencesPanel } from "./references_panel";
 import clsx from "clsx";
 
 export type tabOption = {
@@ -24,6 +26,24 @@ export type tabOption = {
 
 const tabOptions: tabOption[] = [
     {
+        action: "webLinks",
+        display: "Web Links",
+        id: "dropdown_5",
+        description:
+            "Use my research to suggest writing points for the current section",
+        icon: <MdAddLink className="mr-1 size-6 py-1" />,
+        component: <ReferencesPanel />,
+    },
+    {
+        action: "semanticSearch",
+        display: "Search Documents",
+        id: "dropdown_2",
+        description:
+            "Search for exerpts in my documents relevant to current section",
+        icon: <MdOutlineDocumentScanner className="mr-1 size-6 py-1" />,
+        component: <Excerpts />,
+    },
+    {
         action: "generateHeadings",
         display: "Generate Headings",
         id: "dropdown_1",
@@ -33,18 +53,9 @@ const tabOptions: tabOption[] = [
         component: <Outline />,
     },
     {
-        action: "semanticSearch",
-        display: "Search Documents",
-        id: "dropdown_3",
-        description:
-            "Search for exerpts in my documents relevant to current section",
-        icon: <MdOutlineDocumentScanner className="mr-1 size-6 py-1" />,
-        component: <Excerpts />,
-    },
-    {
         action: "suggestFromResearch",
         display: "Suggest Content",
-        id: "dropdown_2",
+        id: "dropdown_3",
         description:
             "Content based on the current section heading, text and notes",
         icon: <ImParagraphLeft className="mr-1 size-5 py-1" />,
@@ -63,7 +74,7 @@ const tabOptions: tabOption[] = [
 
 export const AssistantPanel = () => {
     const editor = useSlate();
-    const [tabIndex, setTabIndex] = useState<number>(1);
+    const [tabIndex, setTabIndex] = useState<number>(0);
     //
     const setTitle = useSectionContext((state) => state.setTitle);
     const setTitleNotes = useSectionContext((state) => state.setTitleNotes);
