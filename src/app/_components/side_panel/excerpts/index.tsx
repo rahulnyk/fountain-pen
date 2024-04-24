@@ -80,9 +80,9 @@ export const Excerpts = ({ className }: { className?: string }) => {
                         />
                     )}
                 </div>
-                <div className="flex w-full justify-end">
+                {/* <div className="flex w-full justify-end">
                     <AddDocumentsButton />
-                </div>
+                </div> */}
             </>
         </TabPanel>
     );

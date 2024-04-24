@@ -6,6 +6,7 @@ import { TabPanel } from "../tab_panel";
 import { useReferencesStore } from "@/app/_store/referencesStore";
 import { AddReferenceForm } from "./add_refrences_form";
 import { getReferences } from "@/app/_actions/ldb";
+import { AddDocumentsButton } from "../excerpts/add_documents_button";
 
 export const ReferencesPanel = ({ className }: { className?: string }) => {
     const references = useReferencesStore((state) => state.references);
@@ -28,6 +29,12 @@ export const ReferencesPanel = ({ className }: { className?: string }) => {
                     <ReferencesCard item={reference} key={reference.name} />
                 ))}
                 <AddReferenceForm />
+                {/* <div className="flex w-full justify-start"> */}
+                <div className="divider px-0 py-4 text-zinc-500 dark:text-zinc-600 text-xs font-bold">
+                    OR
+                </div>
+                <AddDocumentsButton className="mx-4 justify-center content-center" />
+                {/* </div> */}
             </TabPanel>
         </>
     );

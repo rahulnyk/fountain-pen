@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "../../button";
 import { embeddAllDocuments } from "@/app/_actions/vector_store/embedd_all_documents";
 import { LoadingSpinner } from "../../loading_spinner";
+import clsx from "clsx";
 
 export const AddDocumentsButton = ({ className }: { className?: string }) => {
     const [isPending, setIsPending] = useState(false);
@@ -15,7 +16,11 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
     };
 
     return (
-        <Button onClick={handleOnClick} loading={isPending} className="w-40">
+        <Button
+            onClick={handleOnClick}
+            loading={isPending}
+            className={clsx("w-40", className)}
+        >
             ADD DOCUMENTS
         </Button>
     );

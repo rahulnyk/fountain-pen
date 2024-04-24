@@ -25,7 +25,7 @@ export async function generateContent({
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
 
     const system_prompt = [
-        "You are an expert at writing professional content. Your job is to assist the user write a small section of an article",
+        "You are an expert at writing non-fiction content. Your job is to assist the user write a small section of an article",
         "The user will provide you with the following inputs:",
         "section heading: Heading of the current section.",
         "notes: Very important. Notes about the current section.",
@@ -33,7 +33,10 @@ export async function generateContent({
         "docs: Semantic search documents pertinent to the current section.",
         "Write the section content incorporating the provided information.",
         "Do not add conclusions or summary at the end of your respoonse",
-        "Write a detailed response.",
+        "Write in simple and easily readable language.",
+        "use short sentences as much as possible. Do not try to sound sophesticated. Add humour whever possible.",
+        "Use pronounds like 'we', 'you', 'us', etc. instead of 'individual' or 'one' etc.",
+        "Itomise your response whenever possible. ",
     ].join("\n");
 
     const user_prompt: string = [

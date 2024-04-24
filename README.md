@@ -43,7 +43,7 @@ Open http://localhost:3000/editor in your browser.
 The editor should look like this.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./public/interface_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="./public/interface_light.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="./public/interface_dark.png">
+  <source media="(prefers-color-scheme: dark)" srcset="./public/interface.png">
+  <source media="(prefers-color-scheme: light)" srcset="./public/interface.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="./public/interface.png">
 </picture>

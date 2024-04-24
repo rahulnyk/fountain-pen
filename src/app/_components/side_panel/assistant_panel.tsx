@@ -44,6 +44,15 @@ const tabOptions: tabOption[] = [
         component: <Excerpts />,
     },
     {
+        action: "suggestWritingPoints",
+        display: "Suggest Writing Points",
+        id: "dropdown_4",
+        description:
+            "Use my research to suggest writing points for the current section",
+        icon: <PiListBulletsBold className="mr-1 size-6 py-1" />,
+        component: <WritingPointsSuggestions />,
+    },
+    {
         action: "generateHeadings",
         display: "Generate Headings",
         id: "dropdown_1",
@@ -60,15 +69,6 @@ const tabOptions: tabOption[] = [
             "Content based on the current section heading, text and notes",
         icon: <ImParagraphLeft className="mr-1 size-5 py-1" />,
         component: <ContentSuggestions />,
-    },
-    {
-        action: "suggestWritingPoints",
-        display: "Suggest Writing Points",
-        id: "dropdown_4",
-        description:
-            "Use my research to suggest writing points for the current section",
-        icon: <PiListBulletsBold className="mr-1 size-6 py-1" />,
-        component: <WritingPointsSuggestions />,
     },
 ];
 
