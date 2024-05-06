@@ -112,7 +112,7 @@ export const withCustomBehavior = (editor: Editor) => {
     editor.getPreviousSibling = (types: string[], at?: BaseSelection) => {
         const selection = at ? at : editor.selection;
 
-        if (!selection || editor.isSelectionExpanded()) return undefined;
+        if (!selection) return undefined;
 
         const [entry] = Editor.nodes(editor, {
             at: selection,
