@@ -4,6 +4,39 @@ This is an editor that can help you write better, faster, using AI. The purpose 
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="./public/banner.jpg">
 </picture>
 
+## Getting Started Dockerized
+
+### Step 1:
+
+Get an [OpenAI API key](https://openai.com).
+
+Once you have the API key:
+
+```bash
+## go to the repository folder.
+cd path/to/this_repo
+## copy .env.local.example to .env.local
+cp .env.local.example .env.local
+```
+
+Update the .env.local file with your OpenAI API key.
+
+### Step 2:
+
+Build a docker container
+
+```bash
+docker compose build
+```
+
+### Step 3:
+
+Run the docker image
+
+```bash
+docker compose up
+```
+
 ## Getting Started
 
 ### Step 1:
@@ -13,7 +46,7 @@ Get an [OpenAI API key](https://openai.com).
 Once you have the API key:
 
 ```bash
-## go to the repository foler.
+## go to the repository folder.
 cd path/to/this_repo
 ## copy .env.local.example to .env.local
 cp .env.local.example .env.local
