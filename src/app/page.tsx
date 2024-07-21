@@ -27,7 +27,7 @@ export default function Home() {
                 </div>
             </div>
             <Link href="/editor">
-                <Button className="my-10 bg-gradient-to-r from-indigo-700 to-blue-700">
+                <Button className="my-10 bg-gradient-to-r from-indigo-700 to-blue-800">
                     <div
                         className={clsx(
                             "text-xl font-medium px-2 py-0",

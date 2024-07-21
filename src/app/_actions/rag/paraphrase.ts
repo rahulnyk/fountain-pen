@@ -11,7 +11,7 @@ export async function paraphraseContent({
     style,
 }: {
     text: string | null;
-    style: string | null;
+    style: string | null | undefined;
 }): Promise<ChatCompletion.Choice | null> {
     if (!style && !text) {
         return null;
@@ -22,7 +22,8 @@ export async function paraphraseContent({
         "The user will provide you a few paragraphs. ",
         "Your job is to paraphrase the user provided text in the following style",
         `style -> \n ${style} \n `,
-        "Make sure that the content is gramatically correct and easily readable",
+        "Make sure that the content is gramatically correct and easily readable.",
+        "Return only the paraphrased paragraph and nothing else",
     ].join("\n");
 
     const user_prompt: string = [

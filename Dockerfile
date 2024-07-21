@@ -15,6 +15,10 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Remove data and documents folder. 
+RUN rm -rf ./data
+RUN rm -rf ./documents
+
 # Build the application
 RUN npm run build
 

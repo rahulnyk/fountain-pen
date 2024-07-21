@@ -36,8 +36,10 @@ yarn-error.log*
 next-env.d.ts
 todo.todo
 db.json
-data/*
+# data/*
 !data/.gitkeep
-documents/*
-!documents/.gitkeep
+data/documents/*
+!data/documents/.gitkeep
+data/wd/*
+!data/wd/.gitkeep
 

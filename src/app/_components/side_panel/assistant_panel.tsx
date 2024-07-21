@@ -166,7 +166,7 @@ export const AssistantPanel = () => {
                                 role="tabpanel"
                                 className={clsx(
                                     "tab-content bg-base-100 border-base-300 rounded-lg p-6 px-2",
-                                    "dark:bg-zinc-800 bg-white w-auto"
+                                    "dark:bg-zinc-800 bg-white w-full"
                                 )}
                             >
                                 {option.component}

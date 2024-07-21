@@ -1,13 +1,15 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  nextjs-app:
-    image: nextjs-app:latest
-    build:
-      context: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - .env.local:/app/.env.local
-    environment:
-      NODE_ENV: production
+    nextjs-app:
+        image: nextjs-app:latest
+        build:
+            context: .
+        ports:
+            - "3000:3000"
+        volumes:
+            - .env.local:/app/.env.local
+            # Data folder
+            - ./data:/app/data
+        environment:
+            NODE_ENV: production
