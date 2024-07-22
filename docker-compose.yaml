@@ -10,5 +10,6 @@ services:
     volumes:
       - .env.local:/app/.env.local
       - ./data:/app/data
+      - ./documents:/app/documents
     environment:
       NODE_ENV: production

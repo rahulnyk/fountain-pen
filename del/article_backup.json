@@ -1,0 +1,31 @@
+{
+  "articles": [
+    {
+      "content": [
+        {
+          "type": "title",
+          "children": [
+            {
+              "text": "Using Fountain Pen"
+            }
+          ],
+          "notes": [
+            "This is an editor that can help you write better, faster, using AI. The purpose of the editor is to help the writer build and develop collate research material, develop notes and content, and build a narrative to convey the topic of the article."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Start writing your article..."
+            }
+          ],
+          "notes": [
+            ""
+          ]
+        }
+      ]
+    }
+  ],
+  "references": []
+}
