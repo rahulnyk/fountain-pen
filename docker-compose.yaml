@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   nextjs-app:
@@ -9,5 +9,6 @@ services:
       - "3000:3000"
     volumes:
       - .env.local:/app/.env.local
+      - ./data:/app/data
     environment:
       NODE_ENV: production
