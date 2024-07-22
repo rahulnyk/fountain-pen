@@ -1,4 +1,4 @@
-This is an editor that can help you write better, faster, using AI. The purpose of the editor is to help the writer build a develop collate research material, develop notes and content, and duild a narrative to convery about topic of the article.
+This is an editor that can help you write better, faster, using AI. The purpose of the editor is to help the writer build and develop collate research material, develop notes and content, and build a narrative to convey the topic of the article.
 
 <picture>
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="./public/banner.jpg">
