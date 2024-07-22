@@ -14,8 +14,8 @@ export async function rebuildVectorStore(docs: Document[]) {
     try {
         const oldIndex = await HNSWLib.load(DIRECTORY, embeddingFunction);
         oldIndex.delete({ directory: DIRECTORY });
-    } catch (e) {
-        console.log(e);
+    } catch (e: any) {
+        console.log(e.message);
     }
 
     const vectorStore = await HNSWLib.fromDocuments(docs, embeddingFunction);

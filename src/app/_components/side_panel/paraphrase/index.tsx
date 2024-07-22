@@ -66,7 +66,7 @@ export const Paraphrase = ({ className }: { className?: string }) => {
             className={className}
             onClick={refresh}
             buttonActive={active}
-            key="tab_panel_wp"
+            key="tab_panel_paraphrase"
             buttonText="REPHRASE THE PARAGRAPH"
             buttonVisible={false}
         >
@@ -83,6 +83,7 @@ export const Paraphrase = ({ className }: { className?: string }) => {
                             onClick={() => {
                                 setStyle(value);
                             }}
+                            key={`paraphrase_${key}`}
                         >
                             {key}
                         </button>

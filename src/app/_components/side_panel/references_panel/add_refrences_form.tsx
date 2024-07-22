@@ -22,6 +22,9 @@ export const AddReferenceForm = ({}: {}) => {
     const addReference = useReferencesStore((state) => state.addReference);
 
     const handleSubmit = async (e: any) => {
+        if (isPending) {
+            return;
+        }
         setIsPending(true);
         e.preventDefault();
         // Validate form data if needed

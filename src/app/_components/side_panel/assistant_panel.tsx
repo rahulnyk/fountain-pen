@@ -24,6 +24,7 @@ export type tabOption = {
     description?: string;
     icon: JSX.Element;
     component: JSX.Element;
+    disabled: boolean;
 };
 
 const tabOptions: tabOption[] = [
@@ -35,6 +36,7 @@ const tabOptions: tabOption[] = [
             "Use my research to suggest writing points for the current section",
         icon: <MdAddLink className="mr-1 size-6 py-1" />,
         component: <ReferencesPanel />,
+        disabled: false,
     },
     {
         action: "semanticSearch",
@@ -44,6 +46,7 @@ const tabOptions: tabOption[] = [
             "Search for exerpts in my documents relevant to current section",
         icon: <MdOutlineDocumentScanner className="mr-1 size-6 py-1" />,
         component: <Excerpts />,
+        disabled: false,
     },
     {
         action: "suggestWritingPoints",
@@ -53,6 +56,7 @@ const tabOptions: tabOption[] = [
             "Use my research to suggest writing points for the current section",
         icon: <PiListBulletsBold className="mr-1 size-6 py-1" />,
         component: <WritingPointsSuggestions />,
+        disabled: false,
     },
     {
         action: "generateHeadings",
@@ -62,6 +66,7 @@ const tabOptions: tabOption[] = [
             "Headings for the article based on the title and the title notes",
         icon: <FaHeading className="mr-1 size-5 py-1" />,
         component: <Outline />,
+        disabled: false,
     },
     {
         action: "suggestFromResearch",
@@ -71,6 +76,7 @@ const tabOptions: tabOption[] = [
             "Content based on the current section heading, text and notes",
         icon: <ImParagraphLeft className="mr-1 size-5 py-1" />,
         component: <ContentSuggestions />,
+        disabled: false,
     },
     {
         action: "paraphrase",
@@ -79,6 +85,16 @@ const tabOptions: tabOption[] = [
         description: "Paraphrase the content based on a particular style",
         icon: <MdRebaseEdit className="mr-1 size-5 py-1" />,
         component: <Paraphrase />,
+        disabled: false,
+    },
+    {
+        action: "none",
+        display: "Empty tab",
+        id: "assistant_tab_7",
+        description: "Empty tab",
+        icon: <p className="w-10" />,
+        component: <p />,
+        disabled: true,
     },
 ];
 
@@ -154,9 +170,15 @@ export const AssistantPanel = () => {
                                 role="tab"
                                 className={clsx(
                                     "tab [--tab-bg:#ffffff] dark:[--tab-bg:#27272a]",
-                                    index == tabIndex && "tab-active"
+                                    index == tabIndex && "tab-active",
+                                    option.disabled && "tab-disabled"
                                 )}
-                                onClick={() => setTabIndex(index)}
+                                onClick={() => {
+                                    if (option.disabled) {
+                                        return;
+                                    }
+                                    setTabIndex(index);
+                                }}
                                 key={`ai_tab_${index}`}
                             >
                                 {option.icon}
