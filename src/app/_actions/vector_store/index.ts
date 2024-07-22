@@ -4,7 +4,7 @@ import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { Document } from "langchain/document";
 
-const DIRECTORY = "data/";
+const DIRECTORY = "data/wd/";
 
 const embeddingFunction = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
@@ -14,8 +14,8 @@ export async function rebuildVectorStore(docs: Document[]) {
     try {
         const oldIndex = await HNSWLib.load(DIRECTORY, embeddingFunction);
         oldIndex.delete({ directory: DIRECTORY });
-    } catch (e) {
-        console.log(e);
+    } catch (e: any) {
+        console.log(e.message);
     }
 
     const vectorStore = await HNSWLib.fromDocuments(docs, embeddingFunction);

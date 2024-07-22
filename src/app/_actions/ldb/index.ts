@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const main_db_file = "article.json";
 const backup_db_file = "article_backup.json";
-
+const DIRECTORY = "data/wd";
 type Article = {
     content: Descendant[];
 };
@@ -29,7 +29,10 @@ interface DbData {
 
 const LDB = async (filename: string) => {
     const defaultData: DbData = { articles: [], references: [] };
-    const db = await JSONFilePreset<DbData>(`data/${filename}`, defaultData);
+    const db = await JSONFilePreset<DbData>(
+        `${DIRECTORY}/${filename}`,
+        defaultData
+    );
     return db;
 };
 
