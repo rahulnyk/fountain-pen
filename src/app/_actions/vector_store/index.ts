@@ -51,14 +51,15 @@ export async function semanticSearch({
 }: {
     text: string;
     numResults: number;
-}): Promise<Document<Record<string, any>>[] | undefined> {
+}): Promise<Document<Record<string, any>>[]> {
     console.log(text);
-    let result: Document[];
+    let result: Document[] = [];
     try {
         const store = await FaissStore.load(DIRECTORY, embeddingFunction);
         result = await store.similaritySearch(text, numResults);
-        return result;
     } catch (e: any) {
         console.log("Could not retrieve results - ", e?.message);
+    } finally {
+        return result;
     }
 }
