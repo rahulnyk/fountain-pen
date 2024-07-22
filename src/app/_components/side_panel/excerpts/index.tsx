@@ -6,7 +6,7 @@ import { Document } from "langchain/document";
 import { useEffect, useState } from "react";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
-import { AddDocumentsButton } from "./add_documents_button";
+// import { AddDocumentsButton } from "../references_panel/add_documents_button";
 
 export const Excerpts = ({ className }: { className?: string }) => {
     const [documents, setDocuments] = useState<Document[] | null>(null);

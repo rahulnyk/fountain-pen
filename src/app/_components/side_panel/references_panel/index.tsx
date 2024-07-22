@@ -6,7 +6,7 @@ import { TabPanel } from "../tab_panel";
 import { useReferencesStore } from "@/app/_store/referencesStore";
 import { AddReferenceForm } from "./add_refrences_form";
 import { getReferences } from "@/app/_actions/ldb";
-import { AddDocumentsButton } from "../excerpts/add_documents_button";
+import { AddDocumentsButton } from "./add_documents_button";
 
 export const ReferencesPanel = ({ className }: { className?: string }) => {
     const references = useReferencesStore((state) => state.references);
