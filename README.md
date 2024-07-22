@@ -26,7 +26,7 @@ Update the .env.local file with your OpenAI API key.
 Build a docker container
 
 ```bash
-docker compose build
+docker build -t fountain-pen .
 ```
 
 ### Step 3:

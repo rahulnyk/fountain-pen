@@ -10,9 +10,14 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
 
     const handleOnClick = async () => {
         setIsPending(true);
-        await embeddAllDocuments();
-        console.log("document embedding done");
-        setIsPending(false);
+        try {
+            await embeddAllDocuments();
+        } catch (e: any) {
+            console.log("Embedding failed with error - ", e?.message);
+        } finally {
+            console.log("document embedding done");
+            setIsPending(false);
+        }
     };
 
     return (

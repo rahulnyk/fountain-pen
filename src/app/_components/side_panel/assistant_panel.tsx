@@ -30,7 +30,7 @@ export type tabOption = {
 const tabOptions: tabOption[] = [
     {
         action: "webLinks",
-        display: "Web Links",
+        display: "Add References",
         id: "assistant_tab_1",
         description:
             "Use my research to suggest writing points for the current section",
@@ -50,7 +50,7 @@ const tabOptions: tabOption[] = [
     },
     {
         action: "suggestWritingPoints",
-        display: "Suggest Writing Points",
+        display: "Writing Points",
         id: "assistant_tab_3",
         description:
             "Use my research to suggest writing points for the current section",
@@ -191,6 +191,15 @@ export const AssistantPanel = () => {
                                     "dark:bg-zinc-800 bg-white w-full"
                                 )}
                             >
+                                <div className="flex w-full relative">
+                                    <p
+                                        className={clsx(
+                                            "absolute right-2 top-0 text-xs opacity-50"
+                                        )}
+                                    >
+                                        {option.display}
+                                    </p>
+                                </div>
                                 {option.component}
                             </div>
                         </>

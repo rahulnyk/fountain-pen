@@ -5,7 +5,10 @@ import { addDocuments } from ".";
 import { webLinksLoadAndSplit } from "../helpers/weblinks_load_and_split";
 
 export default async function embeddWebLink(reference: References) {
-    const docs = await webLinksLoadAndSplit([reference]);
-    const res = await addDocuments(docs);
-    return res;
+    try {
+        const docs = await webLinksLoadAndSplit([reference]);
+        await addDocuments(docs);
+    } catch (e: any) {
+        console.log(e?.message);
+    }
 }
