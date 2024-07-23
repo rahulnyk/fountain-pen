@@ -55,13 +55,14 @@ export async function generateOutline({
     const docs = await semanticSearch({ text: searchString, numResults: 5 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
     const system_prompt = [
-        "Develop an outline for an article discussing the topic give by the user.",
+        "Develop the outline for an article discussing the topic give by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",
         "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
         "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
         "Aim to create headings that cover distinct aspects of the topic that do not overlap with each other",
         "Remember to add conclusion and references headings towards the end of the outline",
-        "Respond with an array of objects as JSON array where every object is of the following type \n",
+        "Respond with a valid JSON with the following schema\n",
+        // "Respond with a JSON array of objects where every object is of the following type \n",
         `[{
             level: string ("heading"),
             text: string,
@@ -84,7 +85,7 @@ export async function generateOutline({
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
             ],
-            model: "gpt-3.5-turbo",
+            model: process.env.MODEL ? process.env.MODEL : "gpt-3.5-turbo",
             // response_format: { type: "json_object" },
         });
 

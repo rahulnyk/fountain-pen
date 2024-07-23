@@ -11,6 +11,6 @@ services:
         volumes:
             - .env.local:/app/.env.local
             # Data folder
-            - ./data:/app/data
+            - ./data:/app/data:rw
         environment:
             NODE_ENV: production

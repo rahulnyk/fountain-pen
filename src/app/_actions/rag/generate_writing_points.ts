@@ -48,7 +48,7 @@ export async function generateWritingPoints({
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
             ],
-            model: "gpt-3.5-turbo",
+            model: process.env.MODEL ? process.env.MODEL : "gpt-3.5-turbo",
             n: 1,
         });
 
