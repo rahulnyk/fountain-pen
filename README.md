@@ -31,13 +31,19 @@ docker build -t fountain-pen .
 
 ### Step 3:
 
-Run the docker image
+Start a project
 
 ```bash
-docker compose up
+./run_project.sh PROJECT_NAME
 ```
 
-## Getting Started
+This script will set up the project directories for you and start the docker container.
+
+the PROJECT_NAME can be an existing project name, or a new one. These projects are saved in the data folder.
+
+**NOTE: you might have to run `chmod +x run_project.sh` to make the run_project script executable.**
+
+## Getting Started Without Docker
 
 ### Step 1:
 
@@ -52,7 +58,8 @@ cd path/to/this_repo
 cp .env.local.example .env.local
 ```
 
-Update the .env.local file with your OpenAI API key.
+Update the .env.local file with your OpenAI API key, and your project name.
+each time you start a new project, the app will make the respective directories in the data folder.
 
 ### Step 2:
 
