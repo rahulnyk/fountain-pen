@@ -1,8 +1,10 @@
 "use server";
 
-import { OpenAI } from "openai"; // Import OpenAI library
+// import { OpenAI } from "openai"; // Import OpenAI library
 
-const openai = new OpenAI(); // Initialize OpenAI with your API key
+// const openai = new OpenAI(); // Initialize OpenAI with your API key
+
+import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
 
 import { ChatCompletion } from "openai/resources/index.mjs";
 
@@ -35,7 +37,7 @@ export async function paraphraseContent({
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
     let contentResponse = null;
     try {
-        const completion = await openai.chat.completions.create({
+        const completion = await wmChatCompletions({
             messages: [
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },

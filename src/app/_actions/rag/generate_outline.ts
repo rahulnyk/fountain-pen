@@ -1,40 +1,16 @@
 "use server";
 
-import { OpenAI } from "openai"; // Import OpenAI library
+// import { OpenAI } from "openai"; // Import OpenAI library
 import { semanticSearch } from "../vector_store";
-const openai = new OpenAI(); // Initialize OpenAI with your API key
+import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
+
+// const openai = new OpenAI(); // Initialize OpenAI with your API key
 
 export type outlineResponse = {
     level: string;
     text: string;
     description?: string;
 };
-
-const dummy_data: outlineResponse[] = [
-    {
-        level: "heading",
-        text: "Dummy Heading 1",
-        description:
-            "tLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    },
-    {
-        level: "subheading",
-        text: "Dummy Sub-Heading 1",
-        description: "this is a dummy subheading for test",
-    },
-    {
-        level: "heading",
-        text: "Dummy Heading 2",
-        description: "this is a dummy heading 2 for dev",
-    },
-    {
-        level: "subheading",
-        text: "Dummy Sub-Heading 2",
-        description: "this is a dummy heading 2 for dev",
-    },
-];
-
-const env = "dev";
 
 export async function generateOutline({
     title,
@@ -48,9 +24,6 @@ export async function generateOutline({
     }
     console.log("generate outline called");
 
-    // if (env === "dev") {
-    //     return dummy_data;
-    // }
     const searchString = `${title} \n ${titleNotes}`;
     const docs = await semanticSearch({ text: searchString, numResults: 5 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
@@ -80,7 +53,7 @@ export async function generateOutline({
     console.log("SYS\n", system_prompt, "USER\n", user_prompt);
     let outlineObject = null;
     try {
-        const completion = await openai.chat.completions.create({
+        const completion = await wmChatCompletions({
             messages: [
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },

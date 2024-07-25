@@ -6,6 +6,7 @@ import { Document } from "langchain/document";
 import { useEffect, useState } from "react";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
+// import { Toast } from "../../toast";
 // import { AddDocumentsButton } from "../references_panel/add_documents_button";
 
 export const Excerpts = ({ className }: { className?: string }) => {
@@ -83,6 +84,7 @@ export const Excerpts = ({ className }: { className?: string }) => {
                 {/* <div className="flex w-full justify-end">
                     <AddDocumentsButton />
                 </div> */}
+                {/* <Toast><p>This is a toast</p></Toast> */}
             </>
         </TabPanel>
     );

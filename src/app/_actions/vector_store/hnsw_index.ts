@@ -1,4 +1,5 @@
 "use server";
+// DO NOT USE THIS MODULE
 // Not using HNSW Lib
 // Using FAISS instead
 // This file can be safely deleted

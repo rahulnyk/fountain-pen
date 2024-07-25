@@ -50,4 +50,4 @@ else
 fi
 
 # Run the Docker Compose up command
-docker compose up
+# docker compose up

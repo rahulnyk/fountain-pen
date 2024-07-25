@@ -1,8 +1,10 @@
 "use server";
 
-import { OpenAI } from "openai"; // Import OpenAI library
+// import { OpenAI } from "openai"; // Import OpenAI library
 
-const openai = new OpenAI(); // Initialize OpenAI with your API key
+// const openai = new OpenAI(); // Initialize OpenAI with your API key
+
+import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
 
 import { semanticSearch } from "../vector_store";
 
@@ -50,7 +52,7 @@ export async function generateContent({
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
     let contentResponse = null;
     try {
-        const completion = await openai.chat.completions.create({
+        const completion = await wmChatCompletions({
             messages: [
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
@@ -61,8 +63,8 @@ export async function generateContent({
 
         contentResponse = completion.choices[0];
         // console.log(contentResponse);
-    } catch (e) {
-        console.log(e);
+    } catch (e: any) {
+        console.log(e?.messages);
         contentResponse = null;
     } finally {
         return contentResponse;
