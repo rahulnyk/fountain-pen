@@ -80,6 +80,7 @@ export async function generateOutline({
     console.log("SYS\n", system_prompt, "USER\n", user_prompt);
     let outlineObject = null;
     try {
+        if (process.env.BASE_URL){openai.baseURL = process.env.BASE_URL;} 
         const completion = await openai.chat.completions.create({
             messages: [
                 { role: "system", content: system_prompt },

@@ -10,6 +10,9 @@ const indexFilename = "faiss.index";
 
 const embeddingFunction = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
+    configuration: {
+        baseURL: process.env.BASE_URL ? process.env.BASE_URL : undefined,
+    },
 });
 
 async function loadOrCreateVectorStore(): Promise<FaissStore> {
@@ -21,7 +24,12 @@ async function loadOrCreateVectorStore(): Promise<FaissStore> {
         return await FaissStore.load(wd, embeddingFunction);
     } catch (e: any) {
         console.log("Existing store not found", e?.message);
-        return new FaissStore(new OpenAIEmbeddings(), {});
+        return new FaissStore(new OpenAIEmbeddings({
+            openAIApiKey: process.env.OPENAI_API_KEY,
+            configuration: {
+                baseURL: process.env.BASE_URL ? process.env.BASE_URL : undefined,
+            },
+        }), {});
     }
 }
 

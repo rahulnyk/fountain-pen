@@ -35,6 +35,7 @@ export async function paraphraseContent({
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
     let contentResponse = null;
     try {
+        if (process.env.BASE_URL){openai.baseURL = process.env.BASE_URL;} 
         const completion = await openai.chat.completions.create({
             messages: [
                 { role: "system", content: system_prompt },

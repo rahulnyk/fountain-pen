@@ -11,6 +11,9 @@ const DIRECTORY = "data/wd/";
 
 const embeddingFunction = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY,
+    configuration: {
+        baseURL: process.env.BASE_URL ? process.env.BASE_URL : undefined,
+    },
 });
 
 export async function rebuildVectorStore(docs: Document[]) {
