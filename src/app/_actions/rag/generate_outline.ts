@@ -55,7 +55,7 @@ export async function generateOutline({
     const docs = await semanticSearch({ text: searchString, numResults: 5 });
     const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
     const system_prompt = [
-        "Develop the outline for an article discussing the topic give by the user.",
+        "Develop the outline for an article discussing the topic given by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",
         "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
         "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
