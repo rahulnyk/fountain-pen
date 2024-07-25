@@ -5,7 +5,7 @@ services:
         image: fountain-pen:latest
         build:
             context: .
-            target: production
+            target: runner
         ports:
             - "3000:3000"
         volumes:
