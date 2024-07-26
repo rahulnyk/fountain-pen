@@ -14,7 +14,7 @@ export async function pdfsDirLoadAndSplit(): Promise<
 > {
     const dd = await getDocumentsDir();
     if (!dd) {
-        throw Error("Not able to find the project directory");
+        throw new Error("Not able to find the project directory");
     }
     const splitter = await textSplitter();
     const directoryLoader = new DirectoryLoader(dd, {

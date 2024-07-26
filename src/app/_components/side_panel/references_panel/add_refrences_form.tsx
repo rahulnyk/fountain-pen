@@ -107,7 +107,7 @@ export const AddReferenceForm = ({}: {}) => {
                 <Button
                     type="submit"
                     loading={isPending}
-                    className="bg-gradient-to-r from-indigo-700 to-blue-700"
+                    className=""
                 >
                     ADD WEB PAGE
                 </Button>

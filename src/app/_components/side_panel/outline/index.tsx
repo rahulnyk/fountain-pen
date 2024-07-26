@@ -13,6 +13,9 @@ import { TabPanel } from "../tab_panel";
 import { CustomElement } from "../../main_editor/types";
 import { Transforms, Path } from "slate";
 import { RiArrowLeftDoubleFill } from "react-icons/ri";
+import { OutlineResponse } from "@/app/_actions/return_types";
+import toast from "react-hot-toast";
+import { FpToaster } from "../../fp_toast";
 
 export const Outline = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
@@ -23,17 +26,21 @@ export const Outline = ({ className }: { className?: string }) => {
     const titleNotes = useSectionContext((state) => state.titleNotes);
 
     const getOutline = useCallback(async () => {
-        const outlineRes = await generateOutline({
+        const outlineRes: OutlineResponse = await generateOutline({
             title,
             titleNotes,
         });
-        return outlineRes ? outlineRes : [];
+        return outlineRes;
     }, [title, titleNotes]);
 
     const refresh = async () => {
         setIsWaiting(true);
         const outlineRes = await getOutline();
-        setOutline(outlineRes);
+        if (outlineRes.error) {
+            toast.error(outlineRes.error)
+        } else {
+            setOutline(outlineRes.data);
+        }
         setIsWaiting(false);
         setActive(false);
     };
@@ -115,6 +122,7 @@ export const Outline = ({ className }: { className?: string }) => {
                     </div>
                 ))}
             </div>
+            <FpToaster />
         </TabPanel>
     );
 };

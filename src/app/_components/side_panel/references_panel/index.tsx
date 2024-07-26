@@ -33,7 +33,7 @@ export const ReferencesPanel = ({ className }: { className?: string }) => {
                 <div className="divider px-0 py-4 text-zinc-500 dark:text-zinc-600 text-xs font-bold">
                     OR
                 </div>
-                <AddDocumentsButton className="mx-4 justify-center content-center bg-gradient-to-r from-indigo-700 to-blue-700" />
+                <AddDocumentsButton className="mx-4 justify-center content-center" />
                 {/* </div> */}
             </TabPanel>
         </>

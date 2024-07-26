@@ -5,8 +5,10 @@
 import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
 
 import { semanticSearch } from "../vector_store";
+import { SearchResults } from "../return_types";
 // import { ChatCompletion } from "openai/resources/index.mjs";
-import { wpSuggestion } from "@/app/_components/side_panel/writing_points_suggestions/writing_points_suggestions_card";
+// import { wpSuggestion } from "@/app/_components/side_panel/writing_points_suggestions/writing_points_suggestions_card";
+import { ReturnParams } from "../return_types";
 
 export async function generateWritingPoints({
     heading,
@@ -16,13 +18,16 @@ export async function generateWritingPoints({
     heading?: string | null;
     notes?: string | null;
     // text?: string | null;
-}): Promise<wpSuggestion[] | null> {
+}): Promise<ReturnParams> {
     if (!heading && !notes) {
-        return null;
+        return {data: null, error: "I need Headings or Note before I can suggest the writing points."};
     }
     const searchString = `${heading} \n ${notes}`;
-    const docs = await semanticSearch({ text: searchString, numResults: 5 });
-    const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
+    const res: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
+    if (res.error) {
+        return {data: [], error: res.error};
+    }
+    const docsString = res.documents.map((doc) => doc.pageContent).join("\n-\n");
 
     const system_prompt = [
         "You are tasked with extracting key points from a collection of documents.",
@@ -43,7 +48,6 @@ export async function generateWritingPoints({
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
-    let wpResponse = null;
     try {
         const completion = await wmChatCompletions({
             messages: [
@@ -59,11 +63,12 @@ export async function generateWritingPoints({
             ""
         );
         // console.log(writingPoints);
-        wpResponse = JSON.parse(writingPoints ? writingPoints : "[]");
-    } catch (e) {
-        console.log(e);
-        wpResponse = null;
-    } finally {
-        return wpResponse;
-    }
+        if (!writingPoints) {
+            throw new Error("Could not extract writing points from LLM response. Please try again")
+        }
+        const wpResponse = JSON.parse(writingPoints);
+        return {data: wpResponse, error: null};
+    } catch (e: any) {
+        return {data: null, error: e?.message}
+    } 
 }

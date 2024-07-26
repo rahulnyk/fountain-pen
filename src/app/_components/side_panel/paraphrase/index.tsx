@@ -10,6 +10,8 @@ import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
 import { ChatCompletion } from "openai/resources/index.mjs";
 import { Button } from "../../button";
+import { ContentSuggestionResponse } from "@/app/_actions/return_types";
+import toast from "react-hot-toast";
 
 export const Paraphrase = ({ className }: { className?: string }) => {
     // const heading = useSectionContext((state) => state.heading);
@@ -24,12 +26,12 @@ export const Paraphrase = ({ className }: { className?: string }) => {
 
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
     const [paraphrasedContent, setParaphrasedContent] =
-        useState<ChatCompletion.Choice | null>(null);
+        useState<string>('');
     const [active, setActive] = useState<boolean>(false);
 
     const getParaphrasedContent = useCallback(async () => {
         // const inputStyle = style ? style : defaultStyles.Formal;
-        const content = await paraphraseContent({
+        const content: ContentSuggestionResponse = await paraphraseContent({
             text,
             style,
         });
@@ -39,9 +41,13 @@ export const Paraphrase = ({ className }: { className?: string }) => {
     const refresh = async () => {
         setIsWaiting(true);
 
-        const content = await getParaphrasedContent();
-        setParaphrasedContent(content);
-        console.log(content);
+        const result = await getParaphrasedContent();
+        if (result.error) {
+            toast.error(result.error)
+        } else {
+            setParaphrasedContent(result.data);
+        }
+
         setIsWaiting(false);
         // setActive(false);
     };
@@ -73,12 +79,12 @@ export const Paraphrase = ({ className }: { className?: string }) => {
             <div className="flex-col space-y-8 w-full">
                 <div className="inline-flex flex-wrap justify-center align-middle space-x-4">
                     {Object.entries(defaultStyles).map(([key, value]) => (
-                        <button
+                        <Button
                             type="reset"
                             className={clsx(
                                 "text-xs px-2 rounded-full py-1",
-                                "bg-gradient-to-r from-indigo-700 to-blue-700",
-                                "text-white dark:text-zinc-200 text-xs font-normal"
+                                // "bg-gradient-to-r from-indigo-700 to-blue-700",
+                                "text-xs font-normal"
                             )}
                             onClick={() => {
                                 setStyle(value);
@@ -86,7 +92,7 @@ export const Paraphrase = ({ className }: { className?: string }) => {
                             key={`paraphrase_${key}`}
                         >
                             {key}
-                        </button>
+                        </Button>
                     ))}
                 </div>
                 <div className="space-y-2 my-0 mx-0 w-full">
@@ -103,13 +109,13 @@ export const Paraphrase = ({ className }: { className?: string }) => {
                     active={active}
                     type="button"
                     loading={isWaiting}
-                    className="bg-gradient-to-r from-indigo-700 to-blue-700"
+                    // className="bg-gradient-to-r from-indigo-700 to-blue-700"
                     onClick={refresh}
                 >
                     REPHRASE THE PARAGRAPH
                 </Button>
                 <p className="whitespace-pre-line">
-                    {paraphrasedContent && paraphrasedContent.message.content}
+                    {paraphrasedContent}
                 </p>
             </div>
         </TabPanel>

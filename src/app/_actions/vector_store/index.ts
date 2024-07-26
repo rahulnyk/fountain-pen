@@ -1,5 +1,5 @@
 "use server";
-
+const projectDir = process.env.PROJECT_DIR;
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
 // import { OpenAIEmbeddings } from "@langchain/openai";
 import { WalmartEmbeddings } from "@/app/_actions/helpers/llm-gateway/walmart_embeddings";
@@ -9,7 +9,9 @@ import { getWorkingDir } from "../helpers/project_directory";
 // const DIRECTORY = "data/wd/";
 const indexFilename = "faiss.index";
 import { EmbeddingsParams } from "@langchain/core/embeddings";
-
+import { ReturnParams } from "../return_types";
+import { promises } from "dns";
+import { SearchResults } from "../return_types";
 // const embeddingFunction = new OpenAIEmbeddings({
 //     openAIApiKey: process.env.OPENAI_API_KEY,
 // });
@@ -22,7 +24,7 @@ const embeddingFunction = new WalmartEmbeddings(embeddingParams)
 async function loadOrCreateVectorStore(): Promise<FaissStore> {
     const wd = await getWorkingDir();
     if (!wd) {
-        throw Error("Not able to find the working directory");
+        throw new Error("Not able to find the working directory");
     }
     try {
         return await FaissStore.load(wd, embeddingFunction);
@@ -32,37 +34,36 @@ async function loadOrCreateVectorStore(): Promise<FaissStore> {
     }
 }
 
+
+
 export async function rebuildVectorStore(docs: Document[]) {
     if (docs.length == 0) {
-        return;
+        throw new Error("No documents to embedd");
     }
     const wd = await getWorkingDir();
-    if (!wd) {
-        throw Error("Not able to find the working directory");
-    }
-    try {
-        fs.unlinkSync(`${wd}/${indexFilename}`);
-        console.log("Old Index deleted.");
-    } catch (e: any) {
-        console.error(
-            `Not able to delete ${wd}/${indexFilename} - `,
-            e?.message
-        );
-    }
+    // if (fs.existsSync(`${wd}/${indexFilename}`)) {
+    //     fs.unlinkSync(`${wd}/${indexFilename}`);
+    //     console.log("Old Index deleted.");
+    // }
     const store = await loadOrCreateVectorStore();
     await store.addDocuments(docs);
     await store.save(wd);
+    // return {data: null, error: null}
+    // } catch (e: any) {
+    //     return {data: null, error: e?.message}
+    // }
 }
 
 export async function addDocuments(docs: Document[]) {
     const wd = await getWorkingDir();
     if (!wd) {
-        throw Error("Not able to find the working directory");
+        throw new Error("Not able to find the working directory");
     }
     const store = await loadOrCreateVectorStore();
     await store.addDocuments(docs);
     store.save(wd);
 }
+
 
 export async function semanticSearch({
     text,
@@ -70,19 +71,18 @@ export async function semanticSearch({
 }: {
     text: string;
     numResults: number;
-}): Promise<Document<Record<string, any>>[]> {
+}): Promise<SearchResults> {
     console.log(text);
-    let result: Document[] = [];
     try {
         const wd = await getWorkingDir();
         if (!wd) {
-            throw Error("Not able to find the working directory");
+            throw new Error("Not able to find the working directory");
         }
         const store = await FaissStore.load(wd, embeddingFunction);
-        result = await store.similaritySearch(text, numResults);
+        let documents = await store.similaritySearch(text, numResults);
+        return {documents, error: undefined}
     } catch (e: any) {
         console.log("Could not retrieve results - ", e?.message);
-    } finally {
-        return result;
-    }
+        return {documents: [], error: e.message}
+    } 
 }

@@ -37,11 +37,9 @@ export class WalmartEmbeddings extends Embeddings {
                 embed_docs_list.push(embedding_object.embedding);
             }
             return embed_docs_list;
-        } catch (err: any) {
-            console.error('Error while calling LLM Gateway API call', err?.messages);
-            return [];
-        } finally {
-            console.log('LLM Gateway API call completes');
-        }
+        } catch (e: any) {
+            console.log('LLM Gateway API call success');
+            throw new Error( `Error while calling LLM Gateway API call: ${e?.message}` );
+        } 
     }
 }

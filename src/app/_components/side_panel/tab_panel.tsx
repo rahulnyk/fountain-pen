@@ -39,7 +39,7 @@ export const TabPanel: React.FC<CustomComponentProps> = ({
                     <Button
                         onClick={onClick}
                         active={buttonActive}
-                        className="text-xs font-normal bg-gradient-to-r from-indigo-700 to-blue-700"
+                        className="text-xs font-normal"
                         loading={isWaiting}
                     >
                         {buttonText}

@@ -2,15 +2,18 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { ChatCompletion } from "openai/resources/index.mjs";
+// import { ChatCompletion } from "openai/resources/index.mjs";
 import { generateContent } from "@/app/_actions/rag/generate_content";
 import { ContentCard } from "./content_card";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
+import { ContentSuggestionResponse } from "@/app/_actions/return_types";
+import toast from "react-hot-toast";
+import { FpToaster } from "../../fp_toast";
 
 export const ContentSuggestions = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [content, setContent] = useState<ChatCompletion.Choice | null>(null);
+    const [content, setContent] = useState<string | null>(null);
     const [active, setActive] = useState<boolean>(false);
 
     const heading = useSectionContext((state) => state.heading);
@@ -18,7 +21,7 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
     const text = useSectionContext((state) => state.text);
 
     const getContentSuggestions = useCallback(async () => {
-        const contentSuggestions = await generateContent({
+        const contentSuggestions: ContentSuggestionResponse = await generateContent({
             heading,
             notes,
             text,
@@ -29,7 +32,11 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
     const refresh = async () => {
         setIsWaiting(true);
         const contentSuggestions = await getContentSuggestions();
-        setContent(contentSuggestions);
+        if (contentSuggestions.error) {
+            toast.error(contentSuggestions.error)
+        } else {
+            setContent(contentSuggestions.data);
+        }
         // console.log("From Content Suggestion Component", contentSuggestions);
         setIsWaiting(false);
         setActive(false);
@@ -50,8 +57,9 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
             buttonText="SUGGEST CONTENT"
         >
             <div className="space-y-2 my-0 mx-0 w-auto">
-                {content && <ContentCard choice={content} />}
+                {content && <ContentCard content={content} />}
             </div>
+            <FpToaster />
         </TabPanel>
     );
 };

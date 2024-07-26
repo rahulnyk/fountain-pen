@@ -8,7 +8,7 @@ export const textStyle = Lato({
     weight: "300",
 });
 
-export const ContentCard = ({ choice }: { choice: ChatCompletion.Choice }) => {
+export const ContentCard = ({ content }: { content: string }) => {
     return (
         <div
             className={clsx(
@@ -22,7 +22,7 @@ export const ContentCard = ({ choice }: { choice: ChatCompletion.Choice }) => {
                     textStyle
                 )}
             >
-                {choice.message.content}
+                {content}
             </div>
             <hr className="dark:border-zinc-700 my-4" />
         </div>

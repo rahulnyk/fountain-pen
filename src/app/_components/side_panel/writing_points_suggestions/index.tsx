@@ -7,7 +7,9 @@ import { generateWritingPoints } from "@/app/_actions/rag/generate_writing_point
 import { wpSuggestion } from "./writing_points_suggestions_card";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
-
+import { ReturnParams } from "@/app/_actions/return_types";
+import toast from "react-hot-toast";
+import { FpToaster } from "../../fp_toast";
 export const WritingPointsSuggestions = ({
     className,
 }: {
@@ -35,8 +37,12 @@ export const WritingPointsSuggestions = ({
     const refresh = async () => {
         setIsWaiting(true);
 
-        const writingPointsSuggestions = await getWritingPointsSuggestions();
-        setWritingPoints(writingPointsSuggestions);
+        const writingPointsSuggestions: ReturnParams = await getWritingPointsSuggestions();
+        if (writingPointsSuggestions.error) {
+            toast.error(writingPointsSuggestions.error)
+        } else {
+            setWritingPoints(writingPointsSuggestions.data);
+        }
 
         setIsWaiting(false);
         setActive(false);
@@ -65,6 +71,7 @@ export const WritingPointsSuggestions = ({
                         />
                     ))}
             </div>
+            <FpToaster />
         </TabPanel>
     );
 };

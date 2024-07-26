@@ -6,7 +6,7 @@
 
 import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
 
-import { ChatCompletion } from "openai/resources/index.mjs";
+import { ContentSuggestionResponse } from "../return_types";
 
 export async function paraphraseContent({
     text,
@@ -14,9 +14,9 @@ export async function paraphraseContent({
 }: {
     text: string | null;
     style: string | null | undefined;
-}): Promise<ChatCompletion.Choice | null> {
+}): Promise<ContentSuggestionResponse> {
     if (!style && !text) {
-        return null;
+        return {data: "", error: "Please provide a style and place your cursor on the text your want me to rephrase."}
     }
 
     const system_prompt = [
@@ -35,7 +35,6 @@ export async function paraphraseContent({
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
-    let contentResponse = null;
     try {
         const completion = await wmChatCompletions({
             messages: [
@@ -46,11 +45,10 @@ export async function paraphraseContent({
             n: 1,
         });
 
-        contentResponse = completion.choices[0];
-    } catch (e) {
+        const content = completion.choices[0].message.content
+        return {data: content?content:'', error: null}
+    } catch (e: any) {
         console.log(e);
-        contentResponse = null;
-    } finally {
-        return contentResponse;
-    }
+        return {data: '', error: e?.message}
+    } 
 }

@@ -10,6 +10,8 @@ import { semanticSearch } from "../vector_store";
 
 import { ChatCompletion } from "openai/resources/index.mjs";
 
+import { SearchResults, ReturnParams, ContentSuggestionResponse } from "../return_types";
+
 export async function generateContent({
     heading,
     notes,
@@ -18,13 +20,17 @@ export async function generateContent({
     heading: string | null;
     notes: string | null;
     text: string | null;
-}): Promise<ChatCompletion.Choice | null> {
+}): Promise<ContentSuggestionResponse> {
+
     if (!heading && !notes && !text) {
-        return null;
+        return {data: "", error: "I need Section Heading and Notes before I can suggest some content."};
     }
     const searchString = `${heading} \n ${notes} \n ${text}`;
-    const docs = await semanticSearch({ text: searchString, numResults: 3 });
-    const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
+    const results: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
+    if (results.error) {
+        return {data: "", error: results.error};
+    }
+    const docsString = results.documents.map((doc) => doc.pageContent).join("\n-\n");
 
     const system_prompt = [
         "You are an expert at writing non-fiction content. Your job is to assist the user write a small section of an article",
@@ -50,7 +56,6 @@ export async function generateContent({
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
-    let contentResponse = null;
     try {
         const completion = await wmChatCompletions({
             messages: [
@@ -61,12 +66,11 @@ export async function generateContent({
             n: 1,
         });
 
-        contentResponse = completion.choices[0];
+        const content = completion.choices[0].message.content
+        return { data: content? content: '' }
         // console.log(contentResponse);
     } catch (e: any) {
         console.log(e?.messages);
-        contentResponse = null;
-    } finally {
-        return contentResponse;
-    }
+        return {data: "", error: e?.message}
+    } 
 }

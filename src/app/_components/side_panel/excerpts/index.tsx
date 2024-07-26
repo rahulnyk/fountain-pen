@@ -1,12 +1,14 @@
 "use client";
 import { semanticSearch } from "@/app/_actions/vector_store";
+import { SearchResults } from "@/app/_actions/return_types";
 import clsx from "clsx";
 import { ExcerptCard } from "./excerpt_card";
 import { Document } from "langchain/document";
 import { useEffect, useState } from "react";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
-// import { Toast } from "../../toast";
+import toast, { Toaster, resolveValue } from 'react-hot-toast';
+import { FpToaster } from "../../fp_toast";
 // import { AddDocumentsButton } from "../references_panel/add_documents_button";
 
 export const Excerpts = ({ className }: { className?: string }) => {
@@ -21,15 +23,22 @@ export const Excerpts = ({ className }: { className?: string }) => {
     const text = useSectionContext((state) => state.text);
 
     const searchDocs = async () => {
+        if (!heading && !notes && !text) {
+            toast.error('I need some context before searching for the relevant research material.');
+            return
+        }
         setIsWaiting(true);
-        if (heading || notes || text) {
-            const content = [heading, notes, text].join("\n");
-            const results = await semanticSearch({
-                text: content,
-                numResults: 10,
-            });
-            setDocuments(results);
-            results.map((r) => console.log(r.metadata));
+        const content = [heading, notes, text].join("\n");
+        const results: SearchResults = await semanticSearch({
+            text: content,
+            numResults: 10,
+        });
+        if (results.error) {
+            toast.error(results.error);
+        } else {
+            let documents = results.documents
+            setDocuments(results.documents);
+            documents.map((r) => console.log(r.metadata));
         }
         setActive(false);
         setIsWaiting(false);
@@ -81,11 +90,8 @@ export const Excerpts = ({ className }: { className?: string }) => {
                         />
                     )}
                 </div>
-                {/* <div className="flex w-full justify-end">
-                    <AddDocumentsButton />
-                </div> */}
-                {/* <Toast><p>This is a toast</p></Toast> */}
             </>
+            <FpToaster />
         </TabPanel>
     );
 };

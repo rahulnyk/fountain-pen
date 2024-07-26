@@ -33,7 +33,7 @@ const LDB = async (filename: string) => {
     const defaultData: DbData = { articles: [], references: [] };
     const wd = await getWorkingDir();
     if (!wd) {
-        throw Error("Not able to find the project directory");
+        throw new Error("Not able to find the project directory");
     }
     const db = await JSONFilePreset<DbData>(`${wd}/${filename}`, defaultData);
     return db;

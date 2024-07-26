@@ -27,14 +27,14 @@ export default function Home() {
                 </div>
             </div>
             <Link href="/editor">
-                <Button className="my-10 bg-gradient-to-r from-indigo-700 to-blue-800">
+                <Button className="my-10">
                     <div
                         className={clsx(
-                            "text-xl font-medium px-2 py-0",
+                            "text-lg font-medium px-2 py-0",
                             generalText.className
                         )}
                     >
-                        Start Writing
+                        START WRITING
                     </div>
                 </Button>
             </Link>

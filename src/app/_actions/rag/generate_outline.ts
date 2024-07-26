@@ -3,7 +3,8 @@
 // import { OpenAI } from "openai"; // Import OpenAI library
 import { semanticSearch } from "../vector_store";
 import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
-
+import { Outline, SearchResults } from "../return_types";
+import { OutlineResponse } from "../return_types";
 // const openai = new OpenAI(); // Initialize OpenAI with your API key
 
 export type outlineResponse = {
@@ -18,15 +19,17 @@ export async function generateOutline({
 }: {
     title: string | null;
     titleNotes?: string | null;
-}): Promise<outlineResponse[] | null> {
+}): Promise<OutlineResponse> {
     if (!title && !titleNotes) {
-        return null;
+        return {data: [], error: "I need a Title and some Notes about your article before I can suggest an outline"};
     }
-    console.log("generate outline called");
 
     const searchString = `${title} \n ${titleNotes}`;
-    const docs = await semanticSearch({ text: searchString, numResults: 5 });
-    const docsString = docs.map((doc) => doc.pageContent).join("\n-\n");
+    const results: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
+    if (results.error) {
+        return {data: [], error: results.error};
+    }
+    const docsString = results.documents.map((doc) => doc.pageContent).join("\n-\n");
     const system_prompt = [
         "Develop the outline for an article discussing the topic give by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",
@@ -51,7 +54,6 @@ export async function generateOutline({
     ].join("\n");
 
     console.log("SYS\n", system_prompt, "USER\n", user_prompt);
-    let outlineObject = null;
     try {
         const completion = await wmChatCompletions({
             messages: [
@@ -67,11 +69,12 @@ export async function generateOutline({
             ""
         );
         // console.log(outlineResponse);
-        outlineObject = JSON.parse(outlineResponse ? outlineResponse : "[]");
-    } catch (e) {
-        outlineObject = null;
+        if (!outlineResponse) {
+            return {data: [], error: "Could not get a response from LLM. Please try again"};
+        }
+        return {data: JSON.parse(outlineResponse)}
+    } catch (e: any) {
         console.log(e);
-    } finally {
-        return outlineObject;
-    }
+        return {data: [], error: e?.message}
+    } 
 }

@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Button } from "../../button";
 import { embeddAllDocuments } from "@/app/_actions/vector_store/embedd_all_documents";
 import { LoadingSpinner } from "../../loading_spinner";
+import { FpToaster } from "../../fp_toast";
 import clsx from "clsx";
+import toast from "react-hot-toast";
 
 export const AddDocumentsButton = ({ className }: { className?: string }) => {
     const [isPending, setIsPending] = useState(false);
@@ -11,9 +13,13 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
     const handleOnClick = async () => {
         setIsPending(true);
         try {
-            await embeddAllDocuments();
+            const result = await embeddAllDocuments();
+            if (result.error){
+                toast.error(result.error)
+            }
+            toast.success(result.message ? result.message : "Embedded all Research Documents")
         } catch (e: any) {
-            console.log("Embedding failed with error - ", e?.message);
+            toast.error(e.message);
         } finally {
             console.log("document embedding done");
             setIsPending(false);
@@ -21,12 +27,15 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
     };
 
     return (
-        <Button
-            onClick={handleOnClick}
-            loading={isPending}
-            className={clsx("w-40", className)}
-        >
-            ADD DOCUMENTS
-        </Button>
+        <>
+            <Button
+                onClick={handleOnClick}
+                loading={isPending}
+                className={clsx("w-40", className)}
+            >
+                ADD DOCUMENTS
+            </Button>
+            <FpToaster />
+        </>
     );
 };

@@ -7,8 +7,6 @@ import { ChatCompletion } from "openai/resources/index.mjs";
 
 export async function wmChatCompletions(body: any): Promise<ChatCompletion> {
 
-    console.log("\n\n\n\n I Am In \n\n\n\n\n");
-
     const requestBody = {
         "model": readEnvProperty("WALMART_GATEWAY_MODEL", true),
         "task": "chat/completions",

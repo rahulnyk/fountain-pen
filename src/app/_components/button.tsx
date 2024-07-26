@@ -23,13 +23,12 @@ export function Button({
             className={clsx(
                 "flex w-auto content-center justify-center",
                 "focus:ring-4 focus:outline-none rounded-lg px-3 py-2",
-                "text-white dark:text-zinc-200 text-xs font-normal",
-                "bg-blue-600 hover:bg-blue-700  focus:ring-blue-300",
-                "dark:bg-blue-800 dark:hover:bg-blue-900 dark:focus:ring-blue-950",
-                !active &&
-                    "dark:bg-blue-900 dark:text-zinc-500 hover:dark:bg-blue-900 hover:dark:text-zinc-500",
-                !active &&
-                    " bg-blue-200 text-zinc-100 hover:bg-blue-200 hover:text-zinc-100",
+                "text-black-900 dark:text-zinc-200 text-xs font-normal",
+                "bg-gradient-to-r from-indigo-300 to-blue-300",
+                "dark:bg-gradient-to-r dark:from-indigo-700 dark:to-blue-700",
+                active && "hover:bg-gradient-to-r hover:from-indigo-200 hover:to-blue-200",
+                active && "dark:hover:bg-gradient-to-r dark:hover:from-indigo-800 dark:hover:to-blue-800",
+                !active && "opacity-50",
                 className
             )}
             disabled={!active}
