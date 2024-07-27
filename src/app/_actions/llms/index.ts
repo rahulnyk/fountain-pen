@@ -20,6 +20,7 @@ export function LLMProvider(): llmProvider {
     switch (LLM_PROVIDER) {
         case "openai": {
             const openai = new OpenAI();
+            if (process.env.BASE_URL){openai.baseURL = process.env.BASE_URL;}
             const embeddingFunction = new OpenAIEmbeddings({
                 openAIApiKey: process.env.OPENAI_API_KEY,
             });
