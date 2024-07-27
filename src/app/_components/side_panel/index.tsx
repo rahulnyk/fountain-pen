@@ -7,7 +7,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import { AssistantPanel } from "./assistant_panel";
 
 const SidePanel = ({ className }: { className?: string }) => {
-    const pannelWidthOptions = ["w-1/3", "w-2/3"];
+    const pannelWidthOptions = ["w-0", "w-1/3", "w-2/3"];
     const [panelWidthOption, setPanelWidthOption] = useState<number>(0);
     const [panelWidth, setPanelWidth] = useState<string>(pannelWidthOptions[0]);
 

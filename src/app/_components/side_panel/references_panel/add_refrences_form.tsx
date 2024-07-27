@@ -67,7 +67,7 @@ export const AddReferenceForm = ({}: {}) => {
         <div className="w-full">
             <form onSubmit={handleSubmit} className="px-4 pt-6 pb-8 mb-4">
                 <div className="mb-4">
-                    <label className="block dark:text-zinc-500 text-zinc-300 text-xs mb-2 w-full">
+                    <label className="block dark:text-zinc-500 text-zinc-400 text-xs mb-2 w-full">
                         Source:
                         <input
                             type="url"
@@ -80,7 +80,7 @@ export const AddReferenceForm = ({}: {}) => {
                     </label>
                 </div>
                 <div className="mb-4">
-                    <label className="block dark:text-zinc-500 text-zinc-300 text-xs mb-2 w-full">
+                    <label className="block dark:text-zinc-500 text-zinc-400 text-xs mb-2 w-full">
                         Name:
                         <input
                             type="text"
@@ -93,8 +93,8 @@ export const AddReferenceForm = ({}: {}) => {
                     </label>
                 </div>
                 <div className="mb-4">
-                    <label className="block dark:text-zinc-500 text-zinc-300 text-xs mb-2 w-full">
-                        Description:
+                    <label className="block dark:text-zinc-500 text-zinc-400 text-xs mb-2 w-full">
+                        Optional Description:
                         <input
                             type="text"
                             name="description"
@@ -104,11 +104,7 @@ export const AddReferenceForm = ({}: {}) => {
                         />
                     </label>
                 </div>
-                <Button
-                    type="submit"
-                    loading={isPending}
-                    className=""
-                >
+                <Button type="submit" loading={isPending} className="">
                     ADD WEB PAGE
                 </Button>
             </form>

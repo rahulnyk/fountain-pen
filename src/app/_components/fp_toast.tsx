@@ -18,7 +18,7 @@ export function FpToaster({ className }: FpToasterProps) {
                         "flex flex-inline space-x-3 justify-center items-center shadow-md",
                         "border-left-2 border-white text-bold",
                         generalText.className,
-                        "rounded-lg p-4 px-6 m-12 w-auto",
+                        "rounded-lg p-4 px-6 m-12 w-auto min-w-60",
                         t.type == "blank" &&
                             "bg-indigo-100 dark:bg-indigo-900 text-indigo-900 dark:text-indigo-100",
                         t.type == "error" &&

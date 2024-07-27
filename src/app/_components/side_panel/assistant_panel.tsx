@@ -17,6 +17,7 @@ import { ReferencesPanel } from "./references_panel";
 import clsx from "clsx";
 import { Paraphrase } from "./paraphrase";
 import { FaPenNib } from "react-icons/fa";
+import { FaPenToSquare } from "react-icons/fa6";
 
 export type tabOption = {
     action: string;
@@ -31,7 +32,7 @@ export type tabOption = {
 const tabOptions: tabOption[] = [
     {
         action: "webLinks",
-        display: "Add References",
+        display: "Add Research Relevant To The Article",
         id: "assistant_tab_1",
         description:
             "Use my research to suggest writing points for the current section",
@@ -41,7 +42,7 @@ const tabOptions: tabOption[] = [
     },
     {
         action: "semanticSearch",
-        display: "Search Documents",
+        display: "Find Relevant Research For Current Section",
         id: "assistant_tab_2",
         description:
             "Search for exerpts in my documents relevant to current section",
@@ -51,7 +52,7 @@ const tabOptions: tabOption[] = [
     },
     {
         action: "suggestWritingPoints",
-        display: "Writing Points",
+        display: "Extract Writing Points From Research",
         id: "assistant_tab_3",
         description:
             "Use my research to suggest writing points for the current section",
@@ -61,7 +62,7 @@ const tabOptions: tabOption[] = [
     },
     {
         action: "generateHeadings",
-        display: "Generate Headings",
+        display: "Suggest Outline For The Article",
         id: "assistant_tab_4",
         description:
             "Headings for the article based on the title and the title notes",
@@ -71,7 +72,7 @@ const tabOptions: tabOption[] = [
     },
     {
         action: "suggestFromResearch",
-        display: "Suggest Content",
+        display: "Suggest Content For The Current Section",
         id: "assistant_tab_5",
         description:
             "Content based on the current section heading, text and notes",
@@ -81,10 +82,10 @@ const tabOptions: tabOption[] = [
     },
     {
         action: "paraphrase",
-        display: "Paraphrase Content",
+        display: "Paraphrase Current Section Content",
         id: "assistant_tab_6",
         description: "Paraphrase the content based on a particular style",
-        icon: <FaPenNib className="mr-1 size-5 py-1" />,
+        icon: <FaPenToSquare className="mr-1 size-5 py-1" />,
         component: <Paraphrase />,
         disabled: false,
     },
@@ -192,7 +193,7 @@ export const AssistantPanel = () => {
                                     "dark:bg-zinc-800 bg-white w-full"
                                 )}
                             >
-                                <div className="flex w-full relative">
+                                <div className="flex w-full relative py-2">
                                     <p
                                         className={clsx(
                                             "absolute right-2 top-0 text-xs opacity-50"

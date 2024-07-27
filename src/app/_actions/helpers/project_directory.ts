@@ -1,9 +1,9 @@
 // import * as fs from "fs/promises";
 import * as fs from "fs";
 
-const project_dir = process.env.PROJECT_DIR;
+const projectDir = process.env.PROJECT_DIR;
 const baseDir = "data";
-const projPath = `${baseDir}/${project_dir}`;
+const projPath = `${baseDir}/${projectDir}`;
 const workingDirName = "wd";
 const documentsDirName = "documents";
 // Default directories in case the project directory fail to be created.
