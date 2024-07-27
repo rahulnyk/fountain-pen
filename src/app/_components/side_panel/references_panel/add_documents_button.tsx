@@ -14,10 +14,14 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
         setIsPending(true);
         try {
             const result = await embeddAllDocuments();
-            if (result.error){
-                toast.error(result.error)
+            if (result.error) {
+                toast.error(result.error);
             }
-            toast.success(result.message ? result.message : "Embedded all Research Documents")
+            toast.success(
+                result.message
+                    ? result.message
+                    : "Embedded all Research Documents"
+            );
         } catch (e: any) {
             toast.error(e.message);
         } finally {
@@ -28,12 +32,16 @@ export const AddDocumentsButton = ({ className }: { className?: string }) => {
 
     return (
         <>
+            <p className="right-2 top-0 text-xs opacity-50 p-4">
+                Add PDF files to the project documents directory and press this
+                button
+            </p>
             <Button
                 onClick={handleOnClick}
                 loading={isPending}
                 className={clsx("w-40", className)}
             >
-                ADD DOCUMENTS
+                ADD PDF DOCUMENTS
             </Button>
             <FpToaster />
         </>

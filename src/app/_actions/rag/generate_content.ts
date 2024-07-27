@@ -3,7 +3,7 @@
 import { semanticSearch } from "../vector_store";
 import { SearchResults, ContentSuggestionResponse } from "../return_types";
 import { LLMProvider } from "../llms";
-const [chatFunction,] = LLMProvider();
+const [chatFunction] = LLMProvider();
 
 export async function generateContent({
     heading,
@@ -14,16 +14,23 @@ export async function generateContent({
     notes: string | null;
     text: string | null;
 }): Promise<ContentSuggestionResponse> {
-
     if (!heading && !notes && !text) {
-        return { data: "", error: "I need Section Heading and Notes before I can suggest some content." };
+        return {
+            data: "",
+            error: "Place the cursor on a section of the article to give me some context",
+        };
     }
     const searchString = `${heading} \n ${notes} \n ${text}`;
-    const results: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
+    const results: SearchResults = await semanticSearch({
+        text: searchString,
+        numResults: 5,
+    });
     if (results.error) {
         return { data: "", error: results.error };
     }
-    const docsString = results.documents.map((doc) => doc.pageContent).join("\n-\n");
+    const docsString = results.documents
+        .map((doc) => doc.pageContent)
+        .join("\n-\n");
 
     const system_prompt = [
         "You are an expert at writing non-fiction content. Your job is to assist the user write a small section of an article",
@@ -59,11 +66,11 @@ export async function generateContent({
             n: 1,
         });
 
-        const content = completion.choices[0].message.content
-        return { data: content ? content : '' }
+        const content = completion.choices[0].message.content;
+        return { data: content ? content : "" };
         // console.log(contentResponse);
     } catch (e: any) {
         console.log(e?.messages);
-        return { data: "", error: e?.message }
+        return { data: "", error: e?.message };
     }
 }

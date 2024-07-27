@@ -5,7 +5,7 @@ import { SearchResults } from "../return_types";
 import { OutlineResponse } from "../return_types";
 
 import { LLMProvider } from "../llms";
-const [chatFunction,] = LLMProvider();
+const [chatFunction] = LLMProvider();
 
 export type outlineResponse = {
     level: string;
@@ -21,17 +21,25 @@ export async function generateOutline({
     titleNotes?: string | null;
 }): Promise<OutlineResponse> {
     if (!title && !titleNotes) {
-        return {data: [], error: "I need a Title and some Notes about your article before I can suggest an outline"};
+        return {
+            data: [],
+            error: "I need a Title and some Notes about your article before I can suggest an outline",
+        };
     }
 
     const searchString = `${title} \n ${titleNotes}`;
-    const results: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
+    const results: SearchResults = await semanticSearch({
+        text: searchString,
+        numResults: 5,
+    });
     if (results.error) {
-        return {data: [], error: results.error};
+        return { data: [], error: results.error };
     }
-    const docsString = results.documents.map((doc) => doc.pageContent).join("\n-\n");
+    const docsString = results.documents
+        .map((doc) => doc.pageContent)
+        .join("\n-\n");
     const system_prompt = [
-        "Develop the outline for an article discussing the topic give by the user.",
+        "Develop the outline for an article discussing the topic given by the user.",
         "Incorporate the rough titleNotes (if provided by the user) into your outline.",
         "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
         "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
@@ -70,11 +78,14 @@ export async function generateOutline({
         );
         // console.log(outlineResponse);
         if (!outlineResponse) {
-            return {data: [], error: "Could not get a response from LLM. Please try again"};
+            return {
+                data: [],
+                error: "Could not get a response from LLM. Please try again",
+            };
         }
-        return {data: JSON.parse(outlineResponse)}
+        return { data: JSON.parse(outlineResponse) };
     } catch (e: any) {
         console.log(e);
-        return {data: [], error: e?.message}
-    } 
+        return { data: [], error: e?.message };
+    }
 }

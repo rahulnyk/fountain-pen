@@ -14,7 +14,7 @@ export async function paraphraseContent({
     if (!style && !text) {
         return {
             data: "",
-            error: "Please provide a style and place your cursor on the section your want me to rephrase.",
+            error: "Please provide me with a style and place your cursor on a section of the article you want me to rephrase.",
         };
     }
 

@@ -5,6 +5,7 @@ import { Shantell_Sans } from "next/font/google";
 import { Playpen_Sans } from "next/font/google";
 import { Open_Sans } from "next/font/google";
 import { Lato } from "next/font/google";
+import { Poppins } from "next/font/google";
 
 export const generalText = Lato({
     subsets: ["latin"],
@@ -16,7 +17,12 @@ export const generalTextLight = Lato({
     weight: "300",
 });
 
-export const p = Spectral({
+// export const p = Spectral({
+//     weight: "400",
+//     subsets: ["latin"],
+// });
+
+export const p = Poppins({
     weight: "400",
     subsets: ["latin"],
 });
@@ -47,7 +53,7 @@ export const notes = Playpen_Sans({
     subsets: ["latin"],
 });
 
-export const paragraphStyle = `${p.className} text-lg my-1 dark:text-zinc-200`,
+export const paragraphStyle = `${p.className} text-base my-1 dark:text-zinc-200`,
     heading3Style = `${h3.className} text-xl my-2 pt-4 pb-4 dark:text-zinc-200`,
     heading2Style = `${h2.className} text-2xl my-2 pt-4 pb-4 dark:text-zinc-200`,
     heading1Style = `${h1.className} text-4xl my-2 pt-4 pb-4 dark:text-zinc-200`,

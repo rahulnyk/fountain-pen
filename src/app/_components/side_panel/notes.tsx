@@ -58,36 +58,47 @@ const Notes = ({ className }: { className?: string }) => {
     }, [currentSectionHeading]);
 
     return (
-        <>
-            {currentSectionHeading && (
-                <>
-                    <div
-                        className={clsx(
-                            "flex-col rounded-lg",
-                            "dark:bg-zinc-800 bg-white w-auto",
-                            " pb-3 pt-5",
-                            className
-                        )}
-                    >
-                        <div>
-                            <div className={clsx("mt-0 px-2 pt-0")}>
-                                <textarea
-                                    value={text}
-                                    onChange={handleInputChange}
-                                    className={clsx(
-                                        "w-full p-0 px-1 focus:outline-none text-sm",
-                                        "bg-transparent",
-                                        notesStyle
-                                    )}
-                                    rows={10}
-                                    onBlur={handleInputChange}
-                                />
-                            </div>
+        <div
+            className={clsx(
+                "flex-col rounded-lg",
+                "dark:bg-zinc-800 bg-white w-auto",
+                " pb-3 pt-5",
+                className
+            )}
+        >
+            <>
+                {currentSectionHeading && (
+                    <div>
+                        <div className={clsx("mt-0 px-2 pt-0")}>
+                            <textarea
+                                value={text}
+                                onChange={handleInputChange}
+                                className={clsx(
+                                    "w-full p-0 px-1 focus:outline-none text-sm",
+                                    "bg-transparent",
+                                    notesStyle
+                                )}
+                                rows={10}
+                                onBlur={handleInputChange}
+                            />
                         </div>
                     </div>
-                </>
-            )}
-        </>
+                )}
+            </>
+            <>
+                {!currentSectionHeading && (
+                    <div>
+                        <div
+                            className={clsx(
+                                "p-5 py-0 text-xs font-bold opacity-50 text-rose-700 mb-2"
+                            )}
+                        >
+                            PLACE THE CURSOR ON A SECTION OF THE ARTICLE
+                        </div>
+                    </div>
+                )}
+            </>
+        </div>
     );
 };
 

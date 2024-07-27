@@ -4,7 +4,7 @@ import { semanticSearch } from "../vector_store";
 import { SearchResults } from "../return_types";
 import { ReturnParams } from "../return_types";
 import { LLMProvider } from "../llms";
-const [chatFunction,] = LLMProvider();
+const [chatFunction] = LLMProvider();
 
 export async function generateWritingPoints({
     heading,
@@ -16,14 +16,22 @@ export async function generateWritingPoints({
     // text?: string | null;
 }): Promise<ReturnParams> {
     if (!heading && !notes) {
-        return {data: null, error: "I need Headings or Note before I can suggest the writing points."};
+        return {
+            data: null,
+            error: "Place the cursor on a section of the article to give me some context.",
+        };
     }
     const searchString = `${heading} \n ${notes}`;
-    const res: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
+    const res: SearchResults = await semanticSearch({
+        text: searchString,
+        numResults: 5,
+    });
     if (res.error) {
-        return {data: [], error: res.error};
+        return { data: [], error: res.error };
     }
-    const docsString = res.documents.map((doc) => doc.pageContent).join("\n-\n");
+    const docsString = res.documents
+        .map((doc) => doc.pageContent)
+        .join("\n-\n");
 
     const system_prompt = [
         "You are tasked with extracting key points from a collection of documents.",
@@ -60,11 +68,13 @@ export async function generateWritingPoints({
         );
         // console.log(writingPoints);
         if (!writingPoints) {
-            throw new Error("Could not extract writing points from LLM response. Please try again")
+            throw new Error(
+                "Could not extract writing points from LLM response. Please try again"
+            );
         }
         const wpResponse = JSON.parse(writingPoints);
-        return {data: wpResponse, error: null};
+        return { data: wpResponse, error: null };
     } catch (e: any) {
-        return {data: null, error: e?.message}
-    } 
+        return { data: null, error: e?.message };
+    }
 }
