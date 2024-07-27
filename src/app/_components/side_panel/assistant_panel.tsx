@@ -16,6 +16,7 @@ import { MdAddLink } from "react-icons/md";
 import { ReferencesPanel } from "./references_panel";
 import clsx from "clsx";
 import { Paraphrase } from "./paraphrase";
+import { FaPenNib } from "react-icons/fa";
 
 export type tabOption = {
     action: string;
@@ -83,7 +84,7 @@ const tabOptions: tabOption[] = [
         display: "Paraphrase Content",
         id: "assistant_tab_6",
         description: "Paraphrase the content based on a particular style",
-        icon: <MdRebaseEdit className="mr-1 size-5 py-1" />,
+        icon: <FaPenNib className="mr-1 size-5 py-1" />,
         component: <Paraphrase />,
         disabled: false,
     },
