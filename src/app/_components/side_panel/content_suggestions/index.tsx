@@ -21,11 +21,12 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
     const text = useSectionContext((state) => state.text);
 
     const getContentSuggestions = useCallback(async () => {
-        const contentSuggestions: ContentSuggestionResponse = await generateContent({
-            heading,
-            notes,
-            text,
-        });
+        const contentSuggestions: ContentSuggestionResponse =
+            await generateContent({
+                heading,
+                notes,
+                text,
+            });
         return contentSuggestions;
     }, [heading, notes, text]);
 
@@ -33,13 +34,13 @@ export const ContentSuggestions = ({ className }: { className?: string }) => {
         setIsWaiting(true);
         const contentSuggestions = await getContentSuggestions();
         if (contentSuggestions.error) {
-            toast.error(contentSuggestions.error)
+            toast.error(contentSuggestions.error);
         } else {
             setContent(contentSuggestions.data);
         }
         // console.log("From Content Suggestion Component", contentSuggestions);
         setIsWaiting(false);
-        setActive(false);
+        // setActive(false);
     };
 
     useEffect(() => {

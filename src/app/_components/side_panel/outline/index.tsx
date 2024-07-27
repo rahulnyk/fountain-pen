@@ -37,12 +37,12 @@ export const Outline = ({ className }: { className?: string }) => {
         setIsWaiting(true);
         const outlineRes = await getOutline();
         if (outlineRes.error) {
-            toast.error(outlineRes.error)
+            toast.error(outlineRes.error);
         } else {
             setOutline(outlineRes.data);
         }
         setIsWaiting(false);
-        setActive(false);
+        // setActive(false);
     };
 
     useEffect(() => {

@@ -37,15 +37,16 @@ export const WritingPointsSuggestions = ({
     const refresh = async () => {
         setIsWaiting(true);
 
-        const writingPointsSuggestions: ReturnParams = await getWritingPointsSuggestions();
+        const writingPointsSuggestions: ReturnParams =
+            await getWritingPointsSuggestions();
         if (writingPointsSuggestions.error) {
-            toast.error(writingPointsSuggestions.error)
+            toast.error(writingPointsSuggestions.error);
         } else {
             setWritingPoints(writingPointsSuggestions.data);
         }
 
         setIsWaiting(false);
-        setActive(false);
+        // setActive(false);
     };
 
     useEffect(() => {

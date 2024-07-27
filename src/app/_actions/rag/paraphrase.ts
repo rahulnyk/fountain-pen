@@ -2,7 +2,7 @@
 
 import { ContentSuggestionResponse } from "../return_types";
 import { LLMProvider } from "../llms";
-const [chatFunction,] = LLMProvider();
+const [chatFunction] = LLMProvider();
 
 export async function paraphraseContent({
     text,
@@ -12,7 +12,10 @@ export async function paraphraseContent({
     style: string | null | undefined;
 }): Promise<ContentSuggestionResponse> {
     if (!style && !text) {
-        return {data: "", error: "Please provide a style and place your cursor on the text your want me to rephrase."}
+        return {
+            data: "",
+            error: "Please provide a style and place your cursor on the section your want me to rephrase.",
+        };
     }
 
     const system_prompt = [
@@ -41,10 +44,10 @@ export async function paraphraseContent({
             n: 1,
         });
 
-        const content = completion.choices[0].message.content
-        return {data: content?content:'', error: null}
+        const content = completion.choices[0].message.content;
+        return { data: content ? content : "", error: null };
     } catch (e: any) {
         console.log(e);
-        return {data: '', error: e?.message}
-    } 
+        return { data: "", error: e?.message };
+    }
 }

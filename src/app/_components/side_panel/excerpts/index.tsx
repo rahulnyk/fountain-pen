@@ -7,7 +7,7 @@ import { Document } from "langchain/document";
 import { useEffect, useState } from "react";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
-import toast, { Toaster, resolveValue } from 'react-hot-toast';
+import toast, { Toaster, resolveValue } from "react-hot-toast";
 import { FpToaster } from "../../fp_toast";
 // import { AddDocumentsButton } from "../references_panel/add_documents_button";
 
@@ -24,8 +24,10 @@ export const Excerpts = ({ className }: { className?: string }) => {
 
     const searchDocs = async () => {
         if (!heading && !notes && !text) {
-            toast.error('I need some context before searching for the relevant research material.');
-            return
+            toast.error(
+                "I need some context before searching for the relevant research material."
+            );
+            return;
         }
         setIsWaiting(true);
         const content = [heading, notes, text].join("\n");
@@ -36,11 +38,11 @@ export const Excerpts = ({ className }: { className?: string }) => {
         if (results.error) {
             toast.error(results.error);
         } else {
-            let documents = results.documents
+            let documents = results.documents;
             setDocuments(results.documents);
             documents.map((r) => console.log(r.metadata));
         }
-        setActive(false);
+        // setActive(false);
         setIsWaiting(false);
     };
 
