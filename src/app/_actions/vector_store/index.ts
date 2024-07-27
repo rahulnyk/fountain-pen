@@ -7,7 +7,6 @@ import { LLMProvider } from "../llms";
 
 const [, embeddingFunction] = LLMProvider();
 
-
 async function loadOrCreateVectorStore(): Promise<FaissStore> {
     const wd = await getWorkingDir();
     if (!wd) {
@@ -21,24 +20,14 @@ async function loadOrCreateVectorStore(): Promise<FaissStore> {
     }
 }
 
-
-
 export async function rebuildVectorStore(docs: Document[]) {
     if (docs.length == 0) {
         throw new Error("No documents to embedd");
     }
     const wd = await getWorkingDir();
-    // if (fs.existsSync(`${wd}/${indexFilename}`)) {
-    //     fs.unlinkSync(`${wd}/${indexFilename}`);
-    //     console.log("Old Index deleted.");
-    // }
     const store = await loadOrCreateVectorStore();
     await store.addDocuments(docs);
     await store.save(wd);
-    // return {data: null, error: null}
-    // } catch (e: any) {
-    //     return {data: null, error: e?.message}
-    // }
 }
 
 export async function addDocuments(docs: Document[]) {
@@ -50,7 +39,6 @@ export async function addDocuments(docs: Document[]) {
     await store.addDocuments(docs);
     store.save(wd);
 }
-
 
 export async function semanticSearch({
     text,
@@ -67,9 +55,9 @@ export async function semanticSearch({
         }
         const store = await FaissStore.load(wd, embeddingFunction);
         let documents = await store.similaritySearch(text, numResults);
-        return { documents, error: undefined }
+        return { documents };
     } catch (e: any) {
         console.log("Could not retrieve results - ", e?.message);
-        return { documents: [], error: e.message }
+        return { documents: [], error: e.message };
     }
 }

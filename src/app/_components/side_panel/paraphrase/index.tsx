@@ -12,6 +12,7 @@ import { ChatCompletion } from "openai/resources/index.mjs";
 import { Button } from "../../button";
 import { ContentSuggestionResponse } from "@/app/_actions/return_types";
 import toast from "react-hot-toast";
+import { FpToaster } from "../../fp_toast";
 
 export const Paraphrase = ({ className }: { className?: string }) => {
     // const heading = useSectionContext((state) => state.heading);
@@ -25,8 +26,7 @@ export const Paraphrase = ({ className }: { className?: string }) => {
     const [style, setStyle] = useState<string | undefined>(undefined);
 
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [paraphrasedContent, setParaphrasedContent] =
-        useState<string>('');
+    const [paraphrasedContent, setParaphrasedContent] = useState<string>("");
     const [active, setActive] = useState<boolean>(false);
 
     const getParaphrasedContent = useCallback(async () => {
@@ -43,7 +43,7 @@ export const Paraphrase = ({ className }: { className?: string }) => {
 
         const result = await getParaphrasedContent();
         if (result.error) {
-            toast.error(result.error)
+            toast.error(result.error);
         } else {
             setParaphrasedContent(result.data);
         }
@@ -114,10 +114,9 @@ export const Paraphrase = ({ className }: { className?: string }) => {
                 >
                     REPHRASE THE PARAGRAPH
                 </Button>
-                <p className="whitespace-pre-line">
-                    {paraphrasedContent}
-                </p>
+                <p className="whitespace-pre-line">{paraphrasedContent}</p>
             </div>
+            <FpToaster />
         </TabPanel>
     );
 };
