@@ -1,16 +1,9 @@
 "use server";
 
-// import { OpenAI } from "openai"; // Import OpenAI library
-
-// const openai = new OpenAI(); // Initialize OpenAI with your API key
-
-import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
-
 import { semanticSearch } from "../vector_store";
-
-import { ChatCompletion } from "openai/resources/index.mjs";
-
-import { SearchResults, ReturnParams, ContentSuggestionResponse } from "../return_types";
+import { SearchResults, ContentSuggestionResponse } from "../return_types";
+import { LLMProvider } from "../llms";
+const [chatFunction,] = LLMProvider();
 
 export async function generateContent({
     heading,
@@ -23,12 +16,12 @@ export async function generateContent({
 }): Promise<ContentSuggestionResponse> {
 
     if (!heading && !notes && !text) {
-        return {data: "", error: "I need Section Heading and Notes before I can suggest some content."};
+        return { data: "", error: "I need Section Heading and Notes before I can suggest some content." };
     }
     const searchString = `${heading} \n ${notes} \n ${text}`;
     const results: SearchResults = await semanticSearch({ text: searchString, numResults: 5 });
     if (results.error) {
-        return {data: "", error: results.error};
+        return { data: "", error: results.error };
     }
     const docsString = results.documents.map((doc) => doc.pageContent).join("\n-\n");
 
@@ -57,7 +50,7 @@ export async function generateContent({
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
     try {
-        const completion = await wmChatCompletions({
+        const completion = await chatFunction({
             messages: [
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
@@ -67,10 +60,10 @@ export async function generateContent({
         });
 
         const content = completion.choices[0].message.content
-        return { data: content? content: '' }
+        return { data: content ? content : '' }
         // console.log(contentResponse);
     } catch (e: any) {
         console.log(e?.messages);
-        return {data: "", error: e?.message}
-    } 
+        return { data: "", error: e?.message }
+    }
 }

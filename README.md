@@ -35,6 +35,8 @@ Start a project
 
 ```bash
 ./run_project.sh PROJECT_NAME
+# then
+docker compose up
 ```
 
 This script will set up the project directories for you and start the docker container.

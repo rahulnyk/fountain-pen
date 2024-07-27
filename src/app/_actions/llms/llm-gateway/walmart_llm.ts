@@ -1,7 +1,8 @@
 
 // import { signatureGenerator } from "./utils";
 import axios from "axios";
-import { getHeaders, readEnvProperty } from "./utils";
+import { getHeaders } from "./utils";
+import { readEnvProperty } from "../../helpers/read_env_properties";
 import { ChatCompletion } from "openai/resources/index.mjs";
 
 

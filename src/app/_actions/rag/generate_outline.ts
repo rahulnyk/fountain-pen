@@ -1,11 +1,11 @@
 "use server";
 
-// import { OpenAI } from "openai"; // Import OpenAI library
 import { semanticSearch } from "../vector_store";
-import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
-import { Outline, SearchResults } from "../return_types";
+import { SearchResults } from "../return_types";
 import { OutlineResponse } from "../return_types";
-// const openai = new OpenAI(); // Initialize OpenAI with your API key
+
+import { LLMProvider } from "../llms";
+const [chatFunction,] = LLMProvider();
 
 export type outlineResponse = {
     level: string;
@@ -55,7 +55,7 @@ export async function generateOutline({
 
     console.log("SYS\n", system_prompt, "USER\n", user_prompt);
     try {
-        const completion = await wmChatCompletions({
+        const completion = await chatFunction({
             messages: [
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },

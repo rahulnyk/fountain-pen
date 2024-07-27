@@ -52,6 +52,6 @@ export const paragraphStyle = `${p.className} text-lg my-1 dark:text-zinc-200`,
     heading2Style = `${h2.className} text-2xl my-2 pt-4 pb-4 dark:text-zinc-200`,
     heading1Style = `${h1.className} text-4xl my-2 pt-4 pb-4 dark:text-zinc-200`,
     titleStyle = `${title.className} text-6xl my-2 pt-4 pb-4 dark:text-zinc-200`,
-    notesStyle = `${notes.className} text-sm text-zinc-500 dark:text-zinc-400`,
+    notesStyle = `${notes.className} text-sm text-indigo-600 dark:text-indigo-300`,
     generalTextStyle = `${generalText.className} text-normal text-zinc-900 dark:text-zinc-100 text-ellipsis`,
     generalTextStyleLight = `${generalTextLight.className} text-sm text-zinc-800 dark:text-zinc-200 text-ellipsis`;

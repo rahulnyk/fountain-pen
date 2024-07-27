@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { Embeddings, EmbeddingsParams } from "@langchain/core/embeddings";
-import { getHeaders, readEnvProperty} from "./utils";
+import { getHeaders} from "./utils";
+import { readEnvProperty } from "../../helpers/read_env_properties";
 
 export class WalmartEmbeddings extends Embeddings {
 

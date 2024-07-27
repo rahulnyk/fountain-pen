@@ -1,8 +1,11 @@
 import crypto from 'crypto';
+import { readEnvProperty } from '../../helpers/read_env_properties';
+
 export interface ServiceRegistrySignature {
   signature: string,
   timestamp: string
 }
+
 
 export const signatureGenerator = (wnConsumerId: string, privateKey: string, keyVersion: string): ServiceRegistrySignature => {
   const epoch_time_ms = Date.now();
@@ -30,9 +33,9 @@ export function getHeaders() {
   return headers;
 }
 
-export function readEnvProperty(propertyKey: string, required: boolean): string {
-  if (process.env[propertyKey] == undefined && required) {
-    throw new Error("Please add " + propertyKey + " in your .env.local file");
-  }
-  return process.env[propertyKey] ? process.env[propertyKey] as string : "";
-}
+// export function readEnvProperty(propertyKey: string, required: boolean): string {
+//   if (process.env[propertyKey] == undefined && required) {
+//     throw new Error("Please add " + propertyKey + " in your .env.local file");
+//   }
+//   return process.env[propertyKey] ? process.env[propertyKey] as string : "";
+// }

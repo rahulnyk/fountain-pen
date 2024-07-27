@@ -1,25 +1,12 @@
 "use server";
-const projectDir = process.env.PROJECT_DIR;
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
-// import { OpenAIEmbeddings } from "@langchain/openai";
-import { WalmartEmbeddings } from "@/app/_actions/helpers/llm-gateway/walmart_embeddings";
 import { Document } from "langchain/document";
-import fs from "fs";
 import { getWorkingDir } from "../helpers/project_directory";
-// const DIRECTORY = "data/wd/";
-const indexFilename = "faiss.index";
-import { EmbeddingsParams } from "@langchain/core/embeddings";
-import { ReturnParams } from "../return_types";
-import { promises } from "dns";
 import { SearchResults } from "../return_types";
-// const embeddingFunction = new OpenAIEmbeddings({
-//     openAIApiKey: process.env.OPENAI_API_KEY,
-// });
-const embeddingParams: EmbeddingsParams = {
-    maxConcurrency : 1,
-    maxRetries: 2
-};
-const embeddingFunction = new WalmartEmbeddings(embeddingParams)
+import { LLMProvider } from "../llms";
+
+const [, embeddingFunction] = LLMProvider();
+
 
 async function loadOrCreateVectorStore(): Promise<FaissStore> {
     const wd = await getWorkingDir();
@@ -80,9 +67,9 @@ export async function semanticSearch({
         }
         const store = await FaissStore.load(wd, embeddingFunction);
         let documents = await store.similaritySearch(text, numResults);
-        return {documents, error: undefined}
+        return { documents, error: undefined }
     } catch (e: any) {
         console.log("Could not retrieve results - ", e?.message);
-        return {documents: [], error: e.message}
-    } 
+        return { documents: [], error: e.message }
+    }
 }

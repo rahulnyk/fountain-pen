@@ -1,14 +1,10 @@
 "use server";
 
-// import { OpenAI } from "openai"; // Import OpenAI library
-// const openai = new OpenAI(); // Initialize OpenAI with your API key
-import { wmChatCompletions } from "@/app/_actions/helpers/llm-gateway/walmart_llm";
-
 import { semanticSearch } from "../vector_store";
 import { SearchResults } from "../return_types";
-// import { ChatCompletion } from "openai/resources/index.mjs";
-// import { wpSuggestion } from "@/app/_components/side_panel/writing_points_suggestions/writing_points_suggestions_card";
 import { ReturnParams } from "../return_types";
+import { LLMProvider } from "../llms";
+const [chatFunction,] = LLMProvider();
 
 export async function generateWritingPoints({
     heading,
@@ -49,7 +45,7 @@ export async function generateWritingPoints({
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
     try {
-        const completion = await wmChatCompletions({
+        const completion = await chatFunction({
             messages: [
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
