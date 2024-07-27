@@ -23,6 +23,9 @@ export function LLMProvider(): llmProvider {
             if (process.env.BASE_URL){openai.baseURL = process.env.BASE_URL;}
             const embeddingFunction = new OpenAIEmbeddings({
                 openAIApiKey: process.env.OPENAI_API_KEY,
+                configuration: {
+                baseURL: process.env.BASE_URL ? process.env.BASE_URL : undefined,
+            },
             });
             return [
                 openai.chat.completions.create.bind(openai.chat.completions),
