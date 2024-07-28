@@ -5,11 +5,13 @@ import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import { AssistantPanel } from "./assistant_panel";
+import { useSectionContext } from "@/app/_store/sectionContextStore";
 
 const SidePanel = ({ className }: { className?: string }) => {
     const pannelWidthOptions = ["w-0", "w-1/3", "w-2/3"];
     const [panelWidthOption, setPanelWidthOption] = useState<number>(0);
     const [panelWidth, setPanelWidth] = useState<string>(pannelWidthOptions[0]);
+    const heading = useSectionContext((state) => state.heading);
 
     const toggleWidth = () => {
         const option = (panelWidthOption + 1) % pannelWidthOptions.length;
@@ -24,7 +26,8 @@ const SidePanel = ({ className }: { className?: string }) => {
     return (
         <div
             className={clsx(
-                "fixed z-50 pt-0 pl-3 pr-6 right-0 top-0",
+                "fixed z-50 pt-0 pl-4 pr-6 right-0 top-0",
+                // "fixed z-50 pt-0 pl-3 pr-3 right-5 top-5 rounded-2xl",
                 "bg-opacity-80 mx-0 py-1 px-2 backdrop-filter backdrop-blur-lg",
                 "bg-zinc-300/30 dark:bg-zinc-900/80",
                 // "border-[1px] border-zinc-100 dark:border-zinc-900",
@@ -55,14 +58,20 @@ const SidePanel = ({ className }: { className?: string }) => {
                     className
                 )}
             >
-                {/* Notes */}
-                <Notes />
-
-                {/* <AssistantButton /> */}
-                <div className="divider px-0 py-4 text-zinc-500 dark:text-zinc-600 text-xs font-bold">
-                    AI ASSISTANT
+                <div className="flex font-extrabold text-lg align-middle py-2 px-4 opacity-70 justify-center text-center">
+                    {heading}
                 </div>
-                <AssistantPanel />
+                <>
+                    <div className="divider px-0 py-3 text-zinc-400 dark:text-zinc-700 text-xs font-bold">
+                        SECTION NOTES
+                    </div>
+                    <Notes />
+
+                    <div className="divider px-0 py-3 text-zinc-400 dark:text-zinc-700 text-xs font-bold">
+                        AI ASSISTANT
+                    </div>
+                    <AssistantPanel />
+                </>
             </div>
         </div>
     );
