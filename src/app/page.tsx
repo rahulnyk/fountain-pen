@@ -30,8 +30,8 @@ export default function Home() {
                 <Button className="my-10">
                     <div
                         className={clsx(
-                            "text-lg font-medium px-2 py-0",
-                            generalText.className
+                            generalText.className,
+                            "text-base font-extrabold px-2 py-0"
                         )}
                     >
                         START WRITING
