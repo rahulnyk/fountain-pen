@@ -58,9 +58,16 @@ const SidePanel = ({ className }: { className?: string }) => {
                     className
                 )}
             >
-                <div className="flex font-extrabold text-lg align-middle py-2 px-4 opacity-70 justify-center text-center">
+                <p
+                    className={clsx(
+                        "flex font-extrabold text-lg align-middle py-2 px-4 justify-center text-center",
+                        "inline-block text-transparent bg-clip-text",
+                        "bg-gradient-to-br from-zinc-400 via-zinc-600 to-zinc-500",
+                        "dark:from-zinc-500 dark:via-zinc-400 dark:to-slate-600"
+                    )}
+                >
                     {heading}
-                </div>
+                </p>
                 <>
                     <div className="divider px-0 py-3 text-zinc-400 dark:text-zinc-700 text-xs font-bold">
                         SECTION NOTES

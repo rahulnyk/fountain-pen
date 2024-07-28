@@ -7,12 +7,12 @@ import { Open_Sans } from "next/font/google";
 import { Lato } from "next/font/google";
 import { Spectral } from "next/font/google";
 
-export const generalText = Lato({
+export const generalText = Poppins({
     subsets: ["latin"],
     weight: "400",
 });
 
-export const generalTextLight = Lato({
+export const generalTextLight = Poppins({
     subsets: ["latin"],
     weight: "300",
 });
