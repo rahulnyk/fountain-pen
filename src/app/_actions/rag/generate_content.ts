@@ -37,14 +37,14 @@ export async function generateContent({
         "The user will provide you with the following inputs:",
         "section heading: Heading of the current section.",
         "notes: Very important. Notes about the current section.",
-        "initial content: Inital content for the current section.",
+        "initial content: Initial content for the current section.",
         "docs: Semantic search documents pertinent to the current section.",
         "Write the section content incorporating the provided information.",
-        "Do not add conclusions or summary at the end of your respoonse",
+        "Do not add conclusions or summary at the end of your response",
         "Write in simple and easily readable language.",
-        "use short sentences as much as possible. Do not try to sound sophesticated. Add humour whever possible.",
-        "Use pronounds like 'we', 'you', 'us', etc. instead of 'individual' or 'one' etc.",
-        "Itomise your response whenever possible. ",
+        "use short sentences as much as possible. Do not try to sound sophisticated. Add humour whenever possible.",
+        "Use pronouns like 'we', 'you', 'us', etc. instead of 'individual' or 'one' etc.",
+        "Itemize your response whenever possible. ",
     ].join("\n");
 
     const user_prompt: string = [
