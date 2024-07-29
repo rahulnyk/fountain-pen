@@ -26,7 +26,8 @@ export async function generateContent({
         numResults: 5,
     });
     if (results.error) {
-        return { data: "", error: results.error };
+        // return { data: [], error: results.error };
+        console.log(results.error);
     }
     const docsString = results.documents
         .map((doc) => doc.pageContent)
