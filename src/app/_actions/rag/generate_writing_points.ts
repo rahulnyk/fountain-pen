@@ -28,7 +28,7 @@ export async function generateWritingPoints({
     });
     if (res.error) {
         // return { data: [], error: results.error };
-        console.log(results.error);
+        console.log(res.error);
     }
     const docsString = res.documents
         .map((doc) => doc.pageContent)
