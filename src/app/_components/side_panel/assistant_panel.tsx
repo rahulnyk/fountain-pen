@@ -51,23 +51,23 @@ const tabOptions: tabOption[] = [
         disabled: false,
     },
     {
-        action: "suggestWritingPoints",
-        display: "Extract Writing Points From Research",
-        id: "assistant_tab_3",
-        description:
-            "Use my research to suggest writing points for the current section",
-        icon: <PiListBulletsBold className="mr-1 size-6 py-1" />,
-        component: <WritingPointsSuggestions />,
-        disabled: false,
-    },
-    {
         action: "generateHeadings",
         display: "Suggest Outline For The Article",
-        id: "assistant_tab_4",
+        id: "assistant_tab_3",
         description:
             "Headings for the article based on the title and the title notes",
         icon: <FaHeading className="mr-1 size-5 py-1" />,
         component: <Outline />,
+        disabled: false,
+    },
+    {
+        action: "suggestWritingPoints",
+        display: "Extract Writing Points From Research",
+        id: "assistant_tab_4",
+        description:
+            "Use my research to suggest writing points for the current section",
+        icon: <PiListBulletsBold className="mr-1 size-6 py-1" />,
+        component: <WritingPointsSuggestions />,
         disabled: false,
     },
     {
