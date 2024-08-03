@@ -9,6 +9,7 @@ import { createEditor, Descendant } from "slate";
 import { Slate, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { withCustomBehavior } from "./main_editor/plugins/withCustomBehavior";
+import { withMarksUtils } from "./main_editor/plugins/withMarksUtils";
 // import { withEnforcedTitle } from "./main_editor/plugins/withEnforcedTitle";
 import { withOnlyOneTitle } from "./main_editor/plugins/withOnlyOneTitle";
 import {
@@ -25,10 +26,12 @@ import { ToolBar } from "./navbar/toolbar";
 
 const createEditorWithPlugins = pipe(
     // withEnforcedTitle,
+    withMarksUtils,
     withParaAfterHeadings,
     withOnlyOneTitle,
     withCustomBehavior,
     withEditableVoids,
+
     withReact,
     withHistory
 );

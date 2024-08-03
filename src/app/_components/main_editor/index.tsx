@@ -35,6 +35,10 @@ const MainEditor = ({ editor }: { editor: Editor }) => {
 
 const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
     console.log(editor.isCurrentNodeHeading());
+    if (event.shiftKey && event.key === "Enter") {
+        event.preventDefault();
+        editor.insertText("\n");
+    }
     if (event.key === "Enter" && editor.isCurrentNodeHeading()) {
         event.preventDefault();
         Transforms.insertNodes(editor, {
@@ -58,6 +62,24 @@ const handleKeyDown = (event: React.KeyboardEvent, editor: Editor) => {
             case "`":
             case "0":
                 Transforms.setNodes(editor, { type: "paragraph" });
+                break;
+            case "b":
+                if (!editor.isCurrentNodeHeading()) {
+                    event.preventDefault();
+                    editor.toggleMark("bold");
+                }
+                break;
+            case "i":
+                if (!editor.isCurrentNodeHeading()) {
+                    event.preventDefault();
+                    editor.toggleMark("italic");
+                }
+                break;
+            case "u":
+                if (!editor.isCurrentNodeHeading()) {
+                    event.preventDefault();
+                    editor.toggleMark("underline");
+                }
                 break;
             default:
                 break;

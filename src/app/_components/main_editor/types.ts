@@ -14,6 +14,7 @@ import {
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
 import { Editor } from "slate";
+import { withMarksUtils } from "./plugins/withMarksUtils";
 
 export const editorModeValues = ["readonly", "outline", "edit"] as const;
 
@@ -38,6 +39,8 @@ export interface FprEditor extends ReactEditor {
     getTitleString(): string | undefined;
     getTitleNotes(): string | undefined;
     isCurrentNodeHeading(): boolean;
+    // Marks utilities
+    toggleMark(mark: Marks): void;
 }
 export type CustomEditor = ReactEditor & HistoryEditor & FprEditor;
 
@@ -57,6 +60,8 @@ export type CustomText = {
     underline?: boolean;
     text: string;
 };
+
+export type Marks = keyof Omit<CustomText, "text">;
 
 export type EmptyText = { text: string };
 
