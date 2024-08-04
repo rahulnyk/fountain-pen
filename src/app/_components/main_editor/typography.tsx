@@ -18,11 +18,6 @@ export const generalTextLight = Poppins({
     weight: "300",
 });
 
-// export const p = Poppins({
-//     weight: "400",
-//     subsets: ["latin"],
-// });
-
 export const p = Poppins({
     weight: "400",
     subsets: ["latin"],
