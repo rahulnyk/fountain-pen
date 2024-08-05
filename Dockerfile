@@ -1,4 +1,3 @@
-# FROM hub.docker.prod.walmart.com/library/node:21-alpine AS base
 FROM node:21-alpine AS base
 
 RUN apk add --no-cache g++ make py3-pip libc6-compat
