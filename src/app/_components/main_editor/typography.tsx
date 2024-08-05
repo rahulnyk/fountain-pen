@@ -1,4 +1,5 @@
 import React from "react";
+import { Montserrat } from "next/font/google";
 import { Poppins } from "next/font/google";
 import { Inconsolata } from "next/font/google";
 import { Shantell_Sans } from "next/font/google";
@@ -16,11 +17,6 @@ export const generalTextLight = Poppins({
     subsets: ["latin"],
     weight: "300",
 });
-
-// export const p = Poppins({
-//     weight: "400",
-//     subsets: ["latin"],
-// });
 
 export const p = Poppins({
     weight: "400",
@@ -53,11 +49,11 @@ export const notes = Playpen_Sans({
     subsets: ["latin"],
 });
 
-export const paragraphStyle = `${p.className} text-base my-1 dark:text-zinc-200`,
+export const paragraphStyle = `${p.className} text-base my-1 text-zinc-800 dark:text-zinc-300`,
     heading3Style = `${h3.className} text-xl my-2 pt-4 pb-4 dark:text-zinc-200 font-bold`,
     heading2Style = `${h2.className} text-3xl my-2 pt-4 pb-4 dark:text-zinc-200 font-bold`,
     heading1Style = `${h1.className} text-4xl my-2 pt-4 pb-4 dark:text-zinc-200 font-bold`,
     titleStyle = `${title.className} text-5xl my-2 pt-4 pb-4 dark:text-zinc-200 font-extrabold`,
-    notesStyle = `${notes.className} text-sm text-indigo-600 dark:text-indigo-300`,
+    notesStyle = `${notes.className} text-sm text-zinc-500 dark:text-zinc-400`,
     generalTextStyle = `${generalText.className} text-normal text-zinc-900 dark:text-zinc-100 text-ellipsis`,
     generalTextStyleLight = `${generalTextLight.className} text-sm text-zinc-800 dark:text-zinc-200 text-ellipsis`;

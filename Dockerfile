@@ -1,4 +1,3 @@
-# FROM hub.docker.prod.walmart.com/library/node:21-alpine AS base
 FROM node:21-alpine AS base
 # RUN echo http://ark-repos.wal-mart.com/ark/apk/published/alpine/3.18/direct/soe/noenv/main/ > /etc/apk/repositories
 # RUN echo http://ark-repos.wal-mart.com/ark/apk/published/alpine/3.18/direct/soe/noenv/community/ >> /etc/apk/repositories
