@@ -1,5 +1,6 @@
 FROM node:21-alpine AS base
-
+# RUN echo http://ark-repos.wal-mart.com/ark/apk/published/alpine/3.18/direct/soe/noenv/main/ > /etc/apk/repositories
+# RUN echo http://ark-repos.wal-mart.com/ark/apk/published/alpine/3.18/direct/soe/noenv/community/ >> /etc/apk/repositories
 RUN apk add --no-cache g++ make py3-pip libc6-compat
 # Install dependencies only when needed
 FROM base AS deps
@@ -7,8 +8,11 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies 
-COPY package.json package-lock.json* ./
+# Install dependencie s
+# RUN npm install -g npm@10.8.2
+COPY package.json package-lock.json*  ./
+# COPY .npmrc ./
+
 RUN npm ci
 
 
