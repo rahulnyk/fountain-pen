@@ -31,7 +31,8 @@ export const TabPanel: React.FC<CustomComponentProps> = ({
                 className={clsx(
                     "flex-col flex-grow px-4 py-5 flex-wrap w-full",
                     className,
-                    generalTextStyle
+                    generalTextStyle,
+                    "text-zinc-500 dark:text-zinc-400"
                 )}
             >
                 {/* Header and refresh button */}

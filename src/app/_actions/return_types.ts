@@ -9,21 +9,27 @@ export interface ReturnParams {
     message?: string | undefined
 }
 
+export type WritingPointResponse = ReturnParams & {
+    data: string;
+}
+
 export interface SearchResults extends Omit<ReturnParams, 'data'> {
     documents: Document<Record<string, any>>[],
 }
 
-
-
-export type Outline = {
+export type Section = {
     level: string;
     text: string;
     description?: string;
 };
 
-export interface OutlineResponse extends ReturnParams {
-    data: Outline[];
-}
+export type OutlineResponse =  ReturnParams & ({
+    data: Section[] ;
+    dataType?: 'json';
+} | {
+    data: string;
+    dataType?: 'string';
+})
 
 export interface ContentSuggestionResponse extends ReturnParams {
     data: string;

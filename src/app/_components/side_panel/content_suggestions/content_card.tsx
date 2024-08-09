@@ -1,12 +1,6 @@
-import { Lato } from "next/font/google";
 import clsx from "clsx";
-import { ChatCompletion } from "openai/resources/index.mjs";
-import { useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
 
-export const textStyle = Lato({
-    subsets: ["latin"],
-    weight: "300",
-});
 
 export const ContentCard = ({ content }: { content: string }) => {
     return (
@@ -18,11 +12,12 @@ export const ContentCard = ({ content }: { content: string }) => {
         >
             <div
                 className={clsx(
-                    "whitespace-pre-wrap break-normal font-light text-sm",
-                    textStyle
+                    "whitespace-pre-wrap text-sm",
                 )}
             >
-                {content}
+                <ReactMarkdown>
+                    {content}
+                </ReactMarkdown>
             </div>
             <hr className="dark:border-zinc-700 my-4" />
         </div>

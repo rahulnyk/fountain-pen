@@ -1,8 +1,8 @@
 "use server";
 
 import { ContentSuggestionResponse } from "../return_types";
-import { LLMProvider } from "../llms";
-const [chatFunction] = LLMProvider();
+import { ModelProvider, model } from "../llms";
+const [chatFunction] = ModelProvider();
 
 export async function paraphraseContent({
     text,
@@ -21,15 +21,15 @@ export async function paraphraseContent({
     const system_prompt = [
         "You are the chief editor of a high quality journal. ",
         "The user will provide you a few paragraphs. ",
-        "Your job is to paraphrase the user provided text in the following style",
+        "Your job is to paraphrase the user provided text in the following style.\n",
         `style -> \n ${style} \n `,
-        "Make sure that the content is grammatically correct and easily readable.",
-        "Return only the paraphrased paragraph and nothing else",
+        "Make sure that the content is grammatically correct and easily readable. ",
+        "Return only the rephrased paragraph in markdown format, and nothing else\n",
     ].join("\n");
 
     const user_prompt: string = [
         "Help me rephrase these paragraphs please \n",
-        `paragraphs -> \n ${text} \n -------`,
+        `# paragraphs -> \n\n ${text} \n\n`,
         ,
     ].join("\n");
 
@@ -40,7 +40,7 @@ export async function paraphraseContent({
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
             ],
-            model: process.env.MODEL ? process.env.MODEL : "gpt-3.5-turbo",
+            model,
             n: 1,
         });
 

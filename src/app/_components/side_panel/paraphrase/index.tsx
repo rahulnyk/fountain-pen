@@ -13,6 +13,8 @@ import { Button } from "../../button";
 import { ContentSuggestionResponse } from "@/app/_actions/return_types";
 import toast from "react-hot-toast";
 import { FpToaster } from "../../fp_toast";
+import ReactMarkdown from 'react-markdown';
+
 
 export const Paraphrase = ({ className }: { className?: string }) => {
     // const heading = useSectionContext((state) => state.heading);
@@ -114,7 +116,7 @@ export const Paraphrase = ({ className }: { className?: string }) => {
                 >
                     REPHRASE THE PARAGRAPH
                 </Button>
-                <p className="whitespace-pre-line">{paraphrasedContent}</p>
+                <ReactMarkdown className="whitespace-pre-line text-sm">{paraphrasedContent}</ReactMarkdown>
             </div>
             <FpToaster />
         </TabPanel>

@@ -1,7 +1,30 @@
 import axios, { AxiosResponse } from "axios";
 import { Embeddings, EmbeddingsParams } from "@langchain/core/embeddings";
-import { getHeaders } from "./utils";
-import { readEnvProperty } from "../../helpers/read_env_properties";
+import { readEnvProperty } from "../helpers/read_env_properties";
+import crypto from "crypto";
+import { ChatCompletion } from "openai/resources/index.mjs";
+
+export async function orgChatCompletions(body: any): Promise<ChatCompletion> {
+    const requestBody = {
+        model: body.model,
+        task: "chat/completions",
+        "api-version": readEnvProperty("ORG_GATEWAY_API_VERSION", true),
+        "model-version": readEnvProperty("ORG_GATEWAY_MODEL_VERSION", true),
+        "model-params": {
+            messages: body.messages,
+        },
+    };
+    const headers = getHeaders();
+    let choices: ChatCompletion;
+    const res = await axios.post(
+        readEnvProperty("ORG_GATEWAY_BASEURL", true),
+        requestBody,
+        { headers: headers }
+    );
+    choices = res.data;
+    return choices;
+}
+
 
 export class OrgEmbeddings extends Embeddings {
     constructor(params?: EmbeddingsParams) {
@@ -48,4 +71,21 @@ export class OrgEmbeddings extends Embeddings {
             );
         }
     }
+}
+
+
+interface ServiceRegistrySignature {
+    signature: string;
+    timestamp: string;
+}
+
+function getHeaders() {
+    const headers = { "x-api-key": readEnvProperty("ORG_API_KEY", true) };
+
+    if (!headers["x-api-key"]) {
+        throw new Error(
+            "Missing required environment variables ORG_API_KEY. This is required for request header."
+        );
+    }
+    return headers;
 }

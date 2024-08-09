@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { WritingPointsSuggestionsCard } from "./writing_points_suggestions_card";
 import { generateWritingPoints } from "@/app/_actions/rag/generate_writing_points";
-import { wpSuggestion } from "./writing_points_suggestions_card";
 import { useSectionContext } from "@/app/_store/sectionContextStore";
 import { TabPanel } from "../tab_panel";
-import { ReturnParams } from "@/app/_actions/return_types";
+import { WritingPointResponse } from "@/app/_actions/return_types";
 import toast from "react-hot-toast";
 import { FpToaster } from "../../fp_toast";
+import ReactMarkdown from 'react-markdown';
+
 export const WritingPointsSuggestions = ({
     className,
 }: {
@@ -20,7 +21,7 @@ export const WritingPointsSuggestions = ({
     const text = useSectionContext((state) => state.text);
 
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [writingPoints, setWritingPoints] = useState<wpSuggestion[] | null>(
+    const [writingPoints, setWritingPoints] = useState<string | null>(
         null
     );
     const [active, setActive] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export const WritingPointsSuggestions = ({
     const refresh = async () => {
         setIsWaiting(true);
 
-        const writingPointsSuggestions: ReturnParams =
+        const writingPointsSuggestions: WritingPointResponse =
             await getWritingPointsSuggestions();
         if (writingPointsSuggestions.error) {
             toast.error(writingPointsSuggestions.error);
@@ -63,15 +64,18 @@ export const WritingPointsSuggestions = ({
             key="tab_panel_wp"
             buttonText="EXTRACT WRITING POINTS"
         >
-            <div className="space-y-2 my-0 mx-0 w-auto">
-                {writingPoints &&
+            {/* <div className="space-y-2 my-0 mx-0 w-auto"> */}
+                <div className="whitespace-pre-line text-sm">
+                    <ReactMarkdown>{writingPoints}</ReactMarkdown>
+                </div>
+                {/* {writingPoints &&
                     writingPoints.map((item) => (
                         <WritingPointsSuggestionsCard
                             item={item}
                             key={`wp-suggestions-${item.key}`}
                         />
-                    ))}
-            </div>
+                    ))} */}
+            {/* </div> */}
             <FpToaster />
         </TabPanel>
     );

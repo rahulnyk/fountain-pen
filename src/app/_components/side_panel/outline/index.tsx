@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useSlate } from "slate-react";
 import {
     generateOutline,
-    outlineResponse,
 } from "@/app/_actions/rag/generate_outline";
 import { OutlineCard } from "./outline_card";
 import { useCallback } from "react";
@@ -13,13 +12,17 @@ import { TabPanel } from "../tab_panel";
 import { CustomElement } from "../../main_editor/types";
 import { Transforms, Path } from "slate";
 import { RiArrowLeftDoubleFill } from "react-icons/ri";
-import { OutlineResponse } from "@/app/_actions/return_types";
 import toast from "react-hot-toast";
 import { FpToaster } from "../../fp_toast";
+import { Section, OutlineResponse } from "@/app/_actions/return_types";
+import ReactMarkdown from 'react-markdown';
+
 
 export const Outline = ({ className }: { className?: string }) => {
     const [isWaiting, setIsWaiting] = useState<boolean>(false);
-    const [outline, setOutline] = useState<outlineResponse[]>([]);
+    const [outline, setOutline] = useState<Section[] | string>([]);
+    const [outlineType, setOutlineType] = useState<'json' | 'string'>();
+
     const [active, setActive] = useState<boolean>(false);
 
     const title = useSectionContext((state) => state.title);
@@ -40,6 +43,7 @@ export const Outline = ({ className }: { className?: string }) => {
             toast.error(outlineRes.error);
         } else {
             setOutline(outlineRes.data);
+            setOutlineType(outlineRes.dataType)
         }
         setIsWaiting(false);
         // setActive(false);
@@ -52,7 +56,7 @@ export const Outline = ({ className }: { className?: string }) => {
     //// Copy heading to the editor.
     const editor = useSlate();
 
-    const handleInsert = (item: outlineResponse, index: number) => {
+    const handleInsert = (item: Section, index: number) => {
         if (!editor.selection) {
             return;
         }
@@ -61,13 +65,13 @@ export const Outline = ({ className }: { className?: string }) => {
     };
 
     const removeFromOutline = (index: number) => {
-        let newOutline = outline;
+        let newOutline = (outline as Section[]);
         newOutline?.splice(index, 1);
         setOutline(newOutline);
         console.log(outline);
     };
 
-    const insertInToEditor = (item: outlineResponse) => {
+    const insertInToEditor = (item: Section) => {
         const element: CustomElement = {
             type: "heading1",
             children: [{ text: item.text }],
@@ -96,7 +100,38 @@ export const Outline = ({ className }: { className?: string }) => {
             buttonText="GENERATE OUTLINE"
         >
             <div className="space-y-2">
-                {outline.map((item, index) => (
+                {outlineType == 'json' && <RenderOutlineCards sections={outline as Section[]} handleInsert={handleInsert} />}
+                {outlineType == 'string' && (
+                    <div className={clsx(
+                        "whitespace-pre-line text-sm"
+                        )}>
+                        <ReactMarkdown>
+                            {(outline as string)}
+                        </ReactMarkdown>
+                    </div>
+                )}
+            </div>
+            <FpToaster />
+        </TabPanel>
+    );
+};
+
+
+const RenderOutlineCards = (
+    {
+        sections,
+        handleInsert,
+        className,
+    }: {
+        sections: Section[],
+        handleInsert: (item: Section, index: number) => void,
+        className?: string
+    }
+) => {
+    return (
+        <>
+            {
+                sections.map((item, index) => (
                     <div className="flex flex-grow space-x-2 items-center">
                         {/* Icon */}
                         <div
@@ -121,8 +156,6 @@ export const Outline = ({ className }: { className?: string }) => {
                         />
                     </div>
                 ))}
-            </div>
-            <FpToaster />
-        </TabPanel>
-    );
-};
+        </>
+    )
+}

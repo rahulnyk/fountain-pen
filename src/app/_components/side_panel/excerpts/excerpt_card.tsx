@@ -2,6 +2,7 @@ import { Document } from "langchain/document";
 import { Open_Sans } from "next/font/google";
 import { Lato } from "next/font/google";
 import clsx from "clsx";
+import ReactMarkdown from 'react-markdown';
 
 export const textStyle = Lato({
     subsets: ["latin"],
@@ -22,7 +23,7 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
 
     const sanitizePDFText = (pdfText: string) => {
         // Replace newline characters with <br> tags
-        let text = pdfText.replace(/\n/g, "<br>");
+        let text = pdfText.replace(/\n/g, "\n\n");
 
         // Normalize spaces
         text = text.replace(/\s+/g, " ");
@@ -71,16 +72,23 @@ export const ExcerptCard = ({ document }: { document: Document }) => {
                     Page: {document?.metadata?.loc?.pageNumber}
                 </div>
             </div>
+            <div className={clsx(
+                        "whitespace-pre-line text-sm"
+                        )}>
+                        <ReactMarkdown>
+                            {document?.pageContent}
+                        </ReactMarkdown>
+            </div>
 
-            <div
+            {/* <div
                 className={clsx(
-                    "whitespace-pre-wrap break-normal font-light text-sm",
+                    "whitespace-pre-line break-normal font-light text-sm",
                     textStyle
                 )}
                 dangerouslySetInnerHTML={{
                     __html: sanitizePDFText(document?.pageContent),
                 }}
-            />
+            /> */}
             <hr className="dark:border-zinc-700 my-4" />
         </div>
     );
