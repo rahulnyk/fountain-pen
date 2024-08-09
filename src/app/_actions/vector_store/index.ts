@@ -3,9 +3,9 @@ import { FaissStore } from "@langchain/community/vectorstores/faiss";
 import { Document } from "langchain/document";
 import { getWorkingDir } from "../helpers/project_directory";
 import { SearchResults } from "../return_types";
-import { LLMProvider } from "../llms";
+import { ModelProvider } from "../llms";
 
-const [, embeddingFunction] = LLMProvider();
+const [, embeddingFunction] = ModelProvider();
 
 async function loadOrCreateVectorStore(): Promise<FaissStore> {
     const wd = await getWorkingDir();
@@ -55,6 +55,7 @@ export async function semanticSearch({
         }
         const store = await FaissStore.load(wd, embeddingFunction);
         let documents = await store.similaritySearch(text, numResults);
+        console.log('Semantic Search: ', documents);
         return { documents };
     } catch (e: any) {
         console.log("Could not retrieve results - ", e?.message);

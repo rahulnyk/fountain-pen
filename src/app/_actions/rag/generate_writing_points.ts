@@ -2,9 +2,11 @@
 
 import { semanticSearch } from "../vector_store";
 import { SearchResults } from "../return_types";
-import { ReturnParams } from "../return_types";
-import { LLMProvider } from "../llms";
-const [chatFunction] = LLMProvider();
+import { WritingPointResponse } from "../return_types";
+import { ModelProvider, model, modelProvider } from "../llms";
+import { readEnvProperty } from "../helpers/read_env_properties";
+
+const [chatFunction] = ModelProvider();
 
 export async function generateWritingPoints({
     heading,
@@ -14,10 +16,10 @@ export async function generateWritingPoints({
     heading?: string | null;
     notes?: string | null;
     // text?: string | null;
-}): Promise<ReturnParams> {
+}): Promise<WritingPointResponse> {
     if (!heading && !notes) {
         return {
-            data: null,
+            data: '',
             error: "Place the cursor on a section of the article to give me some context.",
         };
     }
@@ -34,48 +36,54 @@ export async function generateWritingPoints({
         .map((doc) => doc.pageContent)
         .join("\n-\n");
 
-    const system_prompt = [
-        "You are tasked with extracting key points from a collection of documents.",
-        "The input will consist of a series documents along with specific instructions such as heading, notes, and content.",
-        "Your goal is to identify and extract the most important points and concepts from these documents to provide a concise summary or list of key points for the user to write about.",
-        "Ensure that the extracted points are atomistic and relevant to the heading and capture the essential information from the content.",
-        "If necessary, prioritize the points based on their importance or significance.",
-        "Format your response as JSON array of objects with following schema",
-        "{key: number, point: text}",
+    const sysInstructions = [
+        "You are tasked with extracting key points for a section of an article. ",
+        "The user will provide you with some relevant documents along with specific section heading, section notes, and section content. ",
+        "Your goal is to identify and extract the most pertenant points that can be used to write a section of the article with the given heading. ",
+        "Ensure that the extracted points are atomistic and relevant to the heading and capture the essential information from the content. ",
+        "If necessary, prioritize the points based on their importance or significance. \n",
     ].join("\n");
+
+
+    let formatingInstructions: string
+    if (modelProvider == 'ollama') {
+        formatingInstructions = "Respond with a Markdown formatted Itomized list of writing points";
+
+    } else {
+        formatingInstructions = [
+            "Format your response as JSON array of objects with following schema",
+            "{key: number, point: text}",    
+        ].join(" ");
+    }
+
+    const systemPrompt = `${sysInstructions}\n${formatingInstructions}`
 
     const user_prompt: string = [
-        "Give me some writing points using the following inputs. ",
-        `docs -> \n ${docsString} \n -------`,
-        `heading -> \n ${heading} \n -------`,
-        `notes -> \n ${notes} \n -------`,
-        // `content -> \n ${text} \n -------`,
+        "Give me some writing points using the following inputs. \n\n",
+        `## heading -> \n\n  ${heading}  \n\n`,
+        `## notes -> \n\n  ${notes}  \n\n`,
+        `## docs ->  \n\n ${docsString} \n\n`,
     ].join("\n");
 
-    console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
+    console.log("SYS PROMPT", systemPrompt, "USER PROMPT", user_prompt);
     try {
         const completion = await chatFunction({
             messages: [
-                { role: "system", content: system_prompt },
+                { role: "system", content: systemPrompt },
                 { role: "user", content: user_prompt },
             ],
-            model: process.env.MODEL ? process.env.MODEL : "gpt-3.5-turbo",
+            model,
             n: 1,
         });
 
-        let writingPoints = completion.choices[0].message.content?.replace(
-            /```json\n?|```/g,
-            ""
-        );
-        // console.log(writingPoints);
+        let writingPoints = completion.choices[0].message.content
         if (!writingPoints) {
             throw new Error(
                 "Could not extract writing points from LLM response. Please try again"
             );
         }
-        const wpResponse = JSON.parse(writingPoints);
-        return { data: wpResponse, error: null };
+        return { data: writingPoints, error: null };
     } catch (e: any) {
-        return { data: null, error: e?.message };
+        return { data: '', error: e?.message };
     }
 }

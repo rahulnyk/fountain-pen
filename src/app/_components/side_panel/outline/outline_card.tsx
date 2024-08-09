@@ -1,15 +1,15 @@
 import clsx from "clsx";
-import { outlineResponse } from "@/app/_actions/rag/generate_outline";
 import {
     generalTextStyle,
     generalTextStyleLight,
 } from "../../main_editor/typography";
 
+import { Section } from "@/app/_actions/return_types";
 export const OutlineCard = ({
     item,
     index,
 }: {
-    item: outlineResponse;
+    item: Section;
     index: number;
 }) => {
     return (

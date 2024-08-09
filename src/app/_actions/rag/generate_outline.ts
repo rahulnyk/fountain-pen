@@ -2,16 +2,13 @@
 
 import { semanticSearch } from "../vector_store";
 import { SearchResults } from "../return_types";
-import { OutlineResponse } from "../return_types";
+import { OutlineResponse, Section } from "../return_types";
 
-import { LLMProvider } from "../llms";
-const [chatFunction] = LLMProvider();
+import { ModelProvider, model, modelProvider } from "../llms";
+import { ChatCompletion } from "openai/resources/index.mjs";
+import { readEnvProperty } from "../helpers/read_env_properties";
 
-export type outlineResponse = {
-    level: string;
-    text: string;
-    description?: string;
-};
+const [chatFunction] = ModelProvider();
 
 export async function generateOutline({
     title,
@@ -20,6 +17,7 @@ export async function generateOutline({
     title: string | null;
     titleNotes?: string | null;
 }): Promise<OutlineResponse> {
+
     if (!title && !titleNotes) {
         return {
             data: [],
@@ -39,54 +37,80 @@ export async function generateOutline({
     const docsString = results.documents
         .map((doc) => doc.pageContent)
         .join("\n-\n");
-    const system_prompt = [
+    const sysInstructions = [
         "Develop the outline for an article discussing the topic given by the user.",
-        "Incorporate the rough titleNotes (if provided by the user) into your outline.",
+        "Incorporate the rough title Notes and relevant documents (if provided by the user) into your outline.",
         "Consider structuring your outline with an introduction, main sections, supporting points or arguments, and a conclusion.",
         "Aim to create a clear and logical flow of ideas that effectively communicates your message to the reader.",
         "Aim to create headings that cover distinct aspects of the topic that do not overlap with each other",
         "Remember to add conclusion and references headings towards the end of the outline",
-        "Respond with a valid JSON with the following schema\n",
-        // "Respond with a JSON array of objects where every object is of the following type \n",
-        `[{
+    ].join(" ");
+
+    let formatingInstructions: string
+
+
+    if (modelProvider == 'ollama') {
+        formatingInstructions = "Respond with a Markdown formatted text";
+    } else {
+        formatingInstructions = ["Respond with a valid JSON with the following schema\n",
+            // "Respond with a JSON array of objects where every object is of the following type \n",
+            `[{
             level: string ("heading"),
             text: string,
             description: Text. Notes on what to write in this heading. be detailed when possible,
         }, {...}]`,
-    ].join(" ");
+        ].join(" ");
+
+    }
+
+    const systemPrompt = `${sysInstructions}\n${formatingInstructions}`
 
     const user_prompt: string = [
-        `Topic: ${title}`,
-        titleNotes ? `Rough titleNotes: ${titleNotes}.` : "",
-        `docs: ${docsString} \n ----- \n`,
+        `# Topic: ${title}\n\n`,
+        titleNotes ? `## Rough title Notes: ${titleNotes}\n\n` : "",
+        `## relevant documents: \n\n ${docsString} \n\n`,
         "Also suggest more ideas and headings (apart from my titleNotes) that I can write about",
     ].join("\n");
 
-    console.log("SYS\n", system_prompt, "USER\n", user_prompt);
+    console.log("\nSYS\n", systemPrompt, "\nUSER\n", user_prompt);
+
+    let completion: ChatCompletion
     try {
-        const completion = await chatFunction({
+        completion = await chatFunction({
             messages: [
-                { role: "system", content: system_prompt },
+                { role: "system", content: systemPrompt },
                 { role: "user", content: user_prompt },
             ],
-            model: process.env.MODEL ? process.env.MODEL : "gpt-3.5-turbo",
+            model,
             // response_format: { type: "json_object" },
         });
-
-        let outlineResponse = completion.choices[0].message.content?.replace(
-            /```json\n?|```/g,
-            ""
-        );
-        // console.log(outlineResponse);
-        if (!outlineResponse) {
-            return {
-                data: [],
-                error: "Could not get a response from LLM. Please try again",
-            };
-        }
-        return { data: JSON.parse(outlineResponse) };
     } catch (e: any) {
         console.log(e);
         return { data: [], error: e?.message };
+    }
+
+    const outlineResponse = completion.choices[0].message.content
+    if (!outlineResponse) {
+        return {
+            data: [],
+            error: "Could not get a response from the LLM. Please try again",
+        };
+    }
+    console.log("Generate Outline: \n", completion.choices[0].message.content)
+
+    try {
+        let jsonResponse = completion.choices[0].message.content?.replace(
+            /```json\n?|```/g,
+            ""
+        );
+        return {
+            data: JSON.parse(jsonResponse ? jsonResponse : ''),
+            dataType: 'json',
+        }
+    } catch (e: any) {
+        return {
+            data: outlineResponse,
+            dataType: 'string'
+        }
     }
 }

@@ -2,8 +2,8 @@
 
 import { semanticSearch } from "../vector_store";
 import { SearchResults, ContentSuggestionResponse } from "../return_types";
-import { LLMProvider } from "../llms";
-const [chatFunction] = LLMProvider();
+import { ModelProvider, model } from "../llms";
+const [chatFunction] = ModelProvider();
 
 export async function generateContent({
     heading,
@@ -23,7 +23,7 @@ export async function generateContent({
     const searchString = `${heading} \n ${notes} \n ${text}`;
     const results: SearchResults = await semanticSearch({
         text: searchString,
-        numResults: 5,
+        numResults: 3,
     });
     if (results.error) {
         // return { data: [], error: results.error };
@@ -35,25 +35,23 @@ export async function generateContent({
 
     const system_prompt = [
         "You are an expert at writing non-fiction content. Your job is to assist the user write a small section of an article",
-        "The user will provide you with the following inputs:",
-        "section heading: Heading of the current section.",
-        "notes: Very important. Notes about the current section.",
-        "initial content: Initial content for the current section.",
-        "docs: Semantic search documents pertinent to the current section.",
-        "Write the section content incorporating the provided information.",
-        "Do not add conclusions or summary at the end of your response",
-        "Write in simple and easily readable language.",
-        "use short sentences as much as possible. Do not try to sound sophisticated. Add humour whenever possible.",
-        "Use pronouns like 'we', 'you', 'us', etc. instead of 'individual' or 'one' etc.",
-        "Itemize your response whenever possible. ",
+        "The user will provide you with the following inputs: \n",
+        " - section heading: Very Important.  \n",
+        " - section notes: Very important.  \n",
+        " - initial section content: Initial content for the current section.\n",
+        " - relevant documents: Some excerpts from reference articles.\n",
+        "Write a few paragraphs for the given section. ",
+        "Remeber the section heading and keep your content relevant to the given section heading only. ",
+        "Write in simple and easily readable language. ",
+        "Itemize your response whenever possible. Respond with Markdown formatted text. ",
     ].join("\n");
 
     const user_prompt: string = [
-        "Help me write this section of the article",
-        `section heading -> \n ${heading} \n -------`,
-        `notes -> \n ${notes} \n -------`,
-        `initial content -> \n ${text} \n -------`,
-        `docs -> \n ${docsString} \n -------`,
+        "Help me write this section of the article \n",
+        `# section heading -> \n\n ${heading} \n\n`,
+        `# section notes -> \n\n ${notes} \n\n`,
+        `# initial section content -> \n\n ${text} \n\n`,
+        `# relevant documents -> \n\n ${docsString} \n\n`,
     ].join("\n");
 
     console.log("SYS PROMPT", system_prompt, "USER PROMPT", user_prompt);
@@ -63,7 +61,7 @@ export async function generateContent({
                 { role: "system", content: system_prompt },
                 { role: "user", content: user_prompt },
             ],
-            model: process.env.MODEL ? process.env.MODEL : "gpt-3.5-turbo",
+            model,
             n: 1,
         });
 
