@@ -42,4 +42,5 @@ data/documents/*
 !data/documents/.gitkeep
 data/wd/*
 !data/wd/.gitkeep
+.npmrc
 
